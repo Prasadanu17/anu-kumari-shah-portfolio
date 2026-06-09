@@ -10,14 +10,14 @@ const ExperienceItem = ({ exp, index }) => {
       ? "bg-primary-500"
       : exp.color === "secondary"
       ? "bg-secondary-500"
-      : "bg-purple-500";
+      : "bg-emerald-500";
 
   const textColor =
     exp.color === "primary"
       ? "text-primary-500"
       : exp.color === "secondary"
       ? "text-secondary-500"
-      : "text-purple-500";
+      : "text-emerald-500";
 
   return (
     <motion.div
@@ -108,7 +108,7 @@ const Experience = () => {
         <div className="max-w-6xl mx-auto relative">
           
           {/* Vertical Line */}
-          <div className="absolute left-1/2 top-0 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary-500 via-secondary-500 to-purple-500"></div>
+          <div className="absolute left-1/2 top-0 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary-500 via-secondary-500 to-emerald-600"></div>
 
           {experience.map((exp, index) => (
             <ExperienceItem key={exp.id} exp={exp} index={index} />

@@ -1,13 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "../utils/constants";
 
-const categories = [
-  { id: "all", label: "All" },
-  { id: "webdevelopment", label: "Web Development" },
-  { id: "dataanalytics", label: "Data Analytics" },
-  { id: "ml", label: "Machine Learning" },
-];
+const webProjects = projects.filter((project) => project.category === "webdevelopment");
+const mlProjects = projects.filter((project) => project.category === "ml");
 
 const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
@@ -135,7 +131,7 @@ const ProjectCard = ({ project, onOpen }) => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ y: -12, transition: { duration: 0.3 } }}
       onClick={() => onOpen(project)}
-      className="group cursor-pointer relative bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-2xl hover:border-primary-500/30 transition-all duration-400"
+      className="group cursor-pointer relative bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-2xl hover:border-primary-500/30 transition-all duration-400 transform-gpu will-change-transform hover:scale-105 hover:-rotate-3"
     >
       {/* Image with overlay gradient & reveal title */}
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -190,18 +186,11 @@ const ProjectCard = ({ project, onOpen }) => {
 };
 
 const Projects = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const filteredProjects = useMemo(() => {
-    if (activeCategory === "all") return projects;
-    return projects.filter((p) => p.category === activeCategory);
-  }, [activeCategory]);
-
   return (
-    <section id="projects" className="py-28 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+    <section className="py-28 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
       <div className="container mx-auto px-5 sm:px-6 lg:px-8 max-w-7xl">
-        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -213,69 +202,61 @@ const Projects = () => {
             Portfolio
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Featured Projects
+            All Projects
           </h2>
           <p className="mt-5 text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            A selection of my work in web development, data analytics, and ongoing machine learning explorations.
+            Explore every project across Web Development and AI/ML, including the latest live and research work.
           </p>
         </motion.div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-14">
-          {categories.map((cat) => (
-            <motion.button
-              key={cat.id}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-6 py-2.5 text-sm md:text-base font-medium rounded-full transition-all duration-300 border-2 ${
-                activeCategory === cat.id
-                  ? "bg-primary-600 text-white border-primary-600 shadow-lg shadow-primary-500/30"
-                  : "border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 hover:shadow-md"
-              }`}
-            >
-              {cat.label}
-            </motion.button>
-          ))}
+        <div className="space-y-20">
+          <div>
+            <div className="mb-8">
+              <h3 className="text-3xl font-semibold text-slate-900 dark:text-white">Web Development Projects</h3>
+              <p className="mt-3 text-slate-600 dark:text-slate-400 max-w-2xl">
+                A curated collection of full-stack and frontend projects showcasing real client work and polished web experiences.
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              {webProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onOpen={(p) => setSelectedProject(p)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-8">
+              <h3 className="text-3xl font-semibold text-slate-900 dark:text-white">AI/ML Projects</h3>
+              <p className="mt-3 text-slate-600 dark:text-slate-400 max-w-2xl">
+                AI/ML work demonstrating NLP, predictive analytics, and intelligent automation using Python-based data science tools.
+              </p>
+            </div>
+            {mlProjects.length > 0 ? (
+              <div className="grid gap-8 md:grid-cols-3">
+                {mlProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onOpen={(p) => setSelectedProject(p)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-500">More exciting AI/ML projects coming soon...</p>
+            )}
+          </div>
         </div>
-
-        {/* Projects Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 auto-rows-fr"
-          >
-            {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                onOpen={(p) => setSelectedProject(p)} 
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Empty State */}
-        {filteredProjects.length === 0 && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center text-xl text-slate-500 dark:text-slate-400 py-20"
-          >
-            More exciting projects coming soon...
-          </motion.p>
-        )}
       </div>
 
-      {/* Project Modal */}
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal 
-            project={selectedProject} 
-            onClose={() => setSelectedProject(null)} 
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
           />
         )}
       </AnimatePresence>

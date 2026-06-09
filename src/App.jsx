@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoadingScreen from './components/common/LoadingScreen';
-import CustomCursor from './components/common/CustomCursor';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Stats from './components/Stats';         // fixed capitalization
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Achievements from './components/Achievements';
-import Certifications from './components/Certifications';
-import Experience from './components/Experience';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import BackToTop from './components/common/BackToTop';
-
-// If you're using feather-icons somewhere in components
 import feather from 'feather-icons';
+import HomePage from './pages/HomePage';
+import ProjectsPage from './pages/ProjectsPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -75,31 +63,12 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 overflow-x-hidden">
-      <CustomCursor />
-
-      {/* Pass theme and toggle function to Navbar */}
-      <Navbar 
-        theme={theme} 
-        toggleTheme={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-      />
-
-      <main>
-        <Hero />
-        <Stats />
-        <About />
-        <Skills />
-        <Projects />
-        <Achievements />
-        <Certifications />
-        <Experience />
-        <Contact />
-      </main>
-
-      <Footer />
-
-      <BackToTop />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

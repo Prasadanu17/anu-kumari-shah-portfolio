@@ -82,7 +82,7 @@ const Hero = () => {
             delay: 4,
             ease: "linear"
           }}
-          className="absolute -bottom-32 left-1/3 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+          className="absolute -bottom-32 left-1/3 w-96 h-96 bg-emerald-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
         />
       </div>
 

@@ -71,6 +71,37 @@ export const projects = [
       "Mobile-first design approach",
       "Optimized CSS animations"
     ]
+  },
+  {
+    id: 6,
+    title: "AI Resume Analyzer & Builder",
+    category: "ml",
+    description: "A Streamlit app that analyzes resumes with ML/NLP, provides ATS score predictions, and generates resume recommendations.",
+    technologies: ["Python", "Streamlit", "spaCy", "Sentence Transformers"],
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+    demo: "https://lnkd.in/gQtcZQzB",
+    keyFeatures: [
+      "Resume and job description semantic matching",
+      "Skill extraction with NLP",
+      "ATS score prediction and gap detection",
+      "Interview question suggestions and PDF export"
+    ]
+  },
+  {
+    id: 7,
+    title: "Heart Disease Prediction System",
+    category: "ml",
+    description: "An interactive healthcare app that predicts heart disease risk using machine learning models and visual data insights.",
+    technologies: ["Python", "Streamlit", "Scikit-learn", "Pandas"],
+    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
+    demo: "https://lnkd.in/gcDfsetc",
+    github: "https://lnkd.in/g5We5FXK",
+    keyFeatures: [
+      "Real-time health risk prediction",
+      "User-friendly medical interface",
+      "Visual analysis of model inputs",
+      "Deployable Streamlit web application"
+    ]
   }
 ];
 
@@ -129,7 +160,7 @@ export const experience = [
     company: "Depression Detection from Social Media",
     period: "2026 - Present",
     description: "Co-authoring a research paper on early detection of depression via social media text analysis. Developing Bi-LSTM models with Attention Mechanisms and Explainable AI (LIME & SHAP). Achieved 94% accuracy.",
-    color: "purple",
+    color: "secondary",
   },
   {
     id: 2,
@@ -156,7 +187,7 @@ export const experience = [
     period: "2026",
     description:
       "Performed structured data analysis and derived actionable business insights. Applied data cleaning, EDA techniques, and analytical problem-solving methods.",
-    color: "purple",
+    color: "secondary",
   }
 ];
 

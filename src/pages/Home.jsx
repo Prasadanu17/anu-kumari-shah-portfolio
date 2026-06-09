@@ -7,7 +7,7 @@ import {
   ArrowRight, Download, Code, Terminal, Cpu, Database,
   Sparkles, ChevronDown 
 } from 'lucide-react'
-import ProjectCard from '../components/ProjectCard'
+import { projects as allProjects } from '../utils/constants'
 
 const Home = () => {
   const heroRef = useRef(null)
@@ -24,28 +24,23 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const featuredProjects = [
-    {
-      title: "Homestay Booking Platform",
-      description: "Full-featured booking system with real-time availability, payment integration, and admin dashboard.",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
-      technologies: ["PHP", "MySQL", "AJAX", "Bootstrap"],
-      demoUrl: "#",
-      githubUrl: "#",
-      status: "Live",
-      year: "2023"
-    },
-    {
-      title: "AI Analytics Dashboard",
-      description: "Real-time data visualization platform with machine learning predictions and interactive charts.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-      technologies: ["React", "Python", "TensorFlow", "D3.js"],
-      demoUrl: "#",
-      githubUrl: "#",
-      status: "Beta",
-      year: "2024"
-    }
-  ]
+  // Featured: top 3 Web Development projects
+  const featuredProjects = allProjects.filter(p => p.category === 'webdevelopment').slice(0, 3)
+
+  const FeaturedProjectCard = ({ project }) => (
+    <div className="group bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
+      <img src={project.image} alt={project.title} className="w-full h-44 object-cover" />
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white">{project.title}</h3>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 line-clamp-3">{project.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.technologies.slice(0,3).map((t) => (
+            <span key={t} className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-900 text-slate-600">{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <div className="relative">
@@ -193,13 +188,15 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {featuredProjects.map((project, index) => (
-              <ProjectCard key={project.title} project={project} index={index} />
+          <div className="grid md:grid-cols-3 gap-8">
+            {featuredProjects.slice(0,3).map((project) => (
+              <FeaturedProjectCard key={project.title} project={project} />
             ))}
           </div>
         </div>
       </section>
+
+      {/* (All Projects moved to separate Projects page) */}
 
       {/* Stats Section */}
       <section className="py-24">

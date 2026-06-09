@@ -31,7 +31,7 @@ const CursorGlow = () => {
 
   return (
     <div
-      className="fixed pointer-events-none z-0 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-primary-500/20 to-accent/20 dark:from-primary-400/10 dark:to-accent/10 blur-3xl transition-opacity duration-300 -translate-x-1/2 -translate-y-1/2 mix-blend-screen"
+      className="fixed pointer-events-none z-0 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-primary-500/20 to-secondary-500/20 dark:from-primary-400/10 dark:to-secondary-400/10 blur-3xl transition-opacity duration-300 -translate-x-1/2 -translate-y-1/2 mix-blend-screen"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

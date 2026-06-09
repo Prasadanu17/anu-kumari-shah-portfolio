@@ -44,34 +44,7 @@ export const projects = [
       "Service-specific inquiry integration"
     ]
   },
-  {
-    id: 4,
-    title: "Gallery Management Module",
-    category: "webdevelopment",
-    description: "A complex media management system developed using CodeIgniter. Allows administrators to easily upload, manage, and display video/image content.",
-    technologies: ["CodeIgniter", "PHP", "MySQL", "jQuery"],
-    image: "/projects/depression-detection.png", // Reuse high-tech viz image for complex modules
-    keyFeatures: [
-      "Full CRUD operations for media items",
-      "Role-based admin access",
-      "Bulk upload & display optimization",
-      "Seamless integration with frontend assets"
-    ]
-  },
-  {
-    id: 5,
-    title: "Vidhya Institute UI Template",
-    category: "webdevelopment",
-    description: "A fully responsive educational institute template featuring a custom-built slider with smooth animations and Bootstrap 5 integration.",
-    technologies: ["Bootstrap", "jQuery", "CSS3 Animations"],
-    image: "https://images.unsplash.com/photo-1523050338692-7b835a07973f?auto=format&fit=crop&w=800&q=80",
-    keyFeatures: [
-      "Custom responsive hero slider",
-      "Modern education-themed UI",
-      "Mobile-first design approach",
-      "Optimized CSS animations"
-    ]
-  },
+  
   {
     id: 6,
     title: "AI Resume Analyzer & Builder",

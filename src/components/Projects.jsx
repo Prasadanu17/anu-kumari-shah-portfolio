@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { projects } from "../utils/constants";
 
 const webProjects = projects.filter((project) => project.category === "webdevelopment");
@@ -131,53 +132,61 @@ const ProjectCard = ({ project, onOpen }) => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ y: -12, transition: { duration: 0.3 } }}
       onClick={() => onOpen(project)}
-      className="group cursor-pointer relative bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-2xl hover:border-primary-500/30 transition-all duration-400 transform-gpu will-change-transform hover:scale-105 hover:-rotate-3"
+      className="group cursor-pointer relative overflow-hidden rounded-3xl shadow-lg transition-transform duration-300 hover:scale-[1.02]"
     >
-      {/* Image with overlay gradient & reveal title */}
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-          <h4 className="text-2xl font-bold text-white drop-shadow-md">
-            {project.title}
-          </h4>
-          <p className="text-sm text-white/80 mt-1.5 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
-            {project.description}
-          </p>
-        </div>
-      </div>
-
-      <div className="p-6 pt-4 space-y-5">
-        <div>
-          <div className="flex flex-wrap gap-2">
-            {project.technologies.slice(0, 3).map((tech) => (
-              <span
-                key={tech}
-                className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-white/70 dark:bg-slate-700/70 backdrop-blur-md border border-slate-200/60 dark:border-slate-600/60 text-slate-800 dark:text-slate-200 shadow-sm"
-              >
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 3 && (
-              <span className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-900 text-slate-500">
-                +{project.technologies.length - 3} more
-              </span>
-            )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
+        
+        {/* Content Overlay */}
+        <div className="absolute inset-0 flex flex-col justify-between p-6">
+          {/* Top */}
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-teal-400">
+              {project.category === "webdevelopment" ? "Web Development" : "AI/ML"}
+            </span>
           </div>
-        </div>
 
-        <div className="flex justify-between items-center pt-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity">
-            View Case Study
-          </span>
-          <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+          {/* Bottom */}
+          <div className="flex flex-col justify-between gap-4">
+            <div>
+              <h3 className="text-2xl font-bold text-white leading-tight">{project.title}</h3>
+              <p className="mt-3 text-sm text-slate-200 line-clamp-2">
+                {project.description}
+              </p>
+            </div>
+
+            <div className="flex items-end justify-between">
+              {/* Tech Pills */}
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.slice(0, 3).map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-slate-800/80 px-3 py-1 text-xs font-medium text-slate-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+                {project.technologies.length > 3 && (
+                  <span className="text-xs text-slate-400 pl-1">+{project.technologies.length - 3} more</span>
+                )}
+              </div>
+
+              {/* CTA Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpen(project);
+                }}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-500 text-white hover:bg-teal-600 transition"
+              >
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

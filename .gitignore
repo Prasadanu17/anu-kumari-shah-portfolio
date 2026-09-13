@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+cnncls/
+kidney/
+
+# Conda / Python environment files
+*.pth
+*.egg-info/
+*.egg
+.eggs/
+
+# Build files
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# DVC
+.dvc/cache/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Python packaging
+__editable__*/

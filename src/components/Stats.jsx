@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const Counter = ({ target, children, color }) => {
+const Counter = ({ target, children }) => {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef();
@@ -35,41 +35,41 @@ const Counter = ({ target, children, color }) => {
   return (
     <div
       ref={ref}
-      className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-center"
+      className="bg-[#FAF8F5] rounded-xl p-6 border border-[#D3CEC7] text-center shadow-sm hover:border-[#2A2825] transition-colors"
     >
-      <h2 className={`text-4xl font-bold ${color}`}>{count}+</h2>
-      <p className="mt-2 text-slate-600 dark:text-slate-400">{children}</p>
+      <h2 className="text-4xl font-bold text-[#2A2825] font-display">{count}+</h2>
+      <p className="mt-2 text-xs font-mono uppercase tracking-wider text-[#66625C]">{children}</p>
     </div>
   );
 };
 
 const Stats = () => {
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-900">
+    <section className="py-20 bg-[#ECE8E3] border-t border-[#D3CEC7]">
       <div className="container mx-auto px-6">
 
         {/* Heading */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-2">My Learning Journey</h2>
-          <p className="text-slate-500">Progress as MCA Student & Web Developer</p>
+          <span className="text-[#66625C] font-mono text-xs uppercase tracking-widest block mb-2">02 FOCUS // METRICS</span>
+          <h3 className="text-3xl font-bold text-[#2A2825] font-display uppercase">Academic & Engineering Milestones</h3>
         </div>
 
         {/* Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <Counter target={15} color="text-primary-500">
-            Web Projects Built
+          <Counter target={15}>
+            Projects Completed
           </Counter>
 
-          <Counter target={10} color="text-indigo-500">
-            React Components
+          <Counter target={10}>
+            Machine Learning Models
           </Counter>
 
-          <Counter target={5} color="text-purple-500">
-            AI Mini Projects
+          <Counter target={4}>
+            Live Production Sites
           </Counter>
 
-          <Counter target={200} color="text-pink-500">
+          <Counter target={500}>
             Coding Practice Hours
           </Counter>
 

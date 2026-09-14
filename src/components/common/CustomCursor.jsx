@@ -47,13 +47,13 @@ export default function CustomCursor() {
 
     const onEnter = () => {
       outer.style.transform = 'translate(-50%, -50%) scale(1.5)';
-      outer.style.borderColor = '#14b8a6'; // teal / secondary-500
+      outer.style.borderColor = '#2A2825';
       inner.style.transform = 'translate(-50%, -50%) scale(0.5)';
     };
 
     const onLeave = () => {
       outer.style.transform = 'translate(-50%, -50%) scale(1)';
-      outer.style.borderColor = '#6366f1'; // indigo / primary-500
+      outer.style.borderColor = '#2A2825';
       inner.style.transform = 'translate(-50%, -50%) scale(1)';
     };
 

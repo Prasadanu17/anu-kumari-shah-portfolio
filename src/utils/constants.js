@@ -1,107 +1,201 @@
+export const personalInfo = {
+  name: "Anu Kumari Shah",
+  title: "AI / ML Engineer | Full Stack Developer",
+  email: "anu705545@gmail.com",
+  location: "Gangtok, Sikkim",
+  bio: "MCA student and aspiring AI/ML Engineer with a strong interest in Artificial Intelligence, Machine Learning, Deep Learning, NLP, Data Science, and Full Stack Web Development.",
+  github: "https://github.com/Prasadanu17",
+  linkedin: "https://linkedin.com/in/anu-shah-102594348",
+  resume: "/assets/Anu Kumari Shah-Resume.pdf"
+};
+
+export const education = [
+  {
+    id: 1,
+    degree: "Master of Computer Applications (MCA)",
+    institution: "ICFAI University, Sikkim",
+    period: "2025 – 2027",
+    cgpa: "Current CGPA: 10.00",
+    description: "Specializing in Artificial Intelligence, Machine Learning, Deep Learning & System Architecture."
+  },
+  {
+    id: 2,
+    degree: "Bachelor of Computer Applications (BCA)",
+    institution: "SRM University, Sikkim",
+    period: "2022 – 2025",
+    cgpa: "CGPA: 8.16",
+    description: "Core Foundations in Computer Science, Data Structures, Web Engineering & Database Systems."
+  }
+];
+
 export const projects = [
   {
     id: 1,
-    title: "Sikkim Homestay Booking",
-    category: "webdevelopment",
-    description: "A premium travel and homestay booking platform built with optimized loading and a scenic UI. Features interactive booking widgets and responsive destination cards.",
-    technologies: ["React", "Custom CSS", "Framer Motion"],
-    image: "/projects/homestay.png",
-    demo: "https://home-stay-kappa.vercel.app/",
+    title: "AI Resume Analyzer & Resume Builder",
+    category: "ml",
+    description: "A Streamlit app that analyzes resumes using ML & NLP, provides ATS score predictions, extracts skills, skill gap analysis, employment gap analysis, interview question generation, and PDF report export.",
+    technologies: ["Python", "Streamlit", "Sentence Transformers / SBERT", "spaCy", "scikit-learn", "NLP", "Matplotlib", "NetworkX"],
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+    demo: "https://lnkd.in/gQtcZQzB",
+    github: "https://github.com/Prasadanu17",
     keyFeatures: [
-      "Optimized performance and accessibility standards",
-      "Interactive booking availability modal",
-      "Scenic mountain-themed UI design",
-      "Responsive layout for all devices"
+      "Resume analysis & ATS score prediction",
+      "Resume-JD matching & skill extraction",
+      "Skill gap & employment gap analysis",
+      "Interview question generation & PDF report export"
     ]
   },
   {
     id: 2,
-    title: "Mahendra Packers and Movers",
-    category: "webdevelopment",
-    description: "Full-scale professional logistics website for a packing and moving service. Includes interactive service inquiry forms and real-time calculation modules.",
-    technologies: ["HTML5", "PHP", "MySQL", "Bootstrap"],
-    image: "/projects/packers.png",
-    demo: "https://mahendrapackersandmovers.com/",
-    keyFeatures: [
-      "Dynamic service inquiry system",
-      "Customer contact/management module",
-      "Real-time database integration",
-      "Professional corporate branding"
-    ]
-  },
-  {
-    id: 3,
-    title: "Elite Interior Design Studio",
-    category: "webdevelopment",
-    description: "A sleek, minimal, and high-end portfolio website for an interior design studio. Focuses on visual storytelling through high-quality photography and elegant typography.",
-    technologies: ["JavaScript", "HTML5", "CSS3", "Animation"],
-    image: "/projects/interior.png",
-    demo: "https://eliteinteriordesignstudio.com/",
-    keyFeatures: [
-      "Modern glassmorphism UI elements",
-      "Elegant typography and layout",
-      "Responsive portfolio showcase",
-      "Service-specific inquiry integration"
-    ]
-  },
-  
-  {
-    id: 6,
-    title: "AI Resume Analyzer & Builder",
-    category: "ml",
-    description: "A Streamlit app that analyzes resumes with ML/NLP, provides ATS score predictions, and generates resume recommendations.",
-    technologies: ["Python", "Streamlit", "spaCy", "Sentence Transformers"],
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-    demo: "https://lnkd.in/gQtcZQzB",
-    keyFeatures: [
-      "Resume and job description semantic matching",
-      "Skill extraction with NLP",
-      "ATS score prediction and gap detection",
-      "Interview question suggestions and PDF export"
-    ]
-  },
-  {
-    id: 7,
     title: "Heart Disease Prediction System",
     category: "ml",
-    description: "An interactive healthcare app that predicts heart disease risk using machine learning models and visual data insights.",
-    technologies: ["Python", "Streamlit", "Scikit-learn", "Pandas"],
+    description: "An interactive machine learning application for predicting heart disease risk based on user-provided health-related input features.",
+    technologies: ["Python", "Streamlit", "scikit-learn", "Pandas", "Machine Learning"],
     image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
     demo: "https://lnkd.in/gcDfsetc",
     github: "https://lnkd.in/g5We5FXK",
     keyFeatures: [
       "Real-time health risk prediction",
-      "User-friendly medical interface",
-      "Visual analysis of model inputs",
+      "User-friendly health input interface",
+      "Visual analysis of model risk indicators",
       "Deployable Streamlit web application"
     ]
+  },
+  {
+    id: 3,
+    title: "Kidney Disease Classification",
+    category: "ml",
+    description: "A machine learning classification project focused on kidney disease prediction and health data feature classification.",
+    technologies: ["Python", "scikit-learn", "Pandas", "NumPy", "Machine Learning"],
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+    demo: "https://github.com/Prasadanu17",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Machine learning classification model",
+      "Health metrics data preprocessing",
+      "Model evaluation & feature analysis"
+    ]
+  },
+  {
+    id: 4,
+    title: "AI Gym Tracker",
+    category: "ml",
+    description: "An AI-powered fitness tracking project using computer vision and pose-based analysis to assist with exercise movement tracking.",
+    technologies: ["Python", "OpenCV", "MediaPipe", "Computer Vision", "AI"],
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    demo: "https://github.com/Prasadanu17",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Real-time pose estimation with MediaPipe",
+      "Repetition counting & posture tracking",
+      "Computer vision frame analysis"
+    ]
+  },
+  {
+    id: 5,
+    title: "Sikkim Homestay Booking",
+    category: "webdevelopment",
+    description: "A modern travel and homestay booking platform focused on discovering and exploring homestay experiences in Sikkim.",
+    technologies: ["React", "JavaScript", "CSS", "Framer Motion"],
+    image: "/projects/homestay.png",
+    demo: "https://home-stay-kappa.vercel.app/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Optimized loading & accessibility standards",
+      "Interactive booking availability modal",
+      "Scenic homestay cards & location details",
+      "Responsive layout for all screen sizes"
+    ]
+  },
+  {
+    id: 6,
+    title: "Mahendra Packers & Movers",
+    category: "webdevelopment",
+    description: "A responsive logistics and packers-and-movers website developed during my web development internship.",
+    technologies: ["HTML", "CSS", "Bootstrap", "JavaScript", "PHP", "MySQL", "AJAX"],
+    image: "/projects/packers.png",
+    demo: "https://mahendrapackersandmovers.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Dynamic service quote inquiry system",
+      "Customer contact and service management",
+      "MySQL database integration",
+      "Corporate brand presentation"
+    ]
+  },
+  {
+    id: 7,
+    title: "Elite Interior Design Studio",
+    category: "webdevelopment",
+    description: "A responsive website created for an interior design studio to present its services and design portfolio.",
+    technologies: ["HTML5", "CSS3", "JavaScript"],
+    image: "/projects/interior.png",
+    demo: "https://eliteinteriordesignstudio.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Modern translucent glassmorphism UI elements",
+      "Elegant design portfolio gallery",
+      "Service consultation request module"
+    ]
+  }
+];
+
+export const research = [
+  {
+    id: 1,
+    title: "A Hybrid Machine Learning Framework for Early Depression Detection from Social Media Using Explainable AI",
+    role: "Co-author (Research Project)",
+    period: "2026 – Present",
+    methodology: ["Bi-LSTM", "Attention Mechanism", "NLP", "Explainable AI (XAI)", "LIME", "SHAP"],
+    description: "Co-authoring a research paper on early detection of depression via social media text analysis using Bi-directional LSTM models with Attention Mechanisms and Explainable AI frameworks (LIME & SHAP) for model interpretability."
+  }
+];
+
+export const experience = [
+  {
+    id: 1,
+    title: "Web Development Intern",
+    company: "Groveus Informatics Pvt. Ltd.",
+    location: "Siliguri",
+    period: "March 2025 – May 2025",
+    technologies: ["HTML", "CSS", "Bootstrap", "JavaScript", "PHP", "CodeIgniter", "SQL", "phpMyAdmin", "AJAX"],
+    description: "Worked on responsive web development and client projects (Mahendra Packers & Movers, Elite Interior Design, Vidhyaa Institute, Niram Industries). Worked on frontend & backend using PHP, MySQL, CodeIgniter, and AJAX.",
+    color: "primary"
+  },
+  {
+    id: 2,
+    title: "Intern",
+    company: "Sheld Tech Infosec Solution",
+    location: "Sikkim",
+    period: "2026 – Present",
+    technologies: ["Cybersecurity", "System Testing", "Technical Operations"],
+    description: "Working on real-time technical and security-related projects. Assisting in development, implementation, and system improvement tasks while gaining practical industry exposure.",
+    color: "secondary"
+  },
+  {
+    id: 3,
+    title: "Deloitte Australia Data Analytics Job Simulation",
+    company: "Forage Virtual Experience",
+    location: "Remote",
+    period: "2026",
+    technologies: ["Python", "Pandas", "EDA", "Data Cleaning"],
+    description: "Performed structured data analysis and derived actionable business insights using data cleaning, exploratory data analysis (EDA), and analytical problem-solving methods.",
+    color: "secondary"
   }
 ];
 
 export const achievements = [
   {
     id: 1,
-    title: "3rd Position – Web Design Competition",
-    description: "Recognized for creative design and layout structure in a regional web development competition.",
+    title: "3rd Place — Web Design",
+    description: "Recognized for creative web design and layout structure in a competitive event.",
     icon: "award"
   },
   {
     id: 2,
-    title: "Runner-up – Coding Challenge",
-    description: "Achieved runner-up status in a collaborative team-based coding competition (Team Contribution).",
+    title: "Coding Challenge Runner-up",
+    description: "Achieved runner-up status in a collaborative programming competition.",
     icon: "code"
-  },
-  {
-    id: 3,
-    title: "Internship Certificate – Groveus Informatics",
-    description: "Successfully completed professional web development internship with live project contributions.",
-    icon: "briefcase"
-  },
-  {
-    id: 4,
-    title: "Workshop / Seminar Participation",
-    description: "Actively participated in multiple technical seminars focusing on modern web standards and AI.",
-    icon: "users"
   }
 ];
 
@@ -126,58 +220,32 @@ export const certifications = [
   }
 ];
 
-export const experience = [
-  {
-    id: 1,
-    title: "Co-author (Research Project)",
-    company: "Depression Detection from Social Media",
-    period: "2026 - Present",
-    description: "Co-authoring a research paper on early detection of depression via social media text analysis. Developing Bi-LSTM models with Attention Mechanisms and Explainable AI (LIME & SHAP). Achieved 94% accuracy.",
-    color: "secondary",
-  },
-  {
-    id: 2,
-    title: "Intern",
-    company: "Sheld Tech Infosec Solution",
-    period: "2026 - Present",
-    description:
-      "Working on real-time technical and security-related projects. Assisting in development, implementation, and system improvement tasks while gaining practical industry exposure.",
-    color: "primary",
-  },
-  {
-    id: 3,
-    title: "Web Developer Intern",
-    company: "Groveus Informatics Pvt. Ltd.",
-    period: "Mar 2025 - May 2025",
-    description:
-      "Developed and deployed 4 live client websites. Worked on frontend and backend using PHP and MySQL. Improved website performance, responsiveness, and overall user experience.",
-    color: "secondary",
-  },
-  {
-    id: 4,
-    title: "Deloitte Data Analytics Job Simulation",
-    company: "Forage Virtual Experience",
-    period: "2026",
-    description:
-      "Performed structured data analysis and derived actionable business insights. Applied data cleaning, EDA techniques, and analytical problem-solving methods.",
-    color: "secondary",
-  }
+export const skillsList = [
+  "Python", "Java", "JavaScript", "HTML", "CSS", "React.js", "Node.js", "FastAPI",
+  "Tailwind CSS", "React Router", "Machine Learning", "Deep Learning", "NLP",
+  "PyTorch", "scikit-learn", "Pandas", "NumPy", "OpenCV", "MongoDB", "MySQL",
+  "Git", "GitHub", "Jupyter", "Google Colab", "VS Code", "Streamlit"
 ];
 
 export const skills = {
+  ai_ml: [
+    { name: "Python / PyTorch / scikit-learn", percentage: 92 },
+    { name: "Machine Learning & Deep Learning", percentage: 90 },
+    { name: "NLP & Explainable AI (LIME / SHAP)", percentage: 88 },
+    { name: "Pandas / NumPy / OpenCV", percentage: 90 }
+  ],
   frontend: [
-    { name: "React / Next.js", percentage: 95 },
-    { name: "TypeScript", percentage: 90 },
-    { name: "Tailwind CSS", percentage: 98 }
+    { name: "React.js / JavaScript / HTML / CSS", percentage: 95 },
+    { name: "Tailwind CSS / React Router / Bootstrap", percentage: 95 }
   ],
   backend: [
-    { name: "Node.js", percentage: 92 },
-    { name: "Python / Django", percentage: 85 },
-    { name: "PostgreSQL", percentage: 88 }
+    { name: "Node.js / FastAPI / PHP / CodeIgniter", percentage: 88 },
+    { name: "MySQL / MongoDB / SQL / phpMyAdmin", percentage: 86 }
   ],
-  devops: [
-    { name: "Docker", percentage: 80 },
-    { name: "AWS", percentage: 75 },
-    { name: "Git / CI/CD", percentage: 90 }
+  tools: [
+    { name: "Git / GitHub (Prasadanu17)", percentage: 92 },
+    { name: "Jupyter / Google Colab / VS Code", percentage: 90 },
+    { name: "Streamlit / Web Deployment", percentage: 88 }
   ]
 };
+

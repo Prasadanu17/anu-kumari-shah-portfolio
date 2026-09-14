@@ -1,207 +1,361 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const Hero = () => {
-  const [currentText, setCurrentText] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(100);
+/* ─── Tech Logos (matching reference's floating icon style) ─── */
+const TECH_LOGOS = [
+  /* Background scattered — lower opacity, larger spread */
+  {
+    id: 'py',     label: 'Py',  bg: '#EBF3FD', color: '#3776AB', border: '#C5DCF5',
+    size: 54, left: '6%',  top: '18%', delay: 0,    dur: 3.8, amplitude: 12,
+  },
+  {
+    id: 'js',     label: 'JS',  bg: '#FEFBDD', color: '#B8980C', border: '#F0E080',
+    size: 48, left: '12%', top: '62%', delay: 0.6,  dur: 4.2, amplitude: 10,
+  },
+  {
+    id: 'react',  label: '⚛',   bg: '#E8FAFE', color: '#00A8C6', border: '#B3ECF8',
+    size: 50, left: '22%', top: '78%', delay: 1.0,  dur: 3.6, amplitude: 14,
+  },
+  {
+    id: 'gh',     label: 'GH',  bg: '#F0F0EE', color: '#333',    border: '#DDDBD8',
+    size: 46, left: '30%', top: '12%', delay: 0.3,  dur: 4.5, amplitude: 9,
+  },
+  /* Right side — around the photo */
+  {
+    id: 'ts',     label: 'TS',  bg: '#E8EFF8', color: '#2F74C0', border: '#B8D0EE',
+    size: 58, left: '56%', top: '8%',  delay: 0.2,  dur: 3.4, amplitude: 13,
+  },
+  {
+    id: 'ml',     label: 'ML',  bg: '#FEF0E8', color: '#C94F1A', border: '#F5CDB0',
+    size: 52, left: '88%', top: '14%', delay: 0.8,  dur: 4.0, amplitude: 11,
+  },
+  {
+    id: 'node',   label: 'N',   bg: '#EAF7EC', color: '#2E7D32', border: '#B3DEBA',
+    size: 46, left: '90%', top: '55%', delay: 0.4,  dur: 3.9, amplitude: 12,
+  },
+  {
+    id: 'nlp',    label: 'NLP', bg: '#F5EBF8', color: '#7B1FA2', border: '#DDB8EE',
+    size: 48, left: '60%', top: '76%', delay: 1.2,  dur: 4.3, amplitude: 10,
+  },
+  {
+    id: 'aws',    label: 'AI',  bg: '#FFF8E8', color: '#A07020', border: '#EED98A',
+    size: 44, left: '78%', top: '82%', delay: 0.5,  dur: 3.7, amplitude: 9,
+  },
+  {
+    id: 'fast',   label: 'API', bg: '#E8F8F8', color: '#009688', border: '#A8DDD9',
+    size: 44, left: '46%', top: '90%', delay: 0.9,  dur: 4.1, amplitude: 11,
+  },
+  {
+    id: 'py2',    label: '🔥',  bg: '#FEF0EB', color: '#E8450A', border: '#F5C4B0',
+    size: 50, left: '74%', top: '10%', delay: 0.7,  dur: 3.5, amplitude: 14,
+  },
+  {
+    id: 'cv',     label: 'CV',  bg: '#EAEAF8', color: '#3949AB', border: '#BEBEF0',
+    size: 42, left: '42%', top: '6%',  delay: 1.4,  dur: 4.4, amplitude: 8,
+  },
+];
 
-  const phrases = [
-    'Full Stack Developer',
-    'AI Enthusiast',
-    'Problem Solver',
-    'Tech Enthusiast'
-  ];
+function FloatingLogo({ logo }) {
+  return (
+    <motion.div
+      className="absolute pointer-events-none select-none z-10"
+      style={{ left: logo.left, top: logo.top }}
+      animate={{
+        y: [-logo.amplitude / 2, logo.amplitude / 2, -logo.amplitude / 2],
+        rotate: [-3, 3, -3],
+        scale: [1, 1.04, 1],
+      }}
+      transition={{
+        duration: logo.dur,
+        repeat: Infinity,
+        ease: 'easeInOut',
+        delay: logo.delay,
+      }}
+    >
+      {/* 3D perspective tilt on hover */}
+      <motion.div
+        whileHover={{
+          rotateY: 25,
+          rotateX: -10,
+          scale: 1.18,
+          boxShadow: '6px 6px 20px rgba(42,40,37,0.18)',
+          transition: { type: 'spring', stiffness: 300, damping: 18 },
+        }}
+        style={{
+          width: logo.size,
+          height: logo.size,
+          background: logo.bg,
+          border: `1.5px solid ${logo.border}`,
+          transformStyle: 'preserve-3d',
+          perspective: 600,
+        }}
+        className="rounded-2xl shadow-md flex items-center justify-center font-bold text-xs cursor-pointer"
+      >
+        <span style={{ color: logo.color, fontSize: logo.size * 0.32, lineHeight: 1 }}>
+          {logo.label}
+        </span>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─── Typewriter ─── */
+function Typewriter() {
+  const phrases = ['AI / ML Engineer', 'Full Stack Developer', 'MCA Student & Researcher', 'Problem Solver'];
+  const [text, setText] = useState('');
+  const [phrase, setPhrase] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [speed, setSpeed] = useState(90);
 
   useEffect(() => {
-    const currentPhrase = phrases[phraseIndex];
-    
-    const timer = setTimeout(() => {
-      if (isDeleting) {
-        setCurrentText(currentPhrase.substring(0, currentText.length - 1));
-        setTypingSpeed(50);
+    const cur = phrases[phrase];
+    const t = setTimeout(() => {
+      if (deleting) {
+        setText(cur.substring(0, text.length - 1));
+        setSpeed(45);
       } else {
-        setCurrentText(currentPhrase.substring(0, currentText.length + 1));
-        setTypingSpeed(100);
+        setText(cur.substring(0, text.length + 1));
+        setSpeed(90);
       }
-
-      if (!isDeleting && currentText === currentPhrase) {
-        setIsDeleting(true);
-        setTypingSpeed(2000);
-      } else if (isDeleting && currentText === '') {
-        setIsDeleting(false);
-        setPhraseIndex((prev) => (prev + 1) % phrases.length);
-        setTypingSpeed(500);
-      }
-    }, typingSpeed);
-
-    return () => clearTimeout(timer);
-  }, [currentText, isDeleting, phraseIndex]);
+      if (!deleting && text === cur) { setDeleting(true); setSpeed(2200); }
+      else if (deleting && text === '') { setDeleting(false); setPhrase((p) => (p + 1) % phrases.length); setSpeed(400); }
+    }, speed);
+    return () => clearTimeout(t);
+  }, [text, deleting, phrase]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background */}
+    <span className="text-[#4A4641] font-light">
+      {text}<span className="animate-pulse text-[#2A2825] ml-0.5">|</span>
+    </span>
+  );
+}
+
+/* ─── Hero ─── */
+const Hero = () => {
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen bg-[#E6E2DD] overflow-hidden"
+      style={{ paddingTop: '72px' }} // navbar height
+    >
+      {/* All floating logos scattered across full section */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -50, 20, 0],
-            scale: [1, 1.1, 0.9, 1],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-        />
-        <motion.div
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -50, 20, 0],
-            scale: [1, 1.1, 0.9, 1],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            delay: 2,
-            ease: "linear"
-          }}
-          className="absolute top-0 right-1/4 w-96 h-96 bg-secondary-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-        />
-        <motion.div
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -50, 20, 0],
-            scale: [1, 1.1, 0.9, 1],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            delay: 4,
-            ease: "linear"
-          }}
-          className="absolute -bottom-32 left-1/3 w-96 h-96 bg-emerald-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-        />
+        {TECH_LOGOS.map((logo) => (
+          <FloatingLogo key={logo.id} logo={logo} />
+        ))}
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="lg:w-1/2 text-center lg:text-left space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 text-primary-700 dark:text-primary-300 text-sm font-medium mb-4">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Available for opportunities
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-400">Anu Kumari Shah</span>
-            </h1>
-            
-            <div className="h-16 lg:h-20 overflow-hidden">
-              <span id="typewriter" className="text-2xl lg:text-4xl font-light text-slate-600 dark:text-slate-300">
-                {currentText}
+      {/* Main content grid */}
+      <div className="relative z-20 container mx-auto px-6 lg:px-10 min-h-[calc(100vh-72px)] flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+          {/* ── LEFT: Text Content ── */}
+          <div className="flex flex-col justify-center space-y-6 py-12 lg:py-0">
+
+            {/* Sub-label */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-3"
+            >
+              <span className="w-8 h-0.5 bg-[#C94F1A]" />
+              <span className="text-[11px] font-mono text-[#C94F1A] tracking-widest uppercase font-semibold">
+                AI / ML ENGINEER — FULL STACK DEVELOPER
               </span>
-              <span className="animate-pulse text-primary-500">|</span>
-            </div>
+            </motion.div>
 
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto lg:mx-0">
-             MCA student & passionate Web Developer focused on creating modern,
-              responsive websites and learning Artificial Intelligence to build
-              smarter applications.
-            </p>
+            {/* Main Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              <h1 className="font-display font-bold leading-[1.08] text-[#2A2825]"
+                style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)' }}
+              >
+                Anu Kumari Shah
+              </h1>
+              <h2 className="font-display leading-tight mt-2"
+                style={{ fontSize: 'clamp(2rem, 4.5vw, 3.6rem)', color: '#2A2825' }}
+              >
+                Building,{' '}
+                <em className="not-italic font-bold text-[#C94F1A]">AI-driven</em>
+                {' '}systems.
+              </h2>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <a href="#projects" className="group relative px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/25 overflow-hidden">
-                <span className="relative z-10 flex items-center gap-2">
-                  View My Work
-                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-              </a>
-              <a href="#contact" className="px-8 py-4 border-2 border-slate-300 dark:border-slate-700 hover:border-primary-500 dark:hover:border-primary-500 rounded-full font-semibold transition-all duration-300 hover:scale-105">
-                Let's Talk
-              </a>
-            </div>
+            {/* Typewriter role */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-lg font-light text-[#66625C] font-sans h-7 flex items-center"
+            >
+              <Typewriter />
+            </motion.div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-6 pt-4">
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors duration-300 hover:scale-110 transform">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors duration-300 hover:scale-110 transform">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors duration-300 hover:scale-110 transform">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors duration-300 hover:scale-110 transform">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </a>
-            </div>
-          </motion.div>
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="text-[#66625C] text-[15px] leading-relaxed font-light max-w-md"
+            >
+              I'm an MCA student passionate about building intelligent systems with Machine Learning, NLP, and Computer Vision — and high-performance web applications with modern full-stack technologies.
+            </motion.p>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:w-1/2 relative"
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="flex flex-wrap items-center gap-4 pt-2"
+            >
+              <a
+                href="/assets/Anu Kumari Shah-Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#2A2825] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest uppercase rounded-lg hover:bg-[#1A1918] transition-all duration-300 shadow-md hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                DOWNLOAD RESUME
+              </a>
+
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-6 py-3.5 border border-[#2A2825] text-[#2A2825] text-xs font-mono font-bold tracking-widest uppercase rounded-lg hover:bg-[#2A2825] hover:text-[#FAF8F5] transition-all duration-300 hover:-translate-y-0.5"
+              >
+                VIEW WORK →
+              </a>
+            </motion.div>
+
+            {/* Socials row */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="flex items-center gap-5 pt-1"
+            >
+              {[
+                { href: 'https://github.com/Prasadanu17', label: 'GitHub' },
+                { href: 'https://linkedin.com/in/anu-shah-102594348', label: 'LinkedIn' },
+                { href: 'mailto:anu705545@gmail.com', label: 'Email' },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-mono text-[#66625C] hover:text-[#2A2825] transition-colors uppercase tracking-wider"
+                >
+                  {s.label} ↗
+                </a>
+              ))}
+            </motion.div>
+
+          </div>
+
+          {/* ── RIGHT: Profile Image ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            className="relative flex items-end justify-center lg:justify-end"
           >
-            <div className="relative w-64 h-64 lg:w-72 lg:h-72 mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary-500 to-secondary-400 rounded-full opacity-20 blur-2xl animate-pulse"></div>
-              <img 
-                src="/assets/profile.jpeg"
-                alt="Anu Kumari Shah" 
-                className="relative w-full h-full object-cover rounded-full border-4 border-white dark:border-slate-800 shadow-2xl hover:scale-105 transition-transform duration-500"
+            {/* Image container */}
+            <div className="relative w-full max-w-sm lg:max-w-md">
+              {/* Subtle warm glow behind image */}
+              <div
+                className="absolute inset-x-8 bottom-0 top-16 rounded-3xl opacity-60"
+                style={{ background: 'radial-gradient(ellipse at center, #D8D0C8 0%, transparent 70%)' }}
               />
-              
-              {/* Floating Tech Icons */}
+
+              {/* Profile photo */}
               <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-4 -right-4 w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative z-10"
               >
-                <svg className="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              </motion.div>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                className="absolute -bottom-4 -left-4 w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center"
-              >
-                <svg className="w-8 h-8 text-secondary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                </svg>
+                <img
+                  src="/assets/profile.jpeg"
+                  alt="Anu Kumari Shah"
+                  className="w-full rounded-2xl shadow-2xl object-cover object-top"
+                  style={{
+                    maxHeight: '520px',
+                    objectPosition: 'center top',
+                    maskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+                    border: '1px solid rgba(211,206,199,0.5)',
+                  }}
+                />
+
+                {/* Floating badge — MCA CGPA */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.9, type: 'spring', stiffness: 200 }}
+                  className="absolute -left-8 top-12 bg-[#FAF8F5] rounded-xl shadow-xl border border-[#D3CEC7] px-4 py-3"
+                >
+                  <div className="text-xs font-mono text-[#66625C] uppercase tracking-wider">MCA CGPA</div>
+                  <div className="text-2xl font-bold font-display text-[#2A2825]">10.00</div>
+                  <div className="text-[10px] font-mono text-[#66625C]">ICFAI University, Sikkim</div>
+                </motion.div>
+
+                {/* Floating badge — Available */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.1, type: 'spring', stiffness: 200 }}
+                  className="absolute -right-6 top-1/3 bg-[#2A2825] rounded-xl shadow-xl px-4 py-3"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    <span className="text-[10px] font-mono text-[#FAF8F5] uppercase tracking-wider">Available</span>
+                  </div>
+                  <div className="text-xs font-mono text-[#FAF8F5]/70 mt-0.5">For Opportunities</div>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
-        </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </motion.div>
+        </div>
+
+        {/* ── Stats Row ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.7 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-0 mt-8 pb-10 border-t border-[#D3CEC7] pt-8"
+        >
+          {[
+            { value: '10.00', label: 'Current CGPA, MCA' },
+            { value: '7+',    label: 'Projects Built' },
+            { value: '10+',   label: 'ML Models Trained' },
+            { value: '4',     label: 'Live Production Sites' },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75 + i * 0.1 }}
+              className={`py-4 px-6 ${i < 3 ? 'border-r border-[#D3CEC7]' : ''}`}
+            >
+              <div className="font-display font-bold text-[#2A2825]"
+                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
+              >
+                {stat.value}
+              </div>
+              <div className="text-[10px] font-mono text-[#66625C] uppercase tracking-wider mt-1">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+      </div>
     </section>
   );
 };

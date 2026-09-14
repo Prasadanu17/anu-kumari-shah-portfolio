@@ -8,45 +8,46 @@ export default {
   theme: {
     extend: {
       colors: {
+        bgWarm: '#E6E2DD',
+        bgWarmSec: '#ECE8E3',
+        cardWarm: '#FAF8F5',
+        textCharcoal: '#2A2825',
+        textMutedWarm: '#66625C',
+        borderWarm: '#D3CEC7',
+        accentSlate: '#2A2825',
+        accentSubtle: '#4A4641',
+        bgDark: '#E6E2DD',
+        bgDarkSec: '#ECE8E3',
+        textLight: '#2A2825',
+        textMuted: '#66625C',
+        accentEmerald: '#2A2825',
+        emeraldHighlight: '#2A2825',
         primary: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
+          50: '#faf8f5',
+          100: '#f4f1ea',
+          200: '#eae6e1',
+          300: '#dfebd5',
+          400: '#d0cbc4',
+          500: '#2a2825',
+          600: '#1f1e1b',
+          700: '#171614',
+          800: '#100f0e',
+          900: '#080807',
         },
-        secondary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Outfit', 'Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       animation: {
-        'blob': 'blob 7s infinite',
-        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 6s ease-in-out infinite',
       },
       keyframes: {
-        blob: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-          '100%': { transform: 'translate(0px, 0px) scale(1)' },
-        },
-        fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(30px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
         }
       }
     }

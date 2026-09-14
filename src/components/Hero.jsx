@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Hero3DCanvas from './Hero3DCanvas';
 
-/* ─── Tech Logos (matching reference's floating icon style) ─── */
+/* ─── Tech Logos (matching reference floating icon style with spatial depth) ─── */
 const TECH_LOGOS = [
-  /* Background scattered — lower opacity, larger spread */
   {
     id: 'py',     label: 'Py',  bg: '#EBF3FD', color: '#3776AB', border: '#C5DCF5',
     size: 54, left: '6%',  top: '18%', delay: 0,    dur: 3.8, amplitude: 12,
@@ -20,7 +20,6 @@ const TECH_LOGOS = [
     id: 'gh',     label: 'GH',  bg: '#F0F0EE', color: '#333',    border: '#DDDBD8',
     size: 46, left: '30%', top: '12%', delay: 0.3,  dur: 4.5, amplitude: 9,
   },
-  /* Right side — around the photo */
   {
     id: 'ts',     label: 'TS',  bg: '#E8EFF8', color: '#2F74C0', border: '#B8D0EE',
     size: 58, left: '56%', top: '8%',  delay: 0.2,  dur: 3.4, amplitude: 13,
@@ -72,7 +71,6 @@ function FloatingLogo({ logo }) {
         delay: logo.delay,
       }}
     >
-      {/* 3D perspective tilt on hover */}
       <motion.div
         whileHover={{
           rotateY: 25,
@@ -89,7 +87,7 @@ function FloatingLogo({ logo }) {
           transformStyle: 'preserve-3d',
           perspective: 600,
         }}
-        className="rounded-2xl shadow-md flex items-center justify-center font-bold text-xs cursor-pointer"
+        className="rounded-2xl shadow-md flex items-center justify-center font-bold text-xs cursor-pointer pointer-events-auto"
       >
         <span style={{ color: logo.color, fontSize: logo.size * 0.32, lineHeight: 1 }}>
           {logo.label}
@@ -101,7 +99,7 @@ function FloatingLogo({ logo }) {
 
 /* ─── Typewriter ─── */
 function Typewriter() {
-  const phrases = ['AI / ML Engineer', 'Full Stack Developer', 'MCA Student & Researcher', 'Problem Solver'];
+  const phrases = ['AI / ML Engineer', 'Full Stack Developer', 'MCA Candidate & Researcher', 'Problem Solver'];
   const [text, setText] = useState('');
   const [phrase, setPhrase] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -136,10 +134,13 @@ const Hero = () => {
     <section
       id="home"
       className="relative min-h-screen bg-[#E6E2DD] overflow-hidden"
-      style={{ paddingTop: '72px' }} // navbar height
+      style={{ paddingTop: '72px' }}
     >
-      {/* All floating logos scattered across full section */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Three.js 3D Background Canvas */}
+      <Hero3DCanvas />
+
+      {/* Floating tech chips */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {TECH_LOGOS.map((logo) => (
           <FloatingLogo key={logo.id} logo={logo} />
         ))}
@@ -265,15 +266,12 @@ const Hero = () => {
             transition={{ duration: 0.9, delay: 0.2 }}
             className="relative flex items-end justify-center lg:justify-end"
           >
-            {/* Image container */}
             <div className="relative w-full max-w-sm lg:max-w-md">
-              {/* Subtle warm glow behind image */}
               <div
                 className="absolute inset-x-8 bottom-0 top-16 rounded-3xl opacity-60"
                 style={{ background: 'radial-gradient(ellipse at center, #D8D0C8 0%, transparent 70%)' }}
               />
 
-              {/* Profile photo */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
@@ -301,7 +299,7 @@ const Hero = () => {
                 >
                   <div className="text-xs font-mono text-[#66625C] uppercase tracking-wider">MCA CGPA</div>
                   <div className="text-2xl font-bold font-display text-[#2A2825]">10.00</div>
-                  <div className="text-[10px] font-mono text-[#66625C]">ICFAI University, Sikkim</div>
+                  <div className="text-[10px] font-mono text-[#66625C]">ICFAI University</div>
                 </motion.div>
 
                 {/* Floating badge — Available */}
@@ -323,7 +321,7 @@ const Hero = () => {
 
         </div>
 
-        {/* ── Stats Row ── */}
+        {/* ── Verified Stats Strip ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -331,10 +329,10 @@ const Hero = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-0 mt-8 pb-10 border-t border-[#D3CEC7] pt-8"
         >
           {[
-            { value: '10.00', label: 'Current CGPA, MCA' },
-            { value: '7+',    label: 'Projects Built' },
-            { value: '10+',   label: 'ML Models Trained' },
-            { value: '4',     label: 'Live Production Sites' },
+            { value: '10.00', label: 'MCA CGPA (ICFAI Univ)' },
+            { value: '8.16',  label: 'BCA CGPA (SRM Univ)' },
+            { value: '7+',    label: 'Web & AI Projects' },
+            { value: '2025–2027', label: 'MCA Candidate' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}

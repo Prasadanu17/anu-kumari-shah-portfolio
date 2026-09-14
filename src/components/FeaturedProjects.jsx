@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, X, ChevronRight } from "lucide-react";
+import { ExternalLink, Github, X, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 import { projects } from "../utils/constants";
 
 const FeaturedProjects = () => {
-  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [selectedModalProject, setSelectedModalProject] = useState(null);
 
-  const activeProject = projects[activeProjectIndex];
+  const total = projects.length;
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % total);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + total) % total);
+  };
 
   return (
-    <section id="projects" className="py-24 bg-[#E6E2DD] relative border-t border-[#D3CEC7]">
+    <section id="projects" className="py-24 bg-[#E6E2DD] relative border-t border-[#D3CEC7] overflow-hidden">
       <div className="container mx-auto px-6">
         
         {/* Section Header */}
@@ -20,158 +28,216 @@ const FeaturedProjects = () => {
               03 SELECTED WORK // TECHNICAL PROJECTS
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-[#2A2825] uppercase font-display">
-              SELECTED PROJECTS
+              STACKED PROJECT DECK
             </h2>
           </div>
-          <p className="text-xs font-mono text-[#66625C] max-w-xs uppercase leading-relaxed">
-            CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL DETAILS
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs font-mono text-[#66625C] uppercase leading-relaxed hidden sm:block">
+              FAN-OUT DECK INTERACTION • CLICK CARDS TO BRING FORWARD
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={handlePrev}
+                className="w-10 h-10 rounded-full border border-[#2A2825] text-[#2A2825] flex items-center justify-center hover:bg-[#2A2825] hover:text-[#FAF8F5] transition-colors"
+                title="Previous Card"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="w-10 h-10 rounded-full bg-[#2A2825] text-[#FAF8F5] flex items-center justify-center hover:bg-[#1A1918] transition-colors shadow-md"
+                title="Next Card"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Stacked / Fan-Out Interactive Project Carousel */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Card Stack / Selector List */}
-          <div className="lg:col-span-5 space-y-3">
+        {/* ── Stacked / Fan-Out Physical Card Deck ── */}
+        <div className="relative min-h-[580px] flex items-center justify-center py-8">
+          <div className="relative w-full max-w-3xl h-[520px] flex items-center justify-center">
             {projects.map((proj, idx) => {
-              const isActive = idx === activeProjectIndex;
+              // Calculate index relative to active card
+              const offset = (idx - activeIndex + total) % total;
+              const isActive = offset === 0;
+
+              // Fan out rotation offsets: active=0deg, back cards rotate -4deg, -8deg, 4deg, etc.
+              let rotate = 0;
+              let translateY = 0;
+              let scale = 1;
+              let zIndex = total - offset;
+              let opacity = 1;
+
+              if (offset === 0) {
+                rotate = 0;
+                translateY = 0;
+                scale = 1;
+              } else if (offset === 1) {
+                rotate = 4;
+                translateY = 16;
+                scale = 0.95;
+              } else if (offset === 2) {
+                rotate = -5;
+                translateY = 32;
+                scale = 0.9;
+              } else if (offset === total - 1) {
+                rotate = -4;
+                translateY = 12;
+                scale = 0.96;
+              } else {
+                rotate = (offset % 2 === 0 ? 1 : -1) * (offset * 3);
+                translateY = offset * 18;
+                scale = Math.max(0.8, 1 - offset * 0.05);
+                if (offset > 3) opacity = 0; // Hide deep stack items
+              }
+
               return (
                 <motion.div
                   key={proj.id}
-                  onClick={() => setActiveProjectIndex(idx)}
-                  whileHover={{ x: 6 }}
-                  className={`p-5 rounded-xl cursor-pointer border transition-all duration-300 flex items-center justify-between ${
+                  onClick={() => setActiveIndex(idx)}
+                  animate={{
+                    rotate,
+                    y: translateY,
+                    scale,
+                    opacity,
+                    zIndex,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 24,
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    width: "100%",
+                    transformOrigin: "center center",
+                  }}
+                  className={`bg-[#FAF8F5] border rounded-2xl p-8 md:p-10 shadow-xl cursor-pointer transition-shadow duration-300 select-none ${
                     isActive
-                      ? "bg-[#FAF8F5] border-[#2A2825] shadow-md"
-                      : "bg-[#ECE8E3] border-[#D3CEC7] hover:bg-[#FAF8F5]/60 hover:border-[#4A4641]"
+                      ? "border-[#2A2825] shadow-2xl ring-1 ring-[#2A2825]/10"
+                      : "border-[#D3CEC7] hover:border-[#4A4641] hover:shadow-2xl"
                   }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-xs text-[#66625C] font-bold">
-                      0{idx + 1}
-                    </span>
-                    <div>
-                      <h4 className="font-bold text-[#2A2825] text-sm md:text-base leading-tight">
-                        {proj.title}
-                      </h4>
-                      <div className="flex gap-2 mt-1">
-                        {proj.technologies.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-[10px] font-mono text-[#66625C] bg-[#E6E2DD] px-2 py-0.5 rounded"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                  <div className="flex flex-col h-full justify-between space-y-6">
+
+                    {/* Card Header */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#D3CEC7] pb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-mono uppercase bg-[#2A2825] text-[#FAF8F5] px-3 py-1 rounded font-bold">
+                          0{idx + 1} / 0{total}
+                        </span>
+                        <span className="text-xs font-mono text-[#66625C] uppercase tracking-wider font-semibold">
+                          {proj.category === "webdevelopment" ? "WEB ENGINEERING" : "MACHINE LEARNING / AI"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Layers className="w-4 h-4 text-[#66625C]" />
+                        <span className="text-[11px] font-mono text-[#66625C] uppercase">
+                          {isActive ? "ACTIVE CARD" : "STACKED DECK"}
+                        </span>
                       </div>
                     </div>
+
+                    {/* Content */}
+                    <div className="space-y-3">
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#2A2825] font-display">
+                        {proj.title}
+                      </h3>
+                      <p className="text-[#66625C] text-xs md:text-sm leading-relaxed font-light line-clamp-3">
+                        {proj.description}
+                      </p>
+                    </div>
+
+                    {/* Key Features */}
+                    {proj.keyFeatures && (
+                      <div className="space-y-2 hidden sm:block">
+                        <span className="text-[11px] font-mono text-[#2A2825] uppercase tracking-wider font-bold block">
+                          KEY ARCHITECTURE
+                        </span>
+                        <div className="grid grid-cols-2 gap-2">
+                          {proj.keyFeatures.slice(0, 4).map((feat, i) => (
+                            <div key={i} className="flex items-center gap-2 text-xs text-[#66625C]">
+                              <span className="w-1.5 h-1.5 bg-[#2A2825] rounded-full shrink-0"></span>
+                              <span className="truncate">{feat}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tech Badges */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {proj.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-1 rounded bg-[#E6E2DD] border border-[#D3CEC7] text-[#2A2825] text-[11px] font-mono font-medium"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Card Actions */}
+                    <div className="pt-4 border-t border-[#D3CEC7] flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex gap-3">
+                        {proj.demo && (
+                          <a
+                            href={proj.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-4 py-2.5 bg-[#2A2825] text-[#FAF8F5] text-xs font-mono font-bold tracking-wider uppercase rounded hover:bg-[#1A1918] transition-colors inline-flex items-center gap-1.5"
+                          >
+                            <span>LIVE DEMO</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                        {proj.github && (
+                          <a
+                            href={proj.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-4 py-2.5 bg-[#E6E2DD] text-[#2A2825] text-xs font-mono font-bold tracking-wider uppercase rounded border border-[#D3CEC7] hover:border-[#2A2825] transition-colors inline-flex items-center gap-1.5"
+                          >
+                            <span>REPO</span>
+                            <Github className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedModalProject(proj);
+                        }}
+                        className="px-4 py-2.5 bg-transparent text-[#2A2825] text-xs font-mono font-bold uppercase rounded border border-[#D3CEC7] hover:bg-[#E6E2DD] transition-colors ml-auto"
+                      >
+                        SLIDE DETAILS ↗
+                      </button>
+                    </div>
+
                   </div>
-                  <ChevronRight className={`w-4 h-4 text-[#2A2825] transition-transform ${isActive ? "rotate-90" : ""}`} />
                 </motion.div>
               );
             })}
           </div>
+        </div>
 
-          {/* Active Card Featured Display */}
-          <div className="lg:col-span-7">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeProject.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-                className="bg-[#FAF8F5] border border-[#D3CEC7] rounded-2xl p-8 md:p-10 shadow-lg space-y-6"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#D3CEC7] pb-4">
-                  <span className="text-xs font-mono uppercase bg-[#2A2825] text-[#FAF8F5] px-3 py-1 rounded">
-                    PROJECT 0{activeProjectIndex + 1}
-                  </span>
-                  <span className="text-xs font-mono text-[#66625C] uppercase">
-                    {activeProject.category === "webdevelopment" ? "WEB ENGINEERING" : "MACHINE LEARNING / AI"}
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="text-3xl font-bold text-[#2A2825] tracking-tight font-display mb-3">
-                    {activeProject.title}
-                  </h3>
-                  <p className="text-[#66625C] text-sm md:text-base leading-relaxed font-light">
-                    {activeProject.description}
-                  </p>
-                </div>
-
-                {/* Key Features */}
-                {activeProject.keyFeatures && (
-                  <div className="space-y-2 pt-2">
-                    <span className="text-xs font-mono text-[#2A2825] uppercase tracking-wider block font-bold">
-                      KEY WORK & HIGHLIGHTS
-                    </span>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {activeProject.keyFeatures.map((feat, i) => (
-                        <div key={i} className="flex items-center gap-2 text-xs text-[#66625C]">
-                          <span className="w-1.5 h-1.5 bg-[#2A2825] rounded-full shrink-0"></span>
-                          <span>{feat}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Technologies */}
-                <div className="space-y-2 pt-2">
-                  <span className="text-xs font-mono text-[#2A2825] uppercase tracking-wider block font-bold">
-                    STACK & TOOLS
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {activeProject.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 rounded bg-[#E6E2DD] border border-[#D3CEC7] text-[#2A2825] text-xs font-mono"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Links / Open Action */}
-                <div className="pt-6 border-t border-[#D3CEC7] flex flex-wrap items-center gap-4">
-                  {activeProject.demo && (
-                    <a
-                      href={activeProject.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-6 py-3 bg-[#2A2825] text-[#FAF8F5] hover:bg-[#1A1918] text-xs font-mono font-bold tracking-wider uppercase rounded transition-colors flex items-center gap-2"
-                    >
-                      <span>LIVE DEMO</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  )}
-
-                  {activeProject.github && (
-                    <a
-                      href={activeProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-6 py-3 bg-[#ECE8E3] text-[#2A2825] border border-[#D3CEC7] hover:border-[#2A2825] text-xs font-mono font-bold tracking-wider uppercase rounded transition-colors flex items-center gap-2"
-                    >
-                      <span>REPOSITORY</span>
-                      <Github className="w-3.5 h-3.5" />
-                    </a>
-                  )}
-
-                  <button
-                    onClick={() => setSelectedModalProject(activeProject)}
-                    className="px-6 py-3 bg-transparent text-[#2A2825] border border-[#D3CEC7] hover:bg-[#E6E2DD] text-xs font-mono font-bold tracking-wider uppercase rounded transition-colors ml-auto"
-                  >
-                    SLIDE FULL DETAILS ↗
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
+        {/* Deck Indicator Dots */}
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {projects.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setActiveIndex(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === activeIndex ? "w-8 bg-[#2A2825]" : "w-2 bg-[#D3CEC7] hover:bg-[#66625C]"
+              }`}
+              title={`Go to project ${i + 1}`}
+            />
+          ))}
         </div>
 
         {/* Detailed Modal Slide Reveal */}
@@ -200,7 +266,7 @@ const FeaturedProjects = () => {
 
                 <div>
                   <span className="text-xs font-mono uppercase bg-[#2A2825] text-[#FAF8F5] px-3 py-1 rounded">
-                    FULL PROJECT BREAKDOWN
+                    FULL TECHNICAL BREAKDOWN
                   </span>
                   <h3 className="text-3xl font-bold text-[#2A2825] mt-4 font-display">
                     {selectedModalProject.title}
@@ -229,7 +295,7 @@ const FeaturedProjects = () => {
 
                 <div>
                   <h4 className="text-xs font-mono text-[#2A2825] uppercase tracking-wider font-bold mb-3">
-                    TECHNOLOGIES USED
+                    STACK & TOOLS
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedModalProject.technologies.map((t) => (
@@ -248,7 +314,7 @@ const FeaturedProjects = () => {
                       rel="noopener noreferrer"
                       className="px-6 py-3 bg-[#2A2825] text-[#FAF8F5] text-xs font-mono font-bold uppercase rounded"
                     >
-                      OPEN LIVE PREVIEW
+                      OPEN LIVE DEMO
                     </a>
                   )}
                   {selectedModalProject.github && (

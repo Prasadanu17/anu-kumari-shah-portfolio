@@ -3,19 +3,19 @@ import { motion, useTransform } from 'framer-motion';
 import { personalInfo } from '../../utils/constants';
 
 const ContactStory = ({ scrollProgress, isReducedMotion }) => {
-  // Enter 0.86 -> 0.92, Active & Calm Settle 0.92 -> 1.00
-  const opacity = useTransform(scrollProgress, [0.86, 0.92, 1.00], [0, 1, 1]);
-  const blur = useTransform(scrollProgress, [0.86, 0.92, 1.00], ['blur(8px)', 'blur(0px)', 'blur(0px)']);
+  // Enter 0.85 -> 0.90, Active & Calm Settle 0.90 -> 1.00
+  const opacity = useTransform(scrollProgress, [0.85, 0.90, 1.00], [0, 1, 1]);
+  const blur = useTransform(scrollProgress, [0.85, 0.90, 1.00], ['blur(8px)', 'blur(0px)', 'blur(0px)']);
 
   // Settled, weighted parallax entry
-  const markerX = useTransform(scrollProgress, [0.86, 0.92, 1.00], [-20, 0, 0]);
-  const markerY = useTransform(scrollProgress, [0.86, 0.92, 1.00], [40, 0, 0]);
-  const titleY = useTransform(scrollProgress, [0.86, 0.92, 1.00], [60, 0, 0]);
-  const descY = useTransform(scrollProgress, [0.86, 0.93, 1.00], [75, 0, 0]);
-  const linksY = useTransform(scrollProgress, [0.87, 0.94, 1.00], [90, 0, 0]);
-  const linksScale = useTransform(scrollProgress, [0.87, 0.94, 1.00], [0.97, 1, 1]);
+  const markerX = useTransform(scrollProgress, [0.85, 0.90, 1.00], [-20, 0, 0]);
+  const markerY = useTransform(scrollProgress, [0.85, 0.90, 1.00], [40, 0, 0]);
+  const titleY = useTransform(scrollProgress, [0.85, 0.90, 1.00], [60, 0, 0]);
+  const descY = useTransform(scrollProgress, [0.85, 0.91, 1.00], [75, 0, 0]);
+  const linksY = useTransform(scrollProgress, [0.86, 0.92, 1.00], [90, 0, 0]);
+  const linksScale = useTransform(scrollProgress, [0.86, 0.92, 1.00], [0.97, 1, 1]);
 
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.86 ? 'auto' : 'none'));
+  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.85 ? 'auto' : 'none'));
 
   return (
     <motion.div

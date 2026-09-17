@@ -71,22 +71,22 @@ const ExperienceItem = ({ exp, index, total, scrollProgress, range, isReducedMot
 };
 
 const ExperienceStory = ({ scrollProgress, isReducedMotion }) => {
-  // Overall container visibility across 0.26 to 0.56 (with smooth overlap)
-  const containerOpacity = useTransform(scrollProgress, [0.26, 0.30, 0.52, 0.56], [0, 1, 1, 0]);
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.26 && p <= 0.55 ? 'auto' : 'none'));
+  // Overall container visibility across 0.30 to 0.56 (with smooth overlap)
+  const containerOpacity = useTransform(scrollProgress, [0.30, 0.35, 0.50, 0.56], [0, 1, 1, 0]);
+  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.30 && p <= 0.55 ? 'auto' : 'none'));
 
   // Header motion
-  const headerY = useTransform(scrollProgress, [0.26, 0.30, 0.52, 0.56], [40, 0, 0, -40]);
+  const headerY = useTransform(scrollProgress, [0.30, 0.35, 0.50, 0.56], [40, 0, 0, -40]);
 
-  // Ranges for the 3 experiences with short natural overlap
+  // Ranges for the 3 experiences with smooth continuous overlap
   const expRanges = [
-    [0.26, 0.30, 0.36, 0.40], // Experience 1
-    [0.37, 0.41, 0.45, 0.49], // Experience 2
-    [0.46, 0.49, 0.53, 0.56], // Experience 3
+    [0.30, 0.34, 0.40, 0.44], // Experience 1 (Deloitte)
+    [0.40, 0.43, 0.47, 0.50], // Experience 2 (Freelance)
+    [0.47, 0.50, 0.54, 0.57], // Experience 3 (Academic & Open Source)
   ];
 
   // Continuous timeline progress indicator line
-  const timelineHeight = useTransform(scrollProgress, [0.26, 0.54], ['0%', '100%']);
+  const timelineHeight = useTransform(scrollProgress, [0.30, 0.54], ['0%', '100%']);
 
   return (
     <motion.div

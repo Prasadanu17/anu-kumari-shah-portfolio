@@ -126,18 +126,18 @@ const ProjectItem = ({ project, index, total, scrollProgress, range, isReducedMo
 };
 
 const ProjectsStory = ({ scrollProgress, isReducedMotion }) => {
-  // Overall chapter container opacity across 0.64 to 0.92
-  const headerOpacity = useTransform(scrollProgress, [0.64, 0.68, 0.90, 0.93], [0, 1, 1, 0]);
-  const headerY = useTransform(scrollProgress, [0.64, 0.68, 0.90, 0.93], [40, 0, 0, -40]);
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.64 && p <= 0.92 ? 'auto' : 'none'));
+  // Overall chapter container opacity across 0.66 to 0.92
+  const headerOpacity = useTransform(scrollProgress, [0.66, 0.70, 0.88, 0.92], [0, 1, 1, 0]);
+  const headerY = useTransform(scrollProgress, [0.66, 0.70, 0.88, 0.92], [40, 0, 0, -40]);
+  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.66 && p <= 0.91 ? 'auto' : 'none'));
 
   // Select 3 top featured projects
   const featuredList = projects.slice(0, 3);
 
   // Sub-step ranges for the 3 projects with continuous smooth overlap
   const projRanges = [
-    [0.64, 0.68, 0.74, 0.78], // Project 1
-    [0.74, 0.78, 0.83, 0.86], // Project 2
+    [0.66, 0.70, 0.76, 0.79], // Project 1
+    [0.76, 0.79, 0.83, 0.86], // Project 2
     [0.83, 0.86, 0.90, 0.93], // Project 3
   ];
 

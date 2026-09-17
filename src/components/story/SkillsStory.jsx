@@ -30,24 +30,24 @@ const SKILL_CATEGORIES = [
 ];
 
 const SkillsStory = ({ scrollProgress, isReducedMotion }) => {
-  // Chapter active from 0.50 to 0.70
-  const opacity = useTransform(scrollProgress, [0.50, 0.56, 0.65, 0.70], [0, 1, 1, 0]);
-  const blur = useTransform(scrollProgress, [0.50, 0.56, 0.65, 0.70], ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']);
+  // Chapter active from 0.50 to 0.72
+  const opacity = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [0, 1, 1, 0]);
+  const blur = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']);
 
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.50 && p <= 0.69 ? 'auto' : 'none'));
+  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.50 && p <= 0.71 ? 'auto' : 'none'));
 
   // Header parallax
-  const headerY = useTransform(scrollProgress, [0.50, 0.56, 0.65, 0.70], [50, 0, 0, -60]);
+  const headerY = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [50, 0, 0, -60]);
 
-  // Restrained, staggered category transitions as scroll advances
-  const cat1Y = useTransform(scrollProgress, [0.50, 0.56, 0.65, 0.70], [60, 0, 0, -50]);
-  const cat1Opacity = useTransform(scrollProgress, [0.50, 0.55, 0.65, 0.70], [0, 1, 1, 0]);
+  // Clean, synchronous category reveal so no skills are hidden
+  const cat1Y = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [40, 0, 0, -50]);
+  const cat1Opacity = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [0, 1, 1, 0]);
 
-  const cat2Y = useTransform(scrollProgress, [0.52, 0.58, 0.65, 0.70], [75, 0, 0, -60]);
-  const cat2Opacity = useTransform(scrollProgress, [0.52, 0.57, 0.65, 0.70], [0, 1, 1, 0]);
+  const cat2Y = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [55, 0, 0, -60]);
+  const cat2Opacity = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [0, 1, 1, 0]);
 
-  const cat3Y = useTransform(scrollProgress, [0.54, 0.60, 0.65, 0.70], [90, 0, 0, -70]);
-  const cat3Opacity = useTransform(scrollProgress, [0.54, 0.59, 0.65, 0.70], [0, 1, 1, 0]);
+  const cat3Y = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [70, 0, 0, -70]);
+  const cat3Opacity = useTransform(scrollProgress, [0.50, 0.56, 0.66, 0.72], [0, 1, 1, 0]);
 
   const catTransforms = [
     { y: cat1Y, opacity: cat1Opacity },

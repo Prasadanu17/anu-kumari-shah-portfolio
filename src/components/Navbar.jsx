@@ -26,11 +26,11 @@ const Navbar = () => {
       if (docHeight <= 0) return;
       const progress = scrollY / docHeight;
 
-      if (progress < 0.12) setActiveSection("home");
-      else if (progress < 0.28) setActiveSection("about");
-      else if (progress < 0.48) setActiveSection("experience");
-      else if (progress < 0.64) setActiveSection("skills");
-      else if (progress < 0.84) setActiveSection("projects");
+      if (progress < 0.14) setActiveSection("home");
+      else if (progress < 0.32) setActiveSection("about");
+      else if (progress < 0.52) setActiveSection("experience");
+      else if (progress < 0.68) setActiveSection("skills");
+      else if (progress < 0.86) setActiveSection("projects");
       else setActiveSection("contact");
     };
 

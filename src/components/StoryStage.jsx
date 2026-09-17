@@ -24,11 +24,11 @@ const StoryStage = () => {
           Clicking nav links (#about, #projects etc.) scrolls precisely into that chapter's peak active state!
       ── */}
       <div id="home" className="absolute top-[0%] left-0 w-full h-[5vh] pointer-events-none" />
-      <div id="about" className="absolute top-[17.5%] left-0 w-full h-[5vh] pointer-events-none" />
-      <div id="experience" className="absolute top-[33%] left-0 w-full h-[5vh] pointer-events-none" />
-      <div id="skills" className="absolute top-[50%] left-0 w-full h-[5vh] pointer-events-none" />
-      <div id="projects" className="absolute top-[65%] left-0 w-full h-[5vh] pointer-events-none" />
-      <div id="contact" className="absolute top-[83%] left-0 w-full h-[5vh] pointer-events-none" />
+      <div id="about" className="absolute top-[20%] left-0 w-full h-[5vh] pointer-events-none" />
+      <div id="experience" className="absolute top-[38%] left-0 w-full h-[5vh] pointer-events-none" />
+      <div id="skills" className="absolute top-[58%] left-0 w-full h-[5vh] pointer-events-none" />
+      <div id="projects" className="absolute top-[74%] left-0 w-full h-[5vh] pointer-events-none" />
+      <div id="contact" className="absolute top-[92%] left-0 w-full h-[5vh] pointer-events-none" />
 
       {/* ── PINNED STORY STAGE ──
           Stays sticky in the viewport while the user scrolls through the 750vh timeline.

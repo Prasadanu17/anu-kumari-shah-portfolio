@@ -3,29 +3,22 @@ import { motion, useTransform } from 'framer-motion';
 import { education } from '../../utils/constants';
 
 const AboutStory = ({ scrollProgress, isReducedMotion }) => {
-  // Enter 0.10 -> 0.16, Active 0.16 -> 0.26, Exit 0.26 -> 0.33
-  const containerOpacity = useTransform(scrollProgress, [0.10, 0.16, 0.26, 0.33], [0, 1, 1, 0]);
-  const blur = useTransform(scrollProgress, [0.10, 0.16, 0.26, 0.33], ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']);
+  // Enter 0.12 -> 0.18, Active 0.18 -> 0.30, Exit 0.30 -> 0.36
+  const containerOpacity = useTransform(scrollProgress, [0.12, 0.18, 0.30, 0.36], [0, 1, 1, 0]);
+  const blur = useTransform(scrollProgress, [0.12, 0.18, 0.30, 0.36], ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']);
 
   // Distinct parallax movement rates for spatial composition depth
-  // 1. Chapter marker: subtle horizontal & vertical drift
-  const markerX = useTransform(scrollProgress, [0.10, 0.16, 0.26, 0.33], [-24, 0, 0, -20]);
-  const markerY = useTransform(scrollProgress, [0.10, 0.16, 0.26, 0.33], [40, 0, 0, -40]);
+  const markerX = useTransform(scrollProgress, [0.12, 0.18, 0.30, 0.36], [-24, 0, 0, -20]);
+  const markerY = useTransform(scrollProgress, [0.12, 0.18, 0.30, 0.36], [40, 0, 0, -40]);
 
-  // 2. Main heading (1.0 rate)
-  const headingY = useTransform(scrollProgress, [0.10, 0.16, 0.26, 0.33], [80, 0, 0, -90]);
+  // Heading & content transforms
+  const headingY = useTransform(scrollProgress, [0.12, 0.18, 0.30, 0.36], [80, 0, 0, -90]);
+  const badgesY = useTransform(scrollProgress, [0.12, 0.19, 0.30, 0.36], [90, 0, 0, -75]);
+  const narrativeY = useTransform(scrollProgress, [0.13, 0.20, 0.30, 0.36], [100, 0, 0, -60]);
+  const eduY = useTransform(scrollProgress, [0.14, 0.21, 0.30, 0.36], [110, 0, 0, -45]);
+  const eduScale = useTransform(scrollProgress, [0.14, 0.21, 0.30, 0.36], [0.96, 1, 1, 1.02]);
 
-  // 3. Identity badges (0.8 rate)
-  const badgesY = useTransform(scrollProgress, [0.10, 0.17, 0.26, 0.33], [90, 0, 0, -75]);
-
-  // 4. Narrative text (0.7 rate, slightly delayed)
-  const narrativeY = useTransform(scrollProgress, [0.11, 0.18, 0.26, 0.33], [100, 0, 0, -60]);
-
-  // 5. Education block (0.5 rate + subtle scale)
-  const eduY = useTransform(scrollProgress, [0.12, 0.19, 0.26, 0.33], [110, 0, 0, -45]);
-  const eduScale = useTransform(scrollProgress, [0.12, 0.19, 0.26, 0.33], [0.96, 1, 1, 1.02]);
-
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.10 && p <= 0.32 ? 'auto' : 'none'));
+  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.12 && p <= 0.35 ? 'auto' : 'none'));
 
   return (
     <motion.div

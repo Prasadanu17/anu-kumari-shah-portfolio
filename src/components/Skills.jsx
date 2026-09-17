@@ -1,134 +1,185 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Cpu, Layout, Database, Wrench } from "lucide-react";
 
-const allCategories = [
+const SKILL_CATEGORIES = [
   {
-    id: "ai",
-    label: "AI / ML",
-    category: "AI & Machine Learning",
-    description: "Predictive Modeling, Computer Vision, & Natural Language Processing",
+    id: "ai_ml",
+    title: "AI / MACHINE LEARNING",
+    icon: Cpu,
+    description: "Deep learning models, sequence modeling, computer vision, and explainable AI.",
     skills: [
-      "Python", "PyTorch", "scikit-learn", "Machine Learning",
-      "Deep Learning", "NLP", "Computer Vision", "OpenCV",
-      "Pandas", "NumPy",
+      "Python",
+      "PyTorch",
+      "scikit-learn",
+      "Machine Learning",
+      "Deep Learning",
+      "NLP",
+      "Computer Vision",
+      "OpenCV",
+      "Sentence Transformers (SBERT)",
+      "Explainable AI (LIME / SHAP)",
     ],
   },
   {
-    id: "frontend",
-    label: "WEB",
-    category: "Frontend Engineering",
-    description: "Modern Responsive Web Applications & UI Interfaces",
+    id: "fullstack",
+    title: "FULL STACK ENGINEERING",
+    icon: Layout,
+    description: "Responsive frontend interfaces and scalable server-side REST architectures.",
     skills: [
-      "JavaScript", "HTML", "CSS", "React.js",
-      "React Router", "Tailwind CSS", "Bootstrap",
+      "React.js",
+      "JavaScript (ES6+)",
+      "Node.js",
+      "FastAPI",
+      "HTML5 / CSS3",
+      "Tailwind CSS",
+      "Bootstrap",
+      "PHP",
+      "CodeIgniter",
+      "RESTful APIs",
     ],
   },
   {
-    id: "backend",
-    label: "WEB",
-    category: "Backend & Databases",
-    description: "Server Architecture, APIs, & Relational/NoSQL Databases",
+    id: "data",
+    title: "DATA SCIENCE & ANALYTICS",
+    icon: Database,
+    description: "Exploratory data analysis, mathematical vector operations, and visualization.",
     skills: [
-      "Node.js", "FastAPI", "PHP", "CodeIgniter",
-      "MySQL", "MongoDB", "SQL", "phpMyAdmin",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "NetworkX",
+      "Exploratory Data Analysis (EDA)",
+      "Feature Engineering",
+      "Data Cleaning",
+      "Model Evaluation",
     ],
   },
   {
     id: "tools",
-    label: "TOOLS",
-    category: "Developer Tools & Environment",
-    description: "Version Control, Notebooks, & Web App Deployment Platforms",
+    title: "DATABASES & TOOLING",
+    icon: Wrench,
+    description: "Relational/NoSQL database management, version control, and deployment.",
     skills: [
-      "Git", "GitHub", "Jupyter", "Google Colab", "VS Code", "Streamlit",
+      "MySQL",
+      "MongoDB",
+      "SQL",
+      "phpMyAdmin",
+      "Git & GitHub",
+      "Streamlit",
+      "Jupyter Notebooks",
+      "Google Colab",
+      "VS Code",
+      "Linux / Shell",
     ],
   },
 ];
 
-const chipVariants = {
-  hidden: { opacity: 0, scale: 0.7, y: 10 },
-  visible: (i) => ({
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 18,
-      delay: i * 0.04,
-    },
-  }),
-};
+/* ── Reusable reveal preset ── */
+const reveal = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-60px" },
+  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
+});
 
 const Skills = () => {
-  return (
-    <section id="skills" className="py-24 bg-[#ECE8E3] relative border-t border-[#D3CEC7]">
-      <div className="container mx-auto px-6">
+  const [hoveredCategory, setHoveredCategory] = useState(null);
 
-        {/* Header */}
+  return (
+    <section id="skills" className="py-28 sm:py-36 relative">
+
+      {/* ── Cinematic section divider ── */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
+
+      <div className="story-container">
+
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+          {...reveal()}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6"
         >
-          <div>
-            <span className="text-xs font-mono tracking-widest text-[#66625C] uppercase block mb-2">
-              04 TECHNICAL SKILLS // CORE ARCHITECTURE
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2A2825] uppercase font-display">
-              TECHNICAL STACK
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#38BDF8] tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8]" />
+              <span>03 / EXPERTISE // TECHNICAL ARCHITECTURE</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-display font-bold uppercase tracking-tight text-[#F4F4F6]">
+              SKILLS & CAPABILITIES
             </h2>
           </div>
-          <p className="text-xs font-mono text-[#66625C] max-w-xs uppercase leading-relaxed">
-            Categorized skill architecture — spatial layout with interactive hover depth
+          <p className="text-xs font-mono text-[#8E95A5] max-w-sm leading-relaxed uppercase">
+            A structured matrix of specialized AI/ML algorithms, modern web technologies, and data engineering tools.
           </p>
         </motion.div>
 
-        {/* Categorized Skills Grid */}
+        {/* Modern 2x2 Architectural Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {allCategories.map((cat, idx) => (
-            <motion.div
-              key={cat.category}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.6 }}
-              className="bg-[#FAF8F5] border border-[#D3CEC7] rounded-2xl p-8 space-y-5 shadow-sm hover:border-[#2A2825] transition-colors"
-            >
-              <div className="flex items-center justify-between border-b border-[#D3CEC7] pb-3">
-                <h3 className="font-bold text-[#2A2825] text-lg uppercase font-display">
-                  {cat.category}
-                </h3>
-                <span className="text-xs font-mono text-[#66625C] bg-[#E6E2DD] px-2.5 py-0.5 rounded border border-[#D3CEC7]">
-                  0{idx + 1}
-                </span>
-              </div>
+          {SKILL_CATEGORIES.map((category, idx) => {
+            const Icon = category.icon;
+            const isHovered = hoveredCategory === category.id;
 
-              <p className="text-xs font-mono text-[#66625C]">{cat.description}</p>
+            return (
+              <motion.div
+                key={category.id}
+                {...reveal(idx * 0.08)}
+                onMouseEnter={() => setHoveredCategory(category.id)}
+                onMouseLeave={() => setHoveredCategory(null)}
+                className={`p-7 sm:p-8 rounded-2xl border transition-all duration-300 bg-[#0E1017]/75 backdrop-blur-md space-y-6 ${
+                  isHovered
+                    ? "border-[#38BDF8]/50 shadow-2xl shadow-[#38BDF8]/5 bg-[#121520]/85"
+                    : "border-white/[0.08] hover:border-white/20"
+                }`}
+              >
+                {/* Category Header */}
+                <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-colors duration-300 ${
+                        isHovered
+                          ? "bg-[#38BDF8]/10 border-[#38BDF8]/30 text-[#38BDF8]"
+                          : "bg-white/[0.03] border-white/10 text-[#8E95A5]"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-display font-bold text-[#F4F4F6] tracking-wide">
+                        {category.title}
+                      </h3>
+                      <span className="text-[10px] font-mono text-[#5D6473] uppercase">
+                        DOMAIN 0{idx + 1}
+                      </span>
+                    </div>
+                  </div>
 
-              <div className="flex flex-wrap gap-2 pt-2">
-                {cat.skills.map((item, i) => (
-                  <motion.span
-                    key={item}
-                    custom={i}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={chipVariants}
-                    whileHover={{
-                      scale: 1.12,
-                      backgroundColor: "#2A2825",
-                      color: "#FAF8F5",
-                      borderColor: "#2A2825",
-                    }}
-                    className="px-3.5 py-1.5 rounded-lg bg-[#E6E2DD] border border-[#D3CEC7] text-[#2A2825] text-xs font-mono font-medium transition-colors cursor-default select-none shadow-xs"
-                  >
-                    {item}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                  <span className="text-xs font-mono text-[#5D6473]">
+                    {category.skills.length} TECHNOLOGIES
+                  </span>
+                </div>
+
+                <p className="text-xs text-[#8E95A5] leading-relaxed font-light">
+                  {category.description}
+                </p>
+
+                {/* Skills Architecture List with Subtle Illumination */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {category.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 cursor-default select-none border ${
+                        isHovered
+                          ? "bg-[#38BDF8]/10 border-[#38BDF8]/30 text-[#F4F4F6] shadow-sm shadow-[#38BDF8]/10"
+                          : "bg-white/[0.02] border-white/[0.07] text-[#8E95A5] hover:text-[#F4F4F6] hover:border-white/20"
+                      }`}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

@@ -1,53 +1,37 @@
 import React from 'react';
 import CustomCursor from '../components/common/CustomCursor';
+import Hero3DCanvas from '../components/Hero3DCanvas';
 import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import About from '../components/About';
-import FeaturedProjects from '../components/FeaturedProjects';
-import Skills from '../components/Skills';
-import Playground from '../components/Playground';
-import Experience from '../components/Experience';
-import Research from '../components/Research';
-import Achievements from '../components/Achievements';
-import Certifications from '../components/Certifications';
-import Contact from '../components/Contact';
+import StoryStage from '../components/StoryStage';
 import Footer from '../components/Footer';
 import BackToTop from '../components/common/BackToTop';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-[#E6E2DD] text-[#2A2825] transition-colors duration-300 overflow-x-hidden selection:bg-[#2A2825] selection:text-[#FAF8F5]">
+    <div className="min-h-screen bg-[#07080B] text-[#F4F4F6] relative overflow-x-hidden selection:bg-[#38BDF8] selection:text-[#07080B]">
+
+      {/* ── PERSISTENT 3D BACKGROUND ──────────────────────────────────────
+          Mounted once at page level. Fixed to the viewport.
+          Never re-mounts or resets between sections.
+          Hero3DCanvas remains untouched as visual foundation.
+      ──────────────────────────────────────────────────────────────────── */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{ zIndex: 0 }}
+        aria-hidden="true"
+      >
+        <Hero3DCanvas />
+      </div>
+
+      {/* ── INTERACTIVE OVERLAY & NAVIGATION ── */}
       <CustomCursor />
       <Navbar />
-      <main>
-        {/* 01 — Hero / Intro (stats embedded at bottom row) */}
-        <Hero />
 
-        {/* 02 — About / Focus */}
-        <About />
-
-        {/* 03 — Selected Work */}
-        <FeaturedProjects />
-
-        {/* 04 — Technical Skills */}
-        <Skills />
-
-        {/* 05 — Playground (Physics Drag) */}
-        <Playground />
-
-        {/* 06 — Experience */}
-        <Experience />
-
-        {/* 07 — Research */}
-        <Research />
-
-        {/* Achievements & Certifications */}
-        <Achievements />
-        <Certifications />
-
-        {/* 08 — Let's Talk */}
-        <Contact />
+      {/* ── PINNED SCROLL STORYTELLER STAGE ── */}
+      <main className="relative z-10">
+        <StoryStage />
       </main>
+
       <Footer />
       <BackToTop />
     </div>

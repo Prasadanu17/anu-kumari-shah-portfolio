@@ -46,15 +46,17 @@ export default function CustomCursor() {
     const interactive = document.querySelectorAll('a, button, input, textarea, .project-card, .filter-btn');
 
     const onEnter = () => {
-      outer.style.transform = 'translate(-50%, -50%) scale(1.5)';
-      outer.style.borderColor = '#2A2825';
+      outer.style.transform = 'translate(-50%, -50%) scale(1.6)';
+      outer.style.borderColor = '#38BDF8';
       inner.style.transform = 'translate(-50%, -50%) scale(0.5)';
+      inner.style.backgroundColor = '#38BDF8';
     };
 
     const onLeave = () => {
       outer.style.transform = 'translate(-50%, -50%) scale(1)';
-      outer.style.borderColor = '#2A2825';
+      outer.style.borderColor = 'rgba(56, 189, 248, 0.4)';
       inner.style.transform = 'translate(-50%, -50%) scale(1)';
+      inner.style.backgroundColor = '#38BDF8';
     };
 
     interactive.forEach(el => {

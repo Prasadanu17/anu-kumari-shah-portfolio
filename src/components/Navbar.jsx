@@ -1,123 +1,185 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// The six story sections — Research and Playground are removed
+const NAV_ITEMS = [
+  { label: "HOME",       href: "#home",       id: "home"       },
+  { label: "ABOUT",      href: "#about",      id: "about"      },
+  { label: "EXPERIENCE", href: "#experience", id: "experience" },
+  { label: "SKILLS",     href: "#skills",     id: "skills"     },
+  { label: "PROJECTS",   href: "#projects",   id: "projects"   },
+  { label: "CONTACT",    href: "#contact",    id: "contact"    },
+];
+
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
+  // Synchronize active section & header glassmorphism directly with scroll progress
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 20);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const progress = scrollY / docHeight;
+
+      if (progress < 0.12) setActiveSection("home");
+      else if (progress < 0.28) setActiveSection("about");
+      else if (progress < 0.48) setActiveSection("experience");
+      else if (progress < 0.64) setActiveSection("skills");
+      else if (progress < 0.84) setActiveSection("projects");
+      else setActiveSection("contact");
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { label: "About",      href: "#about" },
-    { label: "Experience", href: "#experience" },
-    { label: "Work",       href: "#projects" },
-    { label: "Skills",     href: "#skills" },
-    { label: "Playground", href: "#playground" },
-    { label: "Research",   href: "#research" },
-  ];
-
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#E6E2DD]/90 backdrop-blur-md border-b border-[#D3CEC7] shadow-sm py-3"
-          : "bg-[#E6E2DD]/80 backdrop-blur-sm py-4"
-      }`}
-    >
-      <div className="container mx-auto px-6 lg:px-10">
-        <div className="flex items-center justify-between h-10">
-
-          {/* Logo — initials box matching reference "KK" box style */}
-          <a href="#home" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 border-2 border-[#2A2825] rounded flex items-center justify-center group-hover:bg-[#2A2825] transition-colors duration-200">
-              <span className="font-display font-bold text-xs text-[#2A2825] group-hover:text-[#FAF8F5] transition-colors tracking-tight">
-                AK
-              </span>
-            </div>
-          </a>
-
-          {/* Desktop Nav — plain text like reference */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-[12px] font-mono text-[#4A4641] hover:text-[#2A2825] transition-colors uppercase tracking-wider relative group"
-              >
-                {item.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#2A2825] group-hover:w-full transition-all duration-200" />
-              </a>
-            ))}
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      {/* Top Telemetry Status Bar */}
+      <div className="bg-[#07080B]/90 border-b border-white/[0.05] hidden md:block">
+        <div className="story-container py-1.5 flex items-center justify-between text-[10px] font-mono text-[#8E95A5]">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="tracking-wider uppercase text-[#E4E4E7]">
+              STATUS: OPEN TO AI/ML & FULL-STACK ROLES
+            </span>
           </div>
-
-          {/* HIRE ME button — matching reference's dark pill button */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2A2825] text-[#FAF8F5] text-[11px] font-mono font-bold tracking-widest uppercase rounded-lg hover:bg-[#1A1918] transition-all duration-300 hover:-translate-y-0.5 shadow-sm"
-            >
-              HIRE ME →
-            </a>
+          <div className="flex items-center gap-6">
+            <span className="text-[#8E95A5]">ICFAI UNIV • MCA CGPA: 10.00</span>
+            <span className="text-[#5D6473]">|</span>
+            <span className="text-[#8E95A5]">GANGTOK, SIKKIM</span>
           </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2 group"
-            aria-label="Toggle menu"
-          >
-            <motion.span
-              animate={isMobileMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-              className="w-6 h-0.5 bg-[#2A2825] block transition-transform origin-center"
-            />
-            <motion.span
-              animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="w-6 h-0.5 bg-[#2A2825] block"
-            />
-            <motion.span
-              animate={isMobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-              className="w-6 h-0.5 bg-[#2A2825] block transition-transform origin-center"
-            />
-          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden bg-[#FAF8F5] border-b border-[#D3CEC7]"
-          >
-            <div className="px-6 py-6 space-y-5">
-              {navItems.map((item) => (
+      {/* Main Navigation Bar */}
+      <nav
+        className={`transition-all duration-300 ${
+          scrolled
+            ? "bg-[#07080B]/90 backdrop-blur-md border-b border-white/[0.08] shadow-2xl py-3.5"
+            : "bg-[#07080B]/60 backdrop-blur-sm py-4 border-b border-white/[0.04]"
+        }`}
+      >
+        <div className="story-container">
+          <div className="flex items-center justify-between h-10">
+
+            {/* Monogram Brand */}
+            <a href="#home" className="flex items-center gap-3 group">
+              <div className="w-9 h-9 border border-white/20 rounded-lg flex items-center justify-center bg-white/[0.03] group-hover:border-white/50 group-hover:bg-white/[0.08] transition-all duration-200 shadow-sm">
+                <span className="font-display font-bold text-xs text-[#F4F4F6] tracking-tight">
+                  AK
+                </span>
+              </div>
+              <div className="hidden sm:block">
+                <span className="text-xs font-display font-semibold text-[#F4F4F6] block tracking-tight">
+                  ANU KUMARI SHAH
+                </span>
+                <span className="text-[10px] font-mono text-[#8E95A5] block -mt-0.5">
+                  AI/ML & WEB ENGINEER
+                </span>
+              </div>
+            </a>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-8">
+              {NAV_ITEMS.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="block text-sm font-mono text-[#2A2825] hover:text-[#4A4641] uppercase tracking-wider"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-[12px] font-mono transition-colors uppercase tracking-wider relative group py-1 ${
+                    activeSection === item.id
+                      ? "text-[#F4F4F6]"
+                      : "text-[#8E95A5] hover:text-[#F4F4F6]"
+                  }`}
                 >
                   {item.label}
+                  <span className={`absolute bottom-0 left-0 h-[1.5px] bg-[#38BDF8] transition-all duration-200 ${
+                    activeSection === item.id ? "w-full" : "w-0 group-hover:w-full"
+                  }`} />
                 </a>
               ))}
+            </div>
+
+            {/* Action CTA Button */}
+            <div className="hidden lg:flex items-center gap-4">
               <a
                 href="#contact"
-                className="block text-center py-3 bg-[#2A2825] text-[#FAF8F5] text-xs font-mono tracking-widest rounded-lg uppercase mt-4"
-                onClick={() => setIsMobileMenuOpen(false)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/15 bg-white/[0.04] text-[#F4F4F6] hover:bg-white/[0.1] hover:border-white/30 text-[11px] font-mono font-medium tracking-wider uppercase transition-all duration-200 hover:-translate-y-0.5 shadow-sm"
               >
-                HIRE ME →
+                <span>INITIATE CONTACT</span>
+                <span className="text-[#38BDF8]">→</span>
               </a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+
+            {/* Mobile Hamburger Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-lg border border-white/10 bg-white/[0.03] text-[#F4F4F6] flex flex-col gap-1.5 justify-center items-center w-10 h-10"
+              aria-label="Toggle menu"
+            >
+              <motion.span
+                animate={isMobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                className="w-5 h-[1.5px] bg-[#F4F4F6] block transition-transform origin-center"
+              />
+              <motion.span
+                animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                className="w-5 h-[1.5px] bg-[#F4F4F6] block"
+              />
+              <motion.span
+                animate={isMobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                className="w-5 h-[1.5px] bg-[#F4F4F6] block transition-transform origin-center"
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25 }}
+              className="lg:hidden overflow-hidden bg-[#0B0D13] border-b border-white/[0.08]"
+            >
+              <div className="px-6 py-6 space-y-4">
+                {NAV_ITEMS.map((item, idx) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className={`flex items-center justify-between text-sm font-mono uppercase tracking-wider py-2 border-b border-white/[0.04] transition-colors ${
+                      activeSection === item.id
+                        ? "text-[#F4F4F6]"
+                        : "text-[#8E95A5] hover:text-[#F4F4F6]"
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span>{item.label}</span>
+                    <span className={`text-xs font-mono ${
+                      activeSection === item.id ? "text-[#38BDF8]" : "text-[#5D6473]"
+                    }`}>0{idx + 1}</span>
+                  </a>
+                ))}
+                <a
+                  href="#contact"
+                  className="block text-center py-3 bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-[#F4F4F6] text-xs font-mono tracking-widest rounded-lg uppercase mt-4 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  CONTACT →
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </header>
   );
 };
 

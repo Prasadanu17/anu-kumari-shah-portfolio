@@ -1,359 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Hero3DCanvas from './Hero3DCanvas';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-/* ─── Tech Logos (matching reference floating icon style with spatial depth) ─── */
-const TECH_LOGOS = [
-  {
-    id: 'py',     label: 'Py',  bg: '#EBF3FD', color: '#3776AB', border: '#C5DCF5',
-    size: 54, left: '6%',  top: '18%', delay: 0,    dur: 3.8, amplitude: 12,
-  },
-  {
-    id: 'js',     label: 'JS',  bg: '#FEFBDD', color: '#B8980C', border: '#F0E080',
-    size: 48, left: '12%', top: '62%', delay: 0.6,  dur: 4.2, amplitude: 10,
-  },
-  {
-    id: 'react',  label: '⚛',   bg: '#E8FAFE', color: '#00A8C6', border: '#B3ECF8',
-    size: 50, left: '22%', top: '78%', delay: 1.0,  dur: 3.6, amplitude: 14,
-  },
-  {
-    id: 'gh',     label: 'GH',  bg: '#F0F0EE', color: '#333',    border: '#DDDBD8',
-    size: 46, left: '30%', top: '12%', delay: 0.3,  dur: 4.5, amplitude: 9,
-  },
-  {
-    id: 'ts',     label: 'TS',  bg: '#E8EFF8', color: '#2F74C0', border: '#B8D0EE',
-    size: 58, left: '56%', top: '8%',  delay: 0.2,  dur: 3.4, amplitude: 13,
-  },
-  {
-    id: 'ml',     label: 'ML',  bg: '#FEF0E8', color: '#C94F1A', border: '#F5CDB0',
-    size: 52, left: '88%', top: '14%', delay: 0.8,  dur: 4.0, amplitude: 11,
-  },
-  {
-    id: 'node',   label: 'N',   bg: '#EAF7EC', color: '#2E7D32', border: '#B3DEBA',
-    size: 46, left: '90%', top: '55%', delay: 0.4,  dur: 3.9, amplitude: 12,
-  },
-  {
-    id: 'nlp',    label: 'NLP', bg: '#F5EBF8', color: '#7B1FA2', border: '#DDB8EE',
-    size: 48, left: '60%', top: '76%', delay: 1.2,  dur: 4.3, amplitude: 10,
-  },
-  {
-    id: 'aws',    label: 'AI',  bg: '#FFF8E8', color: '#A07020', border: '#EED98A',
-    size: 44, left: '78%', top: '82%', delay: 0.5,  dur: 3.7, amplitude: 9,
-  },
-  {
-    id: 'fast',   label: 'API', bg: '#E8F8F8', color: '#009688', border: '#A8DDD9',
-    size: 44, left: '46%', top: '90%', delay: 0.9,  dur: 4.1, amplitude: 11,
-  },
-  {
-    id: 'py2',    label: '🔥',  bg: '#FEF0EB', color: '#E8450A', border: '#F5C4B0',
-    size: 50, left: '74%', top: '10%', delay: 0.7,  dur: 3.5, amplitude: 14,
-  },
-  {
-    id: 'cv',     label: 'CV',  bg: '#EAEAF8', color: '#3949AB', border: '#BEBEF0',
-    size: 42, left: '42%', top: '6%',  delay: 1.4,  dur: 4.4, amplitude: 8,
-  },
-];
-
-function FloatingLogo({ logo }) {
-  return (
-    <motion.div
-      className="absolute pointer-events-none select-none z-10"
-      style={{ left: logo.left, top: logo.top }}
-      animate={{
-        y: [-logo.amplitude / 2, logo.amplitude / 2, -logo.amplitude / 2],
-        rotate: [-3, 3, -3],
-        scale: [1, 1.04, 1],
-      }}
-      transition={{
-        duration: logo.dur,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: logo.delay,
-      }}
-    >
-      <motion.div
-        whileHover={{
-          rotateY: 25,
-          rotateX: -10,
-          scale: 1.18,
-          boxShadow: '6px 6px 20px rgba(42,40,37,0.18)',
-          transition: { type: 'spring', stiffness: 300, damping: 18 },
-        }}
-        style={{
-          width: logo.size,
-          height: logo.size,
-          background: logo.bg,
-          border: `1.5px solid ${logo.border}`,
-          transformStyle: 'preserve-3d',
-          perspective: 600,
-        }}
-        className="rounded-2xl shadow-md flex items-center justify-center font-bold text-xs cursor-pointer pointer-events-auto"
-      >
-        <span style={{ color: logo.color, fontSize: logo.size * 0.32, lineHeight: 1 }}>
-          {logo.label}
-        </span>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ─── Typewriter ─── */
-function Typewriter() {
-  const phrases = ['AI / ML Engineer', 'Full Stack Developer', 'MCA Candidate & Researcher', 'Problem Solver'];
-  const [text, setText] = useState('');
-  const [phrase, setPhrase] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-  const [speed, setSpeed] = useState(90);
-
-  useEffect(() => {
-    const cur = phrases[phrase];
-    const t = setTimeout(() => {
-      if (deleting) {
-        setText(cur.substring(0, text.length - 1));
-        setSpeed(45);
-      } else {
-        setText(cur.substring(0, text.length + 1));
-        setSpeed(90);
-      }
-      if (!deleting && text === cur) { setDeleting(true); setSpeed(2200); }
-      else if (deleting && text === '') { setDeleting(false); setPhrase((p) => (p + 1) % phrases.length); setSpeed(400); }
-    }, speed);
-    return () => clearTimeout(t);
-  }, [text, deleting, phrase]);
-
-  return (
-    <span className="text-[#4A4641] font-light">
-      {text}<span className="animate-pulse text-[#2A2825] ml-0.5">|</span>
-    </span>
-  );
-}
-
-/* ─── Hero ─── */
 const Hero = () => {
+  const sectionRef = useRef(null);
+
+  // Scroll-exit animation for the content layer.
+  // As the user scrolls past the home section, content fades up and out.
+  // The fixed 3D background behind it continues uninterrupted.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+  const contentY       = useTransform(scrollYProgress, [0, 0.65], [0, -80]);
+
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-[#E6E2DD] overflow-hidden"
-      style={{ paddingTop: '72px' }}
+      ref={sectionRef}
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+      aria-label="Home — Anu Kumari Shah"
     >
-      {/* Three.js 3D Background Canvas */}
-      <Hero3DCanvas />
+      {/* Subtle left-side vignette so text stays readable over the 3D */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 70% 80% at 20% 50%, rgba(7,8,11,0.65) 0%, transparent 100%)',
+        }}
+        aria-hidden="true"
+      />
 
-      {/* Floating tech chips */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {TECH_LOGOS.map((logo) => (
-          <FloatingLogo key={logo.id} logo={logo} />
-        ))}
-      </div>
+      {/* ── CONTENT — exits smoothly on scroll ── */}
+      <motion.div
+        className="story-container relative z-10 pt-36 pb-28"
+        style={{ opacity: contentOpacity, y: contentY }}
+      >
+        <div className="max-w-3xl space-y-10">
 
-      {/* Main content grid */}
-      <div className="relative z-20 container mx-auto px-6 lg:px-10 min-h-[calc(100vh-72px)] flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-
-          {/* ── LEFT: Text Content ── */}
-          <div className="flex flex-col justify-center space-y-6 py-12 lg:py-0">
-
-            {/* Sub-label */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-3"
-            >
-              <span className="w-8 h-0.5 bg-[#C94F1A]" />
-              <span className="text-[11px] font-mono text-[#C94F1A] tracking-widest uppercase font-semibold">
-                AI / ML ENGINEER — FULL STACK DEVELOPER
-              </span>
-            </motion.div>
-
-            {/* Main Heading */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              <h1 className="font-display font-bold leading-[1.08] text-[#2A2825]"
-                style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)' }}
-              >
-                Anu Kumari Shah
-              </h1>
-              <h2 className="font-display leading-tight mt-2"
-                style={{ fontSize: 'clamp(2rem, 4.5vw, 3.6rem)', color: '#2A2825' }}
-              >
-                Building,{' '}
-                <em className="not-italic font-bold text-[#C94F1A]">AI-driven</em>
-                {' '}systems.
-              </h2>
-            </motion.div>
-
-            {/* Typewriter role */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-lg font-light text-[#66625C] font-sans h-7 flex items-center"
-            >
-              <Typewriter />
-            </motion.div>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.35 }}
-              className="text-[#66625C] text-[15px] leading-relaxed font-light max-w-md"
-            >
-              I'm an MCA student passionate about building intelligent systems with Machine Learning, NLP, and Computer Vision — and high-performance web applications with modern full-stack technologies.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-4 pt-2"
-            >
-              <a
-                href="/assets/Anu Kumari Shah-Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#2A2825] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest uppercase rounded-lg hover:bg-[#1A1918] transition-all duration-300 shadow-md hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                DOWNLOAD RESUME
-              </a>
-
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3.5 border border-[#2A2825] text-[#2A2825] text-xs font-mono font-bold tracking-widest uppercase rounded-lg hover:bg-[#2A2825] hover:text-[#FAF8F5] transition-all duration-300 hover:-translate-y-0.5"
-              >
-                VIEW WORK →
-              </a>
-            </motion.div>
-
-            {/* Socials row */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex items-center gap-5 pt-1"
-            >
-              {[
-                { href: 'https://github.com/Prasadanu17', label: 'GitHub' },
-                { href: 'https://linkedin.com/in/anu-shah-102594348', label: 'LinkedIn' },
-                { href: 'mailto:anu705545@gmail.com', label: 'Email' },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-mono text-[#66625C] hover:text-[#2A2825] transition-colors uppercase tracking-wider"
-                >
-                  {s.label} ↗
-                </a>
-              ))}
-            </motion.div>
-
-          </div>
-
-          {/* ── RIGHT: Profile Image ── */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative flex items-end justify-center lg:justify-end"
+          {/* Eyebrow label */}
+          <motion.p
+            className="text-[11px] sm:text-xs font-mono text-[#8E95A5] tracking-[0.3em] uppercase"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <div className="relative w-full max-w-sm lg:max-w-md">
-              <div
-                className="absolute inset-x-8 bottom-0 top-16 rounded-3xl opacity-60"
-                style={{ background: 'radial-gradient(ellipse at center, #D8D0C8 0%, transparent 70%)' }}
-              />
+            AI / ML ENGINEER · FULL-STACK DEVELOPER
+          </motion.p>
 
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative z-10"
-              >
-                <img
-                  src="/assets/profile.jpeg"
-                  alt="Anu Kumari Shah"
-                  className="w-full rounded-2xl shadow-2xl object-cover object-top"
-                  style={{
-                    maxHeight: '520px',
-                    objectPosition: 'center top',
-                    maskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
-                    border: '1px solid rgba(211,206,199,0.5)',
-                  }}
-                />
+          {/* Primary headline */}
+          <motion.h1
+            className="font-display font-extrabold text-[#F4F4F6] leading-[0.92] tracking-tighter
+                       text-[clamp(3.5rem,10vw,7.5rem)]"
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            BUILDING<br />
+            INTELLIGENT<br />
+            SYSTEMS.
+          </motion.h1>
 
-                {/* Floating badge — MCA CGPA */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9, type: 'spring', stiffness: 200 }}
-                  className="absolute -left-8 top-12 bg-[#FAF8F5] rounded-xl shadow-xl border border-[#D3CEC7] px-4 py-3"
-                >
-                  <div className="text-xs font-mono text-[#66625C] uppercase tracking-wider">MCA CGPA</div>
-                  <div className="text-2xl font-bold font-display text-[#2A2825]">10.00</div>
-                  <div className="text-[10px] font-mono text-[#66625C]">ICFAI University</div>
-                </motion.div>
+          {/* Supporting copy */}
+          <motion.p
+            className="text-[#8E95A5] text-base sm:text-lg leading-relaxed font-light max-w-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.22, ease: 'easeOut' }}
+          >
+            I build AI-powered products, computer vision systems, and
+            modern full-stack applications that turn complex ideas into
+            useful experiences.
+          </motion.p>
 
-                {/* Floating badge — Available */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.1, type: 'spring', stiffness: 200 }}
-                  className="absolute -right-6 top-1/3 bg-[#2A2825] rounded-xl shadow-xl px-4 py-3"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-mono text-[#FAF8F5] uppercase tracking-wider">Available</span>
-                  </div>
-                  <div className="text-xs font-mono text-[#FAF8F5]/70 mt-0.5">For Opportunities</div>
-                </motion.div>
-              </motion.div>
-            </div>
+          {/* CTAs */}
+          <motion.div
+            className="flex flex-wrap items-center gap-8 pt-2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.34, ease: 'easeOut' }}
+          >
+            <a
+              id="hero-cta-work"
+              href="#projects"
+              className="group inline-flex items-center gap-2 text-sm font-mono font-bold text-[#F4F4F6]
+                         uppercase tracking-widest border-b border-[#38BDF8] pb-0.5
+                         hover:text-[#38BDF8] transition-colors duration-200"
+            >
+              VIEW MY WORK
+              <span className="group-hover:translate-x-1 transition-transform duration-200 text-[#38BDF8]">→</span>
+            </a>
+
+            <a
+              id="hero-cta-connect"
+              href="#contact"
+              className="text-sm font-mono text-[#8E95A5] hover:text-[#F4F4F6]
+                         uppercase tracking-widest transition-colors duration-200"
+            >
+              LET'S CONNECT →
+            </a>
           </motion.div>
 
         </div>
 
-        {/* ── Verified Stats Strip ── */}
+        {/* Scroll indicator */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.7 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-0 mt-8 pb-10 border-t border-[#D3CEC7] pt-8"
+          className="absolute bottom-12 left-0 flex flex-col items-start gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.8 }}
+          aria-hidden="true"
         >
-          {[
-            { value: '10.00', label: 'MCA CGPA (ICFAI Univ)' },
-            { value: '8.16',  label: 'BCA CGPA (SRM Univ)' },
-            { value: '7+',    label: 'Web & AI Projects' },
-            { value: '2025–2027', label: 'MCA Candidate' },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75 + i * 0.1 }}
-              className={`py-4 px-6 ${i < 3 ? 'border-r border-[#D3CEC7]' : ''}`}
-            >
-              <div className="font-display font-bold text-[#2A2825]"
-                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
-              >
-                {stat.value}
-              </div>
-              <div className="text-[10px] font-mono text-[#66625C] uppercase tracking-wider mt-1">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
+          <span className="text-[10px] font-mono tracking-[0.3em] text-[#5D6473] uppercase">
+            SCROLL TO EXPLORE
+          </span>
+          <motion.div
+            className="w-px h-10 bg-gradient-to-b from-[#5D6473] to-transparent"
+            animate={{ scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
         </motion.div>
-
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// The six story sections — Research and Playground are removed
 const NAV_ITEMS = [
   { label: "HOME",       href: "#home",       id: "home"       },
   { label: "ABOUT",      href: "#about",      id: "about"      },
@@ -16,27 +15,38 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  // Synchronize active section & header glassmorphism directly with scroll progress
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 20);
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight <= 0) return;
-      const progress = scrollY / docHeight;
-
-      if (progress < 0.14) setActiveSection("home");
-      else if (progress < 0.32) setActiveSection("about");
-      else if (progress < 0.52) setActiveSection("experience");
-      else if (progress < 0.68) setActiveSection("skills");
-      else if (progress < 0.86) setActiveSection("projects");
-      else setActiveSection("contact");
+  // IntersectionObserver to accurately track active section in viewport
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -40% 0px",
+      threshold: 0.1,
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleIntersect = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (

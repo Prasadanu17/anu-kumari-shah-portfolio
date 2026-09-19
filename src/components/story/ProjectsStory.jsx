@@ -1,180 +1,253 @@
-import React from 'react';
-import { motion, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ExternalLink, Github } from 'lucide-react';
 import { projects } from '../../utils/constants';
 
-const ProjectItem = ({ project, index, total, scrollProgress, range, isReducedMotion }) => {
-  const [enterStart, activeStart, activeEnd, exitEnd] = range;
+/* ==========================================================================
+   FANNED CARD
+   ========================================================================== */
+const FannedCard = ({ project, index, total, isActive, onSelect, activeExists }) => {
+  const centerIndex = (total - 1) / 2;
+  const offset = index - centerIndex;
 
-  const opacity = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [0, 1, 1, 0]);
-  const blur = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']);
+  // Fan out from bottom-center (matches reference image)
+  const baseRotate = offset * 5;
+  const baseX = offset * 55;
+  const baseY = Math.abs(offset) * 10;
 
-  // Parallax elements within the project stage
-  const imgY = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [40, 0, 0, -40]);
-  const imgScale = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [0.96, 1, 1, 1.02]);
-  const innerImgScale = useTransform(scrollProgress, [enterStart, activeEnd], [1.10, 1.0]);
-
-  const titleY = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [60, 0, 0, -60]);
-  const descY = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [75, 0, 0, -75]);
-  const ctaY = useTransform(scrollProgress, [enterStart, activeStart, activeEnd, exitEnd], [85, 0, 0, -85]);
+  // When a card is selected → tight stack on the right
+  const stackRotate = offset * 1.5;
+  const stackX = offset * 90;
+  const stackY = Math.abs(offset) * 2;
 
   return (
     <motion.div
-      style={{
-        opacity,
-        filter: isReducedMotion ? 'none' : blur,
+      layout
+      onClick={() => !isActive && onSelect(index)}
+      initial={false}
+      animate={{
+        opacity: isActive ? 0 : 1,
+        scale: isActive ? 0.85 : 1,
+        rotate: activeExists ? stackRotate : baseRotate,
+        x: activeExists ? stackX : baseX,
+        y: activeExists ? stackY : baseY,
+        zIndex: activeExists ? index : total - index,
       }}
-      className="absolute inset-0 flex items-center justify-center pointer-events-auto"
+      whileHover={!isActive && !activeExists ? {
+        scale: 1.05,
+        y: baseY - 20,
+        transition: { duration: 0.25 },
+      } : {}}
+      transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+      className="absolute top-0 left-0 w-[320px] sm:w-[360px] h-[440px] sm:h-[480px] cursor-pointer origin-bottom"
+      style={{ transformStyle: 'preserve-3d' }}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full max-w-5xl">
+      <div className="w-full h-full rounded-2xl overflow-hidden border border-white/15 bg-[#0E1017] shadow-2xl flex flex-col hover:border-[#38BDF8]/60 transition-colors">
+        <div className="px-5 py-3.5 bg-[#0E1017] border-b border-white/[0.06] flex items-center justify-between">
+          <span className="text-[10px] font-mono text-[#5D6473] uppercase tracking-[0.2em]">
+            CHAPTER 0{index + 1}
+          </span>
+          <span className="text-[10px] font-mono text-[#38BDF8] uppercase tracking-[0.2em] font-bold">
+            {project.category === 'ml' ? 'AI/ML' : 'WEB'}
+          </span>
+        </div>
 
-        {/* Project Image Card with parallax scale */}
-        <motion.div
-          style={{
-            y: isReducedMotion ? 0 : imgY,
-            scale: isReducedMotion ? 1 : imgScale,
-          }}
-          className="lg:col-span-6 relative overflow-hidden rounded-xl border border-white/10 bg-black/40 group aspect-video sm:aspect-[16/10] shadow-2xl"
-        >
-          <motion.img
+        <div className="relative flex-1 overflow-hidden bg-[#0A0C11]">
+          <img
             src={project.image}
             alt={project.title}
-            style={{ scale: isReducedMotion ? 1 : innerImgScale }}
-            className="w-full h-full object-cover object-center filter brightness-90 group-hover:brightness-100 transition-all duration-500"
+            className="w-full h-full object-cover"
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80';
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07080B] via-transparent to-transparent opacity-80" />
-
-          <div className="absolute top-4 left-4 px-3 py-1 rounded bg-[#07080B]/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-[#38BDF8] uppercase tracking-wider">
-            PROJECT 0{index + 1} // {project.category.toUpperCase()}
-          </div>
-        </motion.div>
-
-        {/* Project Details Editorial Block */}
-        <div className="lg:col-span-6 space-y-5">
-          <motion.div
-            style={{ y: isReducedMotion ? 0 : titleY }}
-            className="space-y-2"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl font-mono font-extrabold text-[#38BDF8]">0{index + 1}</span>
-              <span className="text-xs font-mono text-[#5D6473]">/ 0{total}</span>
-            </div>
-
-            <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-[#F4F4F6] tracking-tight leading-tight">
-              {project.title}
-            </h3>
-          </motion.div>
-
-          <motion.p
-            style={{ y: isReducedMotion ? 0 : descY }}
-            className="text-[#8E95A5] text-sm sm:text-base font-light leading-relaxed"
-          >
-            {project.description}
-          </motion.p>
-
-          {/* Tech stack & CTAs */}
-          <motion.div
-            style={{ y: isReducedMotion ? 0 : ctaY }}
-            className="space-y-4 pt-1"
-          >
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#5D6473]">TECHNOLOGIES</span>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs font-mono px-2.5 py-1 rounded bg-white/[0.04] border border-white/10 text-[#F4F4F6]"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-6 pt-2">
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 text-xs font-mono font-bold text-[#F4F4F6] uppercase tracking-widest border-b border-[#38BDF8] pb-0.5 hover:text-[#38BDF8] transition-colors"
-                >
-                  <span>VIEW PROJECT</span>
-                  <span className="group-hover:translate-x-1 transition-transform text-[#38BDF8]">→</span>
-                </a>
-              )}
-
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-mono text-[#8E95A5] hover:text-[#F4F4F6] uppercase tracking-widest transition-colors"
-                >
-                  GITHUB REPO →
-                </a>
-              )}
-            </div>
-          </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0E1017] via-transparent to-transparent" />
         </div>
 
+        <div className="px-5 py-5 bg-[#0E1017] border-t border-white/[0.06]">
+          <h3 className="text-base sm:text-lg font-display font-bold text-[#F4F4F6] leading-tight line-clamp-2">
+            {project.title}
+          </h3>
+          <div className="flex items-center gap-2 mt-2">
+            {project.technologies.slice(0, 2).map((t) => (
+              <span key={t} className="text-[10px] font-mono text-[#5D6473] uppercase tracking-wider">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 };
 
-const ProjectsStory = ({ scrollProgress, isReducedMotion }) => {
-  // Overall chapter container opacity across 0.66 to 0.92
-  const headerOpacity = useTransform(scrollProgress, [0.66, 0.70, 0.88, 0.92], [0, 1, 1, 0]);
-  const headerY = useTransform(scrollProgress, [0.66, 0.70, 0.88, 0.92], [40, 0, 0, -40]);
-  const pointerEvents = useTransform(scrollProgress, (p) => (p >= 0.66 && p <= 0.91 ? 'auto' : 'none'));
+/* ==========================================================================
+   MAIN COMPONENT
+   ========================================================================== */
+const ProjectsStory = () => {
+  const [activeProjIndex, setActiveProjIndex] = useState(null);
 
-  // Select 3 top featured projects
-  const featuredList = projects.slice(0, 3);
-
-  // Sub-step ranges for the 3 projects with continuous smooth overlap
-  const projRanges = [
-    [0.66, 0.70, 0.76, 0.79], // Project 1
-    [0.76, 0.79, 0.83, 0.86], // Project 2
-    [0.83, 0.86, 0.90, 0.93], // Project 3
-  ];
+  const featuredList = projects.slice(0, 5);
+  const currentProject = activeProjIndex !== null ? featuredList[activeProjIndex] : null;
+  const hasActive = activeProjIndex !== null;
 
   return (
-    <motion.div
-      style={{ opacity: headerOpacity, pointerEvents }}
-      className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10"
+    <section
+      id="projects"
+      className="relative flex flex-col px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-8 pb-24"
     >
-      {/* Chapter Title */}
-      <motion.div
-        style={{ y: isReducedMotion ? 0 : headerY }}
-        className="absolute top-12 sm:top-20 left-4 sm:left-6 lg:left-12 space-y-1"
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-mono text-[#38BDF8] tracking-widest uppercase">04 / PROJECTS</span>
-          <div className="h-px w-12 bg-[#38BDF8]/40" />
-        </div>
-        <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-[#F4F4F6] tracking-tight uppercase">
-          SELECTED PROJECTS
-        </h2>
-      </motion.div>
+      <div className="space-y-6">
 
-      {/* Pinned Stage for switching projects */}
-      <div className="relative w-full h-[65vh] flex items-center justify-center">
-        {featuredList.map((proj, idx) => (
-          <ProjectItem
-            key={proj.id}
-            project={proj}
-            index={idx}
-            total={featuredList.length}
-            scrollProgress={scrollProgress}
-            range={projRanges[idx] || projRanges[0]}
-            isReducedMotion={isReducedMotion}
-          />
-        ))}
+        {/* CHAPTER HEADER */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '-100px' }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+        >
+          <div className="space-y-1">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-[#38BDF8] tracking-widest uppercase font-bold">
+                04 / PROJECTS
+              </span>
+              <div className="h-px w-12 bg-[#38BDF8]/40" />
+            </div>
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-[#F4F4F6] tracking-tight uppercase">
+              SELECTED WORK
+            </h2>
+          </div>
+
+          <Link
+            to="/projects"
+            className="self-start sm:self-auto px-4 py-2 rounded-lg bg-[#38BDF8] text-[#07080B] text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#7DD3FC] transition-colors shadow-md"
+          >
+            INDEX (ALL WORK) →
+          </Link>
+        </motion.div>
+
+        {/* HINT TEXT */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: hasActive ? 0 : 1, y: hasActive ? -8 : 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-center text-[10px] sm:text-xs font-mono text-[#8E95A5] tracking-[0.35em] uppercase pointer-events-none pt-2"
+        >
+          CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL DETAILS
+        </motion.p>
+
+        {/* ================= MAIN STAGE ================= */}
+        <div className="relative w-full h-[560px] sm:h-[600px] pt-4 flex items-center justify-center">
+
+          {/* ---- DETAIL PANEL (LEFT) ---- */}
+          <AnimatePresence mode="wait">
+            {currentProject && (
+              <motion.div
+                key={currentProject.id}
+                initial={{ opacity: 0, x: -60, rotateY: -15 }}
+                animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                exit={{ opacity: 0, x: -60, rotateY: -15 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+                className="absolute left-0 top-0 w-full lg:w-[42%] h-full z-40 bg-[#0E1017] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl flex flex-col gap-4 overflow-y-auto"
+                style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
+              >
+                <div className="flex items-center justify-between shrink-0">
+                  <span className="text-[10px] font-mono uppercase bg-[#38BDF8]/15 border border-[#38BDF8]/30 text-[#38BDF8] px-2.5 py-1 rounded font-bold">
+                    {currentProject.category === 'ml' ? 'AI / ML' : 'FULL-STACK WEB'}
+                  </span>
+                  <button
+                    onClick={() => setActiveProjIndex(null)}
+                    className="text-[10px] font-mono text-[#8E95A5] hover:text-[#F4F4F6] transition-colors uppercase tracking-wider"
+                  >
+                    CLOSE ✕
+                  </button>
+                </div>
+
+                <div className="rounded-xl overflow-hidden border border-white/10 bg-black aspect-video shrink-0">
+                  <img
+                    src={currentProject.image}
+                    alt={currentProject.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80';
+                    }}
+                  />
+                </div>
+
+                <h3 className="font-display font-extrabold text-2xl sm:text-3xl text-[#F4F4F6] leading-tight shrink-0">
+                  {currentProject.title}
+                </h3>
+
+                <div className="flex flex-wrap gap-1.5 shrink-0">
+                  {currentProject.technologies.slice(0, 5).map((t) => (
+                    <span
+                      key={t}
+                      className="px-2 py-0.5 text-[10px] font-mono rounded bg-white/[0.04] border border-white/[0.08] text-[#E4E4E7] uppercase tracking-wider"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="text-[#8E95A5] text-xs sm:text-sm leading-relaxed font-light">
+                  {currentProject.description}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 pt-2 mt-auto border-t border-white/[0.08] shrink-0">
+                  {currentProject.github && (
+                    <a
+                      href={currentProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/15 bg-white/[0.04] text-[#F4F4F6] text-[10px] font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] transition-colors"
+                    >
+                      <Github className="w-3 h-3" />
+                      SOURCE
+                    </a>
+                  )}
+                  {currentProject.demo && (
+                    <a
+                      href={currentProject.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/15 bg-white/[0.04] text-[#F4F4F6] text-[10px] font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] transition-colors"
+                    >
+                      LAUNCH
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ---- CARD DECK (CENTERED) ---- */}
+          <motion.div
+            animate={{
+              x: hasActive ? '55%' : '0%',
+            }}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+            className="relative w-[360px] h-[480px]"
+            style={{ perspective: 1600, transformStyle: 'preserve-3d' }}
+          >
+            {featuredList.map((project, idx) => (
+              <FannedCard
+                key={project.id}
+                project={project}
+                index={idx}
+                total={featuredList.length}
+                isActive={activeProjIndex === idx}
+                activeExists={hasActive}
+                onSelect={setActiveProjIndex}
+              />
+            ))}
+          </motion.div>
+
+        </div>
+
       </div>
-    </motion.div>
+    </section>
   );
 };
 

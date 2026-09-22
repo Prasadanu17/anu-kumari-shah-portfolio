@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #070908;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    background-color: #070908;
+    color: #F4F5F4;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    color: #F4F5F4;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ─── Standardized Global Story Container (Strict Responsive Horizontal Rhythm) ─── */
+.story-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (min-width: 640px) {
+  .story-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .story-container {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .story-container {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* ─── Scroll Progress Bar ─── */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #1e6f5c, #28967d);
+  transform-origin: left;
+  z-index: 10000;
+  pointer-events: none;
+  transition: transform 0.05s linear;
+}
+
+/* ─── Subtle Technical Grid & Grain Atmosphere ─── */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* ─── Refined Titanium & Emerald Panels ─── */
+.glass-panel {
+  background-color: rgba(13, 19, 16, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+.glass-panel-hover {
+  background-color: rgba(13, 19, 16, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(30, 111, 92, 0.45);
+  background-color: rgba(17, 24, 21, 0.88);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+.card-editorial {
+  background-color: #0d1310;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-editorial:hover {
+  border-color: rgba(30, 111, 92, 0.4);
+  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+}
+
+.card-subtle {
+  background-color: #111815;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── Minimal Technical Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070908;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #17221d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e6f5c;
+}
+
+/* ─── Clean Selection Color ─── */
+::selection {
+  background: #1e6f5c;
+  color: #ffffff;
+}
+
+/* ─── Custom Cursor Refined ─── */
+#cursor, #cursor-dot {
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@media (pointer: fine) {
+  html, body {
+    cursor: auto;
+  }
+}

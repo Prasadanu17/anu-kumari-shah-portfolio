@@ -3,10 +3,11 @@ import { Journey } from '../models/Journey.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getJourneyStore } from '../services/dataStore';
 
 export const getJourneys = asyncHandler(
   async (_req: Request, res: Response) => {
-    const items = await Journey.find().sort({ order: 1, createdAt: 1 });
+    const items = await getJourneyStore();
     new ApiResponse(200, items).send(res);
   }
 );

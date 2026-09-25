@@ -3,10 +3,11 @@ import { Experience } from '../models/Experience.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getExperienceStore } from '../services/dataStore';
 
 export const getExperiences = asyncHandler(
   async (_req: Request, res: Response) => {
-    const items = await Experience.find().sort({ order: 1, createdAt: 1 });
+    const items = await getExperienceStore();
     new ApiResponse(200, items).send(res);
   }
 );

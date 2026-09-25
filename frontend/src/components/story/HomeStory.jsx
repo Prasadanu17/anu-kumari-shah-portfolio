@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { personalInfo, heroHighlights } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const HomeStory = () => {
+  const { personalInfo, heroHighlights } = usePortfolio();
   const containerRef = useRef(null);
 
   const mouseX = useMotionValue(0);
@@ -42,7 +43,7 @@ const HomeStory = () => {
       id="home"
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="min-h-screen relative flex items-center justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-28 pb-16 overflow-hidden"
+      className="relative flex flex-col justify-start sm:justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-8 sm:pb-16 overflow-hidden sm:min-h-screen"
       style={{ perspective: 1200 }}
     >
       <div className="w-full grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center relative z-10 gap-3 sm:gap-[clamp(1.5rem,4vw,3rem)]">

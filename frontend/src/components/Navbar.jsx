@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { personalInfo } from "../utils/constants";
+import { usePortfolio } from "../context/PortfolioContext";
 
 const NAV_ITEMS = [
   { label: "HOME",           href: "#home",           id: "home"           },
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
 ];
 
 const Navbar = () => {
+  const { personalInfo } = usePortfolio();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");

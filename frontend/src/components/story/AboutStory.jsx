@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { education } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 // 3D Hover Circular Photo Component
 const HoverPhoto = () => {
@@ -68,10 +68,11 @@ const HoverPhoto = () => {
 };
 
 const AboutStory = () => {
+  const { education } = usePortfolio();
   return (
     <section
       id="about"
-      className="min-h-screen relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 py-24"
+      className="min-h-0 sm:min-h-screen relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       {/* Grid Layout: Left Text & Education, Right 3D Photo */}
       <div className="grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center gap-3 sm:gap-[clamp(2rem,5vw,4rem)]">

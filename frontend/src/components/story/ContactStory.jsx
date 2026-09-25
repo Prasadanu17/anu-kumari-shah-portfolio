@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Send, Check, Mail, Github, Linkedin, FileText } from 'lucide-react';
-import { personalInfo } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 /* ==========================================================================
    CONTACT CARD (3D Hover Tilt)
@@ -62,6 +62,7 @@ const ContactCard = ({ label, value, href, external, icon: Icon, index }) => {
    CONTACT FORM
    ========================================================================== */
 const ContactForm = () => {
+  const { personalInfo, submitContactForm } = usePortfolio();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle');
 
@@ -74,14 +75,16 @@ const ContactForm = () => {
     setStatus('sending');
 
     try {
-      // Direct mailto fallback / email dispatch
-      window.location.href = `mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`;
+      await submitContactForm(formData);
       setStatus('sent');
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setStatus('idle'), 3000);
     } catch (error) {
-      console.error('Form submission:', error);
-      setStatus('idle');
+      console.error('API submission fallback to mailto:', error);
+      window.location.href = `mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`;
+      setStatus('sent');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 3000);
     }
   };
 
@@ -192,6 +195,8 @@ const ContactForm = () => {
    MAIN COMPONENT
    ========================================================================== */
 const ContactStory = () => {
+  const { personalInfo } = usePortfolio();
+
   const contacts = [
     { label: 'EMAIL', value: personalInfo.email, href: `mailto:${personalInfo.email}`, external: false, icon: Mail },
     { label: 'LINKEDIN', value: 'Anu Shah', href: personalInfo.linkedin, external: true, icon: Linkedin },
@@ -202,7 +207,7 @@ const ContactStory = () => {
   return (
     <section
       id="contact"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 py-24"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       <div className="space-y-12">
 

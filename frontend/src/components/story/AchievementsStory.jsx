@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Code2, HeartHandshake } from 'lucide-react';
-import { achievements } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const getAchievementIcon = (iconName) => {
   switch (iconName) {
@@ -17,6 +17,7 @@ const getAchievementIcon = (iconName) => {
 };
 
 const AchievementsStory = () => {
+  const { achievements } = usePortfolio();
   return (
     <section
       id="achievements"

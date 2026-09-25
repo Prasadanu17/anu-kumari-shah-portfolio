@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUp, Github, Linkedin, Mail, MapPin } from 'lucide-react';
-import { personalInfo } from '../utils/constants';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const Footer = () => {
+  const { personalInfo } = usePortfolio();
   const currentYear = new Date().getFullYear();
 
   const scrollToTop = () => {

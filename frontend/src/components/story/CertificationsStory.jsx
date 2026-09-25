@@ -10,7 +10,7 @@ import {
   Building2,
   ChevronRight
 } from 'lucide-react';
-import { certifications, currentlyExploring } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 /* ─── Premium Certificate Visual Frame Component ─── */
 const CertificateVisualFrame = ({ cert, onFullscreen }) => {
@@ -100,10 +100,11 @@ const CertificateVisualFrame = ({ cert, onFullscreen }) => {
 
 /* ─── Main Certifications Story Component (DRY Single Layout) ─── */
 const CertificationsStory = () => {
+  const { certifications, currentlyExploring } = usePortfolio();
   const [activeCertId, setActiveCertId] = useState(certifications[0]?.id || 1);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const activeCert = certifications.find((c) => c.id === activeCertId) || certifications[0];
+  const activeCert = certifications.find((c) => c.id === activeCertId) || certifications[0] || {};
 
   // Close modal on Escape key
   useEffect(() => {
@@ -119,7 +120,7 @@ const CertificationsStory = () => {
   return (
     <section
       id="certifications"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 py-24"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       <div className="space-y-14">
 

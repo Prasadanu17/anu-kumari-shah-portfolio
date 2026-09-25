@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Download, ExternalLink } from 'lucide-react';
-import { personalInfo } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const ResumeSection = () => {
+  const { personalInfo } = usePortfolio();
   return (
     <section
       id="resume"

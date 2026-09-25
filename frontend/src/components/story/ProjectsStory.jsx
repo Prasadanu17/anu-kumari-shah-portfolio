@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, X } from 'lucide-react';
-import { projects } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 /* ==========================================================================
    FANNED CARD (Each individual project card in the deck)
@@ -12,13 +12,13 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
   const offset = index - centerIndex;
 
   // Fan out from bottom-center (scaled down on mobile screens)
-  const baseRotate = offset * (isMobile ? 3 : 5);
-  const baseX = offset * (isMobile ? 22 : 55);
-  const baseY = Math.abs(offset) * (isMobile ? 6 : 10);
+  const baseRotate = offset * (isMobile ? 2.5 : 5);
+  const baseX = offset * (isMobile ? 12 : 55);
+  const baseY = Math.abs(offset) * (isMobile ? 4 : 10);
 
   // When a card is selected → tight stack on the right
   const stackRotate = offset * 1.5;
-  const stackX = offset * (isMobile ? 35 : 90);
+  const stackX = offset * (isMobile ? 18 : 90);
   const stackY = Math.abs(offset) * 2;
 
   return (
@@ -40,11 +40,11 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
         transition: { duration: 0.25 },
       } : {}}
       transition={{ type: 'spring', stiffness: 180, damping: 24 }}
-      className="absolute top-0 left-0 w-[260px] sm:w-[320px] md:w-[360px] h-[380px] sm:h-[440px] md:h-[480px] cursor-pointer origin-bottom"
+      className="absolute top-0 left-0 w-[230px] sm:w-[320px] md:w-[360px] h-[340px] sm:h-[440px] md:h-[480px] cursor-pointer origin-bottom"
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div className="w-full h-full rounded-2xl overflow-hidden border border-white/15 bg-[#0d1310] shadow-2xl flex flex-col hover:border-[#1e6f5c]/60 transition-colors">
-        <div className="px-4 sm:px-5 py-3 sm:py-3.5 bg-[#0d1310] border-b border-white/[0.06] flex items-center justify-between">
+        <div className="px-3.5 sm:px-5 py-2.5 sm:py-3.5 bg-[#0d1310] border-b border-white/[0.06] flex items-center justify-between">
           <span className="text-[9px] sm:text-[10px] font-mono text-[#8E9793] uppercase tracking-[0.2em]">
             CHAPTER 0{index + 1}
           </span>
@@ -65,13 +65,13 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d1310] via-transparent to-transparent" />
         </div>
 
-        <div className="px-4 sm:px-5 py-4 sm:py-5 bg-[#0d1310] border-t border-white/[0.06]">
-          <h3 className="text-sm sm:text-lg font-display font-bold text-[#F4F5F4] leading-tight line-clamp-2">
+        <div className="px-3.5 sm:px-5 py-3 sm:py-5 bg-[#0d1310] border-t border-white/[0.06]">
+          <h3 className="text-xs sm:text-lg font-display font-bold text-[#F4F5F4] leading-tight line-clamp-2">
             {project.title}
           </h3>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
             {project.technologies.slice(0, 2).map((t) => (
-              <span key={t} className="text-[9px] sm:text-[10px] font-mono text-[#8E9793] uppercase tracking-wider">
+              <span key={t} className="text-[8px] sm:text-[10px] font-mono text-[#8E9793] uppercase tracking-wider">
                 {t}
               </span>
             ))}
@@ -86,6 +86,7 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
    MAIN COMPONENT (Restored Fanned Deck + Slide-Out Detail Drawer)
    ========================================================================== */
 const ProjectsStory = () => {
+  const { projects } = usePortfolio();
   const [activeProjIndex, setActiveProjIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -105,7 +106,7 @@ const ProjectsStory = () => {
   return (
     <section
       id="projects"
-      className="relative flex flex-col px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-16 pb-24"
+      className="relative flex flex-col px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       <div className="space-y-6">
 
@@ -115,7 +116,7 @@ const ProjectsStory = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4"
         >
           <div className="space-y-1">
             <div className="flex items-center gap-3">
@@ -131,7 +132,7 @@ const ProjectsStory = () => {
 
           <Link
             to="/projects"
-            className="self-start sm:self-auto px-4.5 py-2.5 rounded-lg bg-[#1e6f5c] text-white text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#28967d] transition-colors shadow-md"
+            className="self-start sm:self-auto px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-lg bg-[#1e6f5c] text-white text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#28967d] transition-colors shadow-md"
           >
             INDEX (ALL WORK) →
           </Link>
@@ -142,24 +143,24 @@ const ProjectsStory = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: hasActive ? 0 : 1, y: hasActive ? -8 : 0 }}
           transition={{ duration: 0.4 }}
-          className="text-center text-[10px] sm:text-xs font-mono text-[#8E9793] tracking-[0.25em] sm:tracking-[0.35em] uppercase pointer-events-none pt-2"
+          className="text-center text-[9px] sm:text-xs font-mono text-[#8E9793] tracking-[0.18em] sm:tracking-[0.35em] uppercase pointer-events-none pt-1 sm:pt-2"
         >
           CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL DETAILS
         </motion.p>
 
         {/* ================= MAIN STAGE ================= */}
-        <div className="relative w-full h-[520px] sm:h-[600px] pt-4 flex items-center justify-center">
+        <div className="relative w-full h-[380px] sm:h-[600px] pt-2 flex items-center justify-center">
 
-          {/* ---- DETAIL PANEL (LEFT / FULL ON MOBILE) ---- */}
+          {/* ---- DETAIL PANEL (LEFT / FULL MODAL ON MOBILE) ---- */}
           <AnimatePresence mode="wait">
             {currentProject && (
               <motion.div
                 key={currentProject.id}
-                initial={{ opacity: 0, x: -60, rotateY: -15 }}
-                animate={{ opacity: 1, x: 0, rotateY: 0 }}
-                exit={{ opacity: 0, x: -60, rotateY: -15 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : -60, y: isMobile ? 20 : 0, rotateY: isMobile ? 0 : -15 }}
+                animate={{ opacity: 1, x: 0, y: 0, rotateY: 0 }}
+                exit={{ opacity: 0, x: isMobile ? 0 : -60, y: isMobile ? 20 : 0, rotateY: isMobile ? 0 : -15 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-                className="absolute left-0 top-0 w-full lg:w-[44%] h-full z-40 bg-[#0d1310] border border-[#1e6f5c]/50 rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col gap-4 overflow-y-auto"
+                className="fixed inset-x-3 top-20 bottom-6 sm:absolute sm:left-0 sm:top-0 sm:inset-x-auto sm:bottom-auto sm:w-[44%] sm:h-full z-50 bg-[#0d1310] border border-[#1e6f5c]/60 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-2xl flex flex-col gap-3.5 overflow-y-auto"
                 style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
               >
                 <div className="flex items-center justify-between shrink-0">
@@ -168,9 +169,10 @@ const ProjectsStory = () => {
                   </span>
                   <button
                     onClick={() => setActiveProjIndex(null)}
-                    className="text-[10px] font-mono text-[#8E9793] hover:text-[#F4F5F4] transition-colors uppercase tracking-wider p-1 font-bold"
+                    className="inline-flex items-center gap-1 text-[10px] font-mono text-[#8E9793] hover:text-[#F4F5F4] bg-white/[0.05] hover:bg-white/10 px-2.5 py-1 rounded-md transition-colors uppercase tracking-wider font-bold"
                   >
-                    CLOSE ✕
+                    <span>CLOSE</span>
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
@@ -185,7 +187,7 @@ const ProjectsStory = () => {
                   />
                 </div>
 
-                <h3 className="font-display font-extrabold text-xl sm:text-3xl text-[#F4F5F4] leading-tight shrink-0">
+                <h3 className="font-display font-extrabold text-lg sm:text-3xl text-[#F4F5F4] leading-tight shrink-0">
                   {currentProject.title}
                 </h3>
 
@@ -193,7 +195,7 @@ const ProjectsStory = () => {
                   {currentProject.technologies.slice(0, 6).map((t) => (
                     <span
                       key={t}
-                      className="px-2 py-0.5 text-[10px] font-mono rounded bg-white/[0.04] border border-white/[0.08] text-[#F4F5F4] uppercase tracking-wider"
+                      className="px-2 py-0.5 text-[9px] sm:text-[10px] font-mono rounded bg-white/[0.04] border border-white/[0.08] text-[#F4F5F4] uppercase tracking-wider"
                     >
                       {t}
                     </span>
@@ -210,7 +212,7 @@ const ProjectsStory = () => {
                       href={currentProject.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/15 bg-white/[0.04] text-[#F4F5F4] text-[10px] font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] transition-colors"
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-white/15 bg-white/[0.04] text-[#F4F5F4] text-[10px] font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] transition-colors"
                     >
                       <Github className="w-3.5 h-3.5 text-[#1e6f5c]" />
                       SOURCE
@@ -221,7 +223,7 @@ const ProjectsStory = () => {
                       href={currentProject.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1e6f5c] hover:bg-[#28967d] text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors shadow-md"
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#1e6f5c] hover:bg-[#28967d] text-white text-[10px] font-mono font-bold tracking-wider uppercase transition-colors shadow-md"
                     >
                       LAUNCH DEMO
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -235,10 +237,10 @@ const ProjectsStory = () => {
           {/* ---- CARD DECK (CENTERED) ---- */}
           <motion.div
             animate={{
-              x: hasActive ? (isMobile ? '10%' : '55%') : '0%',
+              x: hasActive ? (isMobile ? '0%' : '55%') : '0%',
             }}
             transition={{ type: 'spring', stiffness: 180, damping: 24 }}
-            className="relative w-[260px] sm:w-[320px] md:w-[360px] h-[380px] sm:h-[440px] md:h-[480px]"
+            className="relative w-[230px] sm:w-[320px] md:w-[360px] h-[340px] sm:h-[440px] md:h-[480px] mx-auto"
             style={{ perspective: 1600, transformStyle: 'preserve-3d' }}
           >
             {featuredList.map((project, idx) => (

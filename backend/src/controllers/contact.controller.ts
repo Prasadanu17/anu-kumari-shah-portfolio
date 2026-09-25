@@ -4,12 +4,13 @@ import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
 import { sendContactEmail } from '../services/email.service';
+import { createContactMessageStore, getContactMessagesStore } from '../services/dataStore';
 
 export const submitContact = asyncHandler(
   async (req: Request, res: Response) => {
     const { name, email, message } = req.body;
 
-    const contact = await ContactMessage.create({ name, email, message });
+    const contact: any = await createContactMessageStore({ name, email, message });
 
     // Send email notification (don't fail the request if it errors)
     try {
@@ -28,7 +29,7 @@ export const submitContact = asyncHandler(
 
 export const getMessages = asyncHandler(
   async (_req: Request, res: Response) => {
-    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    const messages = await getContactMessagesStore();
     new ApiResponse(200, messages).send(res);
   }
 );

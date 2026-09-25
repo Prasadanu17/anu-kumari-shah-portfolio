@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { experience } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const ExperienceStory = () => {
+  const { experience } = usePortfolio();
   const [activeExpIndex, setActiveExpIndex] = useState(0);
-  const activeExp = experience[activeExpIndex];
+  const activeExp = experience[activeExpIndex] || experience[0];
 
   return (
     <section
       id="experience"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 pb-12"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       <div className="space-y-12">
 

@@ -3,16 +3,21 @@ import { Project } from '../models/Project.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getProjectsStore } from '../services/dataStore';
 
 export const getProjects = asyncHandler(
   async (req: Request, res: Response) => {
+    let items: any[] = await getProjectsStore();
     const { category, isProminent } = req.query;
 
-    const filter: Record<string, unknown> = {};
-    if (category) filter.category = category;
-    if (isProminent !== undefined) filter.isProminent = isProminent === 'true';
+    if (category) {
+      items = items.filter((i: any) => i.category === category);
+    }
+    if (isProminent !== undefined) {
+      const boolProm = isProminent === 'true';
+      items = items.filter((i: any) => i.isProminent === boolProm);
+    }
 
-    const items = await Project.find(filter).sort({ order: 1, createdAt: 1 });
     new ApiResponse(200, items).send(res);
   }
 );

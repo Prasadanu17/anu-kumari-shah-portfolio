@@ -3,10 +3,11 @@ import { Achievement } from '../models/Achievement.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getAchievementsStore } from '../services/dataStore';
 
 export const getAchievements = asyncHandler(
   async (_req: Request, res: Response) => {
-    const items = await Achievement.find().sort({ order: 1, createdAt: 1 });
+    const items = await getAchievementsStore();
     new ApiResponse(200, items).send(res);
   }
 );

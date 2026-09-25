@@ -3,10 +3,11 @@ import { Certification } from '../models/Certification.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getCertificationsStore } from '../services/dataStore';
 
 export const getCertifications = asyncHandler(
   async (_req: Request, res: Response) => {
-    const items = await Certification.find().sort({ order: 1, createdAt: 1 });
+    const items = await getCertificationsStore();
     new ApiResponse(200, items).send(res);
   }
 );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X } from "lucide-react";
-import { projects } from "../utils/constants";
+import { usePortfolio } from "../context/PortfolioContext";
 
 /* ==========================================================================
    PROJECT DETAIL PANEL (Slides out when a card is clicked)
@@ -168,6 +168,7 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
    MAIN PROJECTS COMPONENT
    ========================================================================== */
 const Projects = () => {
+  const { projects } = usePortfolio();
   const [activeIndex, setActiveIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 

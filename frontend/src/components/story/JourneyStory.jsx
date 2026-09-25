@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { journeyTimeline } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const JourneyStory = () => {
+  const { journeyTimeline } = usePortfolio();
   return (
     <section
       id="journey"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 py-24"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
     >
       <div className="space-y-12">
 

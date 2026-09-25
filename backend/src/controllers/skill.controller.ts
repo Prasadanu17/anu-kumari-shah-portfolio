@@ -3,10 +3,11 @@ import { SkillCategory } from '../models/SkillCategory.model';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { getSkillsStore } from '../services/dataStore';
 
 export const getSkills = asyncHandler(
   async (_req: Request, res: Response) => {
-    const items = await SkillCategory.find().sort({ order: 1, createdAt: 1 });
+    const items = await getSkillsStore();
     new ApiResponse(200, items).send(res);
   }
 );

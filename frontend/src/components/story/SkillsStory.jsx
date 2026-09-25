@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { skillsCategorized } from '../../utils/constants';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const SkillsStory = () => {
+  const { skillsCategorized } = usePortfolio();
   return (
     <section
       id="skills"
-      className="relative flex flex-col px-4 sm:px-6 lg:px-12 pt-16 pb-24 max-w-7xl mx-auto z-10"
+      className="relative flex flex-col px-4 sm:px-6 lg:px-12 pt-24 sm:pt-28 pb-12 sm:pb-20 max-w-7xl mx-auto z-10"
     >
       <div className="w-full space-y-12">
 

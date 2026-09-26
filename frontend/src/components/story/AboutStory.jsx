@@ -49,9 +49,9 @@ const HoverPhoto = () => {
       >
         {/* Inner circle container to hold image */}
         <div className="absolute inset-1.5 sm:inset-2.5 rounded-full overflow-hidden border border-white/10">
-          <img 
-            src="/assets/profile.jpeg" 
-            alt="Anu Kumari Shah" 
+          <img
+            src="/assets/profile.jpeg"
+            alt="Anu Kumari Shah"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             onError={(e) => {
               e.target.src = "/assets/hero_img.png";
@@ -76,7 +76,7 @@ const AboutStory = () => {
     >
       {/* Grid Layout: Left Text & Education, Right 3D Photo */}
       <div className="grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center gap-3 sm:gap-[clamp(2rem,5vw,4rem)]">
-        
+
         {/* ================= LEFT COLUMN: NARRATIVE CONTENT ================= */}
         <div className="space-y-3 sm:space-y-7">
 

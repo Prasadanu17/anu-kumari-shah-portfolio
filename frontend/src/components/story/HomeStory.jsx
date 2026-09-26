@@ -192,7 +192,7 @@ const HomeStory = () => {
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#070908] via-transparent to-transparent opacity-80" />
-              
+
               <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 p-2.5 sm:p-3 rounded-lg bg-[#070908]/90 border border-white/10 backdrop-blur-md">
                 <p className="text-xs font-display font-bold text-[#F4F5F4]">Anu Kumari Shah</p>
                 <p className="text-[10px] font-mono text-[#1e6f5c]">ICFAI MCA • AI/ML & Web Dev</p>

@@ -64,9 +64,8 @@ const JourneyStory = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, margin: "-80px" }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className={`flex flex-row items-center gap-0 ${
-                    isEven ? 'flex-row-reverse' : ''
-                  }`}
+                  className={`flex flex-row items-center gap-0 ${isEven ? 'flex-row-reverse' : ''
+                    }`}
                 >
                   {/* Timeline Card */}
                   <div className="w-1/2 px-[clamp(0.5rem,2vw,2rem)]">

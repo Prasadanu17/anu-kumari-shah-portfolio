@@ -22,7 +22,7 @@ const CertificateVisualFrame = ({ cert, onFullscreen }) => {
 
       {/* Double Certificate Guilloche Frame Motif */}
       <div className="border border-[#1e6f5c]/30 rounded-lg sm:rounded-xl p-2.5 sm:p-7 relative bg-[#0a0f0d]/90 backdrop-blur-md space-y-3 sm:space-y-6">
-        
+
         {/* Top Header: Issuing Organization Badge & Verified Seal */}
         <div className="flex items-start justify-between border-b border-[#1e6f5c]/20 pb-4">
           <div className="space-y-1">
@@ -188,11 +188,10 @@ const CertificationsStory = () => {
                   <button
                     key={cert.id}
                     onClick={() => setActiveCertId(cert.id)}
-                    className={`w-full text-left p-2 sm:p-5 rounded-lg sm:rounded-xl transition-all duration-300 relative group flex items-center justify-between gap-2 sm:gap-4 border ${
-                      isActive
+                    className={`w-full text-left p-2 sm:p-5 rounded-lg sm:rounded-xl transition-all duration-300 relative group flex items-center justify-between gap-2 sm:gap-4 border ${isActive
                         ? 'bg-[#0d1310] border-[#1e6f5c] shadow-lg shadow-[#1e6f5c]/10'
                         : 'bg-[#0d1310]/60 border-white/10 hover:border-white/25 hover:bg-[#0d1310]'
-                    }`}
+                      }`}
                   >
                     {/* Active Accent Bar */}
                     {isActive && (
@@ -209,9 +208,8 @@ const CertificationsStory = () => {
                       </span>
 
                       <div className="space-y-1">
-                        <h4 className={`text-[9px] sm:text-sm font-display font-bold leading-snug transition-colors ${
-                          isActive ? 'text-[#F4F5F4]' : 'text-[#8E9793] group-hover:text-[#F4F5F4]'
-                        }`}>
+                        <h4 className={`text-[9px] sm:text-sm font-display font-bold leading-snug transition-colors ${isActive ? 'text-[#F4F5F4]' : 'text-[#8E9793] group-hover:text-[#F4F5F4]'
+                          }`}>
                           {cert.title}
                         </h4>
 
@@ -226,9 +224,8 @@ const CertificationsStory = () => {
                     </div>
 
                     <div className="flex items-center shrink-0">
-                      <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${
-                        isActive ? 'text-[#1e6f5c] translate-x-1' : 'text-[#8E9793] group-hover:translate-x-0.5'
-                      }`} />
+                      <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'text-[#1e6f5c] translate-x-1' : 'text-[#8E9793] group-hover:translate-x-0.5'
+                        }`} />
                     </div>
                   </button>
                 );

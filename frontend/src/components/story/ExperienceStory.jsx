@@ -53,7 +53,7 @@ const ExperienceStory = () => {
 
         {/* Timeline Navigation + Details */}
         <div className="grid grid-cols-[2fr_3fr] sm:grid-cols-[5fr_7fr] items-start gap-2 sm:gap-[clamp(1.5rem,4vw,3rem)]">
-          
+
           {/* Left: Role Selection Cards */}
           <div className="space-y-2 sm:space-y-4">
             {experience.map((exp, idx) => {
@@ -63,11 +63,10 @@ const ExperienceStory = () => {
                   key={exp.id}
                   onClick={() => setActiveExpIndex(idx)}
                   whileHover={{ x: 4 }}
-                  className={`p-2.5 sm:p-6 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 space-y-1 sm:space-y-2 ${
-                    isActive
+                  className={`p-2.5 sm:p-6 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 space-y-1 sm:space-y-2 ${isActive
                       ? 'bg-[#0d1310] border-[#1e6f5c] shadow-[0_0_25px_rgba(30,111,92,0.2)]'
                       : 'bg-white/[0.02] border-white/10 hover:border-white/20'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[7px] sm:text-[10px] font-mono text-[#1e6f5c] font-bold uppercase tracking-wider">

@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, X } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { getSkillIcon } from '../../context/skillIcons';
-import MagneticLogo from '../MagneticLogo';
 
 /* ==========================================================================
    FANNED CARD (Each individual project card in the deck)
@@ -71,20 +69,12 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
           <h3 className="text-xs sm:text-lg font-display font-bold text-[#F4F5F4] leading-tight line-clamp-2">
             {project.title}
           </h3>
-          <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2" style={{ transformStyle: 'preserve-3d' }}>
-            {project.technologies.slice(0, 2).map((t) => {
-              const { icon, color } = getSkillIcon(t);
-              return (
-                <MagneticLogo
-                  key={t}
-                  icon={icon}
-                  color={color}
-                  label={t}
-                  showLabel={true}
-                  className="px-1.5 py-0.5 border border-white/10"
-                />
-              );
-            })}
+          <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+            {project.technologies.slice(0, 2).map((t) => (
+              <span key={t} className="text-[8px] sm:text-[10px] font-mono text-[#8E9793] uppercase tracking-wider">
+                {t}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -117,7 +107,6 @@ const ProjectsStory = () => {
     <section
       id="projects"
       className="relative flex flex-col px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
-      style={{ perspective: '1200px' }}
     >
       <div className="space-y-6">
 
@@ -172,7 +161,7 @@ const ProjectsStory = () => {
                 exit={{ opacity: 0, x: isMobile ? 0 : -60, y: isMobile ? 20 : 0, rotateY: isMobile ? 0 : -15 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 25 }}
                 className="fixed inset-x-3 top-20 bottom-6 sm:absolute sm:left-0 sm:top-0 sm:inset-x-auto sm:bottom-auto sm:w-[44%] sm:h-full z-50 bg-[#0d1310] border border-[#1e6f5c]/60 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-2xl flex flex-col gap-3.5 overflow-y-auto"
-                style={{ transformStyle: 'preserve-3d', perspective: 1200 }}
+                style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
               >
                 <div className="flex items-center justify-between shrink-0">
                   <span className="text-[10px] font-mono uppercase bg-[#1e6f5c]/15 border border-[#1e6f5c]/30 text-[#1e6f5c] px-2.5 py-1 rounded font-bold">
@@ -202,20 +191,15 @@ const ProjectsStory = () => {
                   {currentProject.title}
                 </h3>
 
-                <div className="flex flex-wrap gap-1.5 shrink-0" style={{ transformStyle: 'preserve-3d' }}>
-                  {currentProject.technologies.slice(0, 6).map((t) => {
-                    const { icon, color } = getSkillIcon(t);
-                    return (
-                      <MagneticLogo
-                        key={t}
-                        icon={icon}
-                        color={color}
-                        label={t}
-                        showLabel={true}
-                        className="px-2 py-0.5 border border-white/10"
-                      />
-                    );
-                  })}
+                <div className="flex flex-wrap gap-1.5 shrink-0">
+                  {currentProject.technologies.slice(0, 6).map((t) => (
+                    <span
+                      key={t}
+                      className="px-2 py-0.5 text-[9px] sm:text-[10px] font-mono rounded bg-white/[0.04] border border-white/[0.08] text-[#F4F5F4] uppercase tracking-wider"
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </div>
 
                 <p className="text-[#8E9793] text-xs sm:text-sm leading-relaxed font-light">

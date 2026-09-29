@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { getSkillIcon } from '../../context/skillIcons';
-import MagneticLogo from '../MagneticLogo';
+// Importing logos from react-icons (you can replace these with your own SVGs)
+import { 
+  SiPython, SiNumpy, SiPandas, SiScikitlearn, SiPytorch, SiTensorflow, SiKeras, 
+  SiReact, SiJavascript, SiNodedotjs, SiFastapi, SiTailwindcss, SiHtml5, SiCss, 
+  SiBootstrap, SiPhp, SiCodeigniter, SiMysql, SiMongodb, SiGit, SiGithub, 
+  SiJupyter, SiGooglecolab 
+} from 'react-icons/si';
+import { FaBrain, FaEye, FaChartBar, FaDatabase, FaCode, FaServer, FaPalette } from 'react-icons/fa';
+import { VscCode } from 'react-icons/vsc';
+
+// --- Icon Mapper with Brand Colors ---
+// Maps skill names to their respective logo components and brand colors
+const getSkillIcon = (skillName) => {
+  const icons = {
+    'Python': { icon: <SiPython />, color: '#3776AB' },
+    'NumPy': { icon: <SiNumpy />, color: '#013243' },
+    'Pandas': { icon: <SiPandas />, color: '#150458' },
+    'scikit-learn': { icon: <SiScikitlearn />, color: '#F7931E' },
+    'PyTorch': { icon: <SiPytorch />, color: '#EE4C2C' },
+    'TensorFlow/Keras': { icon: <SiTensorflow />, color: '#FF6F00' },
+    'NLP': { icon: <FaBrain />, color: '#9B59B6' },
+    'Deep Learning': { icon: <FaBrain />, color: '#8E44AD' },
+    'Computer Vision': { icon: <FaEye />, color: '#3498DB' },
+    'EDA': { icon: <FaChartBar />, color: '#E67E22' },
+    'Explainable AI': { icon: <FaBrain />, color: '#1ABC9C' },
+    'React.js': { icon: <SiReact />, color: '#61DAFB' },
+    'JavaScript': { icon: <SiJavascript />, color: '#F7DF1E' },
+    'Node.js': { icon: <SiNodedotjs />, color: '#339933' },
+    'FastAPI': { icon: <SiFastapi />, color: '#009688' },
+    'Tailwind CSS': { icon: <SiTailwindcss />, color: '#06B6D4' },
+    'HTML': { icon: <SiHtml5 />, color: '#E34F26' },
+    'CSS': { icon: <SiCss />, color: '#1572B6' },
+    'Bootstrap': { icon: <SiBootstrap />, color: '#7952B3' },
+    'PHP': { icon: <SiPhp />, color: '#777BB4' },
+    'CodeIgniter': { icon: <SiCodeigniter />, color: '#EF4223' },
+    'MySQL': { icon: <SiMysql />, color: '#4479A1' },
+    'MongoDB': { icon: <SiMongodb />, color: '#47A248' },
+    'Git': { icon: <SiGit />, color: '#F05032' },
+    'GitHub': { icon: <SiGithub />, color: '#ffffff' },
+    'VS Code': { icon: <VscCode />, color: '#007ACC' },
+    'Jupyter': { icon: <SiJupyter />, color: '#F37626' },
+    'Google Colab': { icon: <SiGooglecolab />, color: '#F9AB00' },
+    'Canva': { icon: <FaPalette />, color: '#00C4CC' },
+  };
+  return icons[skillName] || { icon: <FaCode />, color: '#F4F5F4' }; // Default icon if not found
+};
 
 // --- 3D Tilt Card Component ---
 const TiltCard = ({ children, className }) => {
@@ -55,7 +99,7 @@ const SkillsStory = () => {
     <section
       id="skills"
       className="relative flex flex-col px-4 sm:px-6 lg:px-12 pt-24 sm:pt-28 pb-12 sm:pb-20 max-w-7xl mx-auto z-10"
-      style={{ perspective: '1200px' }}
+      style={{ perspective: '1000px' }} // Essential for 3D effect
     >
       <div className="w-full space-y-12">
 
@@ -97,7 +141,7 @@ const SkillsStory = () => {
         </div>
 
         {/* 3 Categorized Layout Columns */}
-        <div className="grid grid-cols-3 pt-4 gap-2 sm:gap-[clamp(0.75rem,2vw,1.5rem)]" style={{ transformStyle: 'preserve-3d' }}>
+        <div className="grid grid-cols-3 pt-4 gap-2 sm:gap-[clamp(0.75rem,2vw,1.5rem)]">
           {skillsCategorized.map((cat, idx) => (
             <motion.div
               key={cat.category}
@@ -126,17 +170,22 @@ const SkillsStory = () => {
                   <div className="h-px w-full bg-white/[0.06] pt-2" />
                 </div>
 
-                {/* Skill Items - Now with Original Brand Colors & Magnetic Logos */}
-                <div className="flex flex-wrap gap-1 sm:gap-2 pt-1 sm:pt-2" style={{ transformStyle: 'preserve-3d', transform: 'translateZ(20px)' }}>
+                {/* Skill Items - Now with Original Brand Colors */}
+                <div className="flex flex-wrap gap-1 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
                   {cat.skills.map((skill) => {
                     const { icon, color } = getSkillIcon(skill);
                     return (
-                      <MagneticLogo
+                      <motion.div
                         key={skill}
-                        icon={icon}
-                        color={color}
-                        label={skill}
-                      />
+                        whileHover={{ scale: 1.15, y: -3 }}
+                        className="flex items-center justify-center p-1.5 sm:p-2 rounded-md sm:rounded-lg bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all duration-200 cursor-pointer"
+                        title={skill} // Tooltip on hover
+                        style={{ color }}
+                      >
+                        <span className="text-sm sm:text-xl" style={{ color }}>
+                          {icon}
+                        </span>
+                      </motion.div>
                     );
                   })}
                 </div>

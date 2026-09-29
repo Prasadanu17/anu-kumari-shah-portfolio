@@ -15,7 +15,7 @@ const ExperienceStory = () => {
       <div className="space-y-12">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-4">
+        <div className="flex flex-col items-center text-center space-y-4 mb-2 sm:mb-6">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}

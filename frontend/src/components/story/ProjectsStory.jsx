@@ -12,14 +12,14 @@ const FannedCard = ({ project, index, total, isActive, onSelect, activeExists, i
   const offset = index - centerIndex;
 
   // Fan out from bottom-center (scaled down on mobile screens)
-  const baseRotate = offset * (isMobile ? 2.5 : 5);
-  const baseX = offset * (isMobile ? 12 : 55);
-  const baseY = Math.abs(offset) * (isMobile ? 4 : 10);
+  const baseRotate = offset * (isMobile ? 3 : 5);
+  const baseX = offset * (isMobile ? 30 : 65);
+  const baseY = Math.abs(offset) * (isMobile ? 5 : 10);
 
-  // When a card is selected → tight stack on the right
-  const stackRotate = offset * 1.5;
-  const stackX = offset * (isMobile ? 18 : 90);
-  const stackY = Math.abs(offset) * 2;
+  // When a card is selected → elegant stack with visible titles on the right
+  const stackRotate = offset * (isMobile ? 2 : 2.5);
+  const stackX = offset * (isMobile ? 48 : 105);
+  const stackY = Math.abs(offset) * 3;
 
   return (
     <motion.div

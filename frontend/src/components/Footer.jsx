@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUp, Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
+import { getSkillIcon } from '../context/skillIcons';
+import MagneticLogo from './MagneticLogo';
 
 const Footer = () => {
   const { personalInfo } = usePortfolio();
@@ -27,8 +29,10 @@ const Footer = () => {
     { label: 'LINKEDIN', href: personalInfo.linkedin, icon: Linkedin },
   ];
 
+  const akIcon = getSkillIcon('AK');
+
   return (
-    <footer className="bg-transparent text-[#8E9793] pt-20 pb-10 border-t border-white/[0.08] relative overflow-hidden">
+    <footer className="bg-transparent text-[#8E9793] pt-20 pb-10 border-t border-white/[0.08] relative overflow-hidden" style={{ perspective: '1200px' }}>
 
       {/* Subtle radial glow at top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#1e6f5c]/10 blur-[120px] rounded-full pointer-events-none" />
@@ -83,10 +87,13 @@ const Footer = () => {
             transition={{ duration: 0.5 }}
             className="col-span-5 space-y-2 sm:space-y-4"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg border border-[#1e6f5c]/40 bg-[#1e6f5c]/10 flex items-center justify-center text-[8px] sm:text-xs font-bold text-[#1e6f5c] font-mono">
-                AK
-              </div>
+            <div className="flex items-center gap-3" style={{ transformStyle: 'preserve-3d' }}>
+              <MagneticLogo
+                icon={<span className="text-[8px] sm:text-xs font-bold text-[#1e6f5c] font-mono">AK</span>}
+                color="#1e6f5c"
+                label="Anu Kumari Shah"
+                className="w-6 h-6 sm:w-9 sm:h-9 p-0"
+              />
               <span className="text-xs sm:text-lg font-display font-bold text-[#F4F5F4] tracking-tight">
                 ANU KUMARI SHAH
               </span>
@@ -149,31 +156,42 @@ const Footer = () => {
               <span className="text-[10px] font-mono text-[#1e6f5c] uppercase tracking-widest block font-bold">
                 // CONNECT
               </span>
-              <div className="flex flex-wrap justify-end gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap justify-end gap-1.5 sm:gap-2" style={{ transformStyle: 'preserve-3d' }}>
                 {socials.map((social) => {
                   const Icon = social.icon;
+                  const { color } = getSkillIcon(social.label);
                   return (
-                    <motion.a
+                    <MagneticLogo
                       key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ y: -2 }}
-                      className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-1 sm:py-2 rounded-md sm:rounded-lg border border-white/10 bg-white/[0.02] text-[#F4F5F4] hover:border-[#1e6f5c]/50 hover:bg-[#1e6f5c]/10 hover:text-[#1e6f5c] transition-all text-[8px] sm:text-[11px] font-mono tracking-wider"
+                      icon={<Icon className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />}
+                      color={color || '#ffffff'}
+                      label={social.label}
+                      showLabel={true}
+                      className="px-2 sm:px-3.5 py-1 sm:py-2 text-[8px] sm:text-[11px] font-mono tracking-wider"
                     >
-                      <Icon className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
-                      {social.label}
-                    </motion.a>
+                      <a
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute inset-0 z-20"
+                        aria-label={social.label}
+                      />
+                    </MagneticLogo>
                   );
                 })}
-                <motion.a
-                  href={`mailto:${personalInfo.email}`}
-                  whileHover={{ y: -2 }}
-                  className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-1 sm:py-2 rounded-md sm:rounded-lg border border-white/10 bg-white/[0.02] text-[#F4F5F4] hover:border-[#1e6f5c]/50 hover:bg-[#1e6f5c]/10 hover:text-[#1e6f5c] transition-all text-[8px] sm:text-[11px] font-mono tracking-wider"
+                <MagneticLogo
+                  icon={<Mail className="w-3.5 h-3.5" />}
+                  color="#1e6f5c"
+                  label="EMAIL"
+                  showLabel={true}
+                  className="px-2 sm:px-3.5 py-1 sm:py-2 text-[8px] sm:text-[11px] font-mono tracking-wider"
                 >
-                  <Mail className="w-3.5 h-3.5" />
-                  EMAIL
-                </motion.a>
+                  <a
+                    href={`mailto:${personalInfo.email}`}
+                    className="absolute inset-0 z-20"
+                    aria-label="EMAIL"
+                  />
+                </MagneticLogo>
               </div>
             </div>
 

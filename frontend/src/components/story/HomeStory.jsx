@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
+import { getSkillIcon } from '../../context/skillIcons';
+import MagneticLogo from '../MagneticLogo';
 
 const HomeStory = () => {
   const { personalInfo, heroHighlights } = usePortfolio();
@@ -88,15 +90,20 @@ const HomeStory = () => {
           </motion.p>
 
           {/* 4 Identity Highlights Chips */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-1 sm:gap-2.5 pt-1">
-            {heroHighlights.map((chip) => (
-              <span
-                key={chip}
-                className="px-1.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-md bg-white/[0.04] border border-white/10 text-[8px] sm:text-xs font-mono text-[#F4F5F4] hover:border-[#1e6f5c]/50 hover:bg-[#1e6f5c]/10 transition-colors"
-              >
-                ● {chip}
-              </span>
-            ))}
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-1 sm:gap-2.5 pt-1" style={{ transformStyle: 'preserve-3d' }}>
+            {heroHighlights.map((chip) => {
+              const { icon, color } = getSkillIcon(chip);
+              return (
+                <MagneticLogo
+                  key={chip}
+                  icon={icon}
+                  color={color}
+                  label={chip}
+                  showLabel={true}
+                  className="px-1.5 py-0.5 sm:px-3 sm:py-1.5 border border-white/10"
+                />
+              );
+            })}
           </motion.div>
 
           {/* CTA Buttons */}

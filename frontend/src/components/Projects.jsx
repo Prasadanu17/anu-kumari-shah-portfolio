@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
+import { getSkillIcon } from "../context/skillIcons";
+import MagneticLogo from "./MagneticLogo";
 
 /* ==========================================================================
    PROJECT DETAIL PANEL (Slides out when a card is clicked)
@@ -17,7 +19,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       exit={{ opacity: 0, x: -50, rotateY: -15 }}
       transition={{ type: "spring", stiffness: 200, damping: 25 }}
       className="relative bg-[#0d1310] border border-[#1e6f5c]/40 rounded-3xl p-5 sm:p-8 shadow-2xl overflow-hidden"
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ transformStyle: "preserve-3d", perspective: 1200 }}
     >
       {/* Close Button */}
       <button
@@ -52,15 +54,20 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       </h3>
 
       {/* Tech Stack */}
-      <div className="flex flex-wrap gap-2 mt-4">
-        {project.technologies.slice(0, 6).map((t) => (
-          <span
-            key={t}
-            className="px-2.5 py-1 text-[10px] font-mono rounded bg-white/[0.04] border border-white/[0.08] text-[#F4F5F4] uppercase tracking-wider"
-          >
-            {t}
-          </span>
-        ))}
+      <div className="flex flex-wrap gap-2 mt-4" style={{ transformStyle: "preserve-3d" }}>
+        {project.technologies.slice(0, 6).map((t) => {
+          const { icon, color } = getSkillIcon(t);
+          return (
+            <MagneticLogo
+              key={t}
+              icon={icon}
+              color={color}
+              label={t}
+              showLabel={true}
+              className="px-2.5 py-1 text-[10px]"
+            />
+          );
+        })}
       </div>
 
       {/* Description */}
@@ -190,7 +197,7 @@ const Projects = () => {
   const activeProject = activeIndex !== null ? projects[activeIndex] : null;
 
   return (
-    <div className="space-y-12 relative">
+    <div className="space-y-12 relative" style={{ perspective: "1200px" }}>
       <div className="text-center">
         <motion.p
           initial={{ opacity: 0, y: 10 }}

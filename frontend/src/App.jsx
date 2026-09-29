@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import Lenis from 'lenis';
 import { PortfolioProvider } from './context/PortfolioContext';
+import { MouseProvider } from './context/MouseContext';
 
 function ScrollProgressBar() {
   useEffect(() => {
@@ -86,15 +87,17 @@ function App() {
   }
 
   return (
-    <PortfolioProvider>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <ScrollProgressBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </PortfolioProvider>
+    <MouseProvider>
+      <PortfolioProvider>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <ScrollProgressBar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+          </Routes>
+        </BrowserRouter>
+      </PortfolioProvider>
+    </MouseProvider>
   );
 }
 

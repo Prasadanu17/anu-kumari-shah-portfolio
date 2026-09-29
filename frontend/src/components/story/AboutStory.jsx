@@ -73,6 +73,7 @@ const AboutStory = () => {
     <section
       id="about"
       className="min-h-0 sm:min-h-screen relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
+      style={{ perspective: '1200px' }}
     >
       {/* Grid Layout: Left Text & Education, Right 3D Photo */}
       <div className="grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center gap-3 sm:gap-[clamp(2rem,5vw,4rem)]">

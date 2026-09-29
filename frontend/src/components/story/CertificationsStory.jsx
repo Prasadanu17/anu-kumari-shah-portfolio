@@ -11,6 +11,8 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
+import { getSkillIcon } from '../../context/skillIcons';
+import MagneticLogo from '../MagneticLogo';
 
 /* ─── Premium Certificate Visual Frame Component ─── */
 const CertificateVisualFrame = ({ cert, onFullscreen }) => {
@@ -121,6 +123,7 @@ const CertificationsStory = () => {
     <section
       id="certifications"
       className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
+      style={{ perspective: '1200px' }}
     >
       <div className="space-y-14">
 
@@ -291,15 +294,20 @@ const CertificationsStory = () => {
                   <span className="text-[10px] font-mono text-[#8E9793] uppercase tracking-wider block">
                     KEY TECHNICAL COMPETENCIES:
                   </span>
-                  <div className="flex flex-wrap gap-2">
-                    {activeCert.skills.map((sk) => (
-                      <span
-                        key={sk}
-                        className="px-2.5 py-1 text-xs font-mono rounded-md bg-[#1e6f5c]/10 border border-[#1e6f5c]/30 text-[#6bb2a0] font-medium"
-                      >
-                        {sk}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-2" style={{ transformStyle: 'preserve-3d' }}>
+                    {activeCert.skills.map((sk) => {
+                      const { icon, color } = getSkillIcon(sk);
+                      return (
+                        <MagneticLogo
+                          key={sk}
+                          icon={icon}
+                          color={color}
+                          label={sk}
+                          showLabel={true}
+                          className="px-2.5 py-1 text-xs"
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>

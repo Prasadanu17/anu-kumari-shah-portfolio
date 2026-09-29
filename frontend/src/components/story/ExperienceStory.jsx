@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
+import { getSkillIcon } from '../../context/skillIcons';
+import MagneticLogo from '../MagneticLogo';
 
 const ExperienceStory = () => {
   const { experience } = usePortfolio();
@@ -11,6 +13,7 @@ const ExperienceStory = () => {
     <section
       id="experience"
       className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
+      style={{ perspective: '1200px' }}
     >
       <div className="space-y-12">
 
@@ -150,15 +153,20 @@ const ExperienceStory = () => {
                   <span className="text-[10px] font-mono uppercase tracking-widest text-[#8E9793] font-bold block">
                     TECHNOLOGIES USED
                   </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeExp.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[9px] sm:text-xs font-mono px-1.5 sm:px-3 py-0.5 sm:py-1 rounded bg-white/[0.04] border border-white/10 text-[#F4F5F4]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-1.5" style={{ transformStyle: 'preserve-3d' }}>
+                    {activeExp.technologies.map((tech) => {
+                      const { icon, color } = getSkillIcon(tech);
+                      return (
+                        <MagneticLogo
+                          key={tech}
+                          icon={icon}
+                          color={color}
+                          label={tech}
+                          showLabel={true}
+                          className="px-2 py-0.5"
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 

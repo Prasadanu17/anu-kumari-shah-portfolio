@@ -28,12 +28,9 @@ const HomePage = () => {
       <Navbar />
 
       {/* ── PINNED SCROLL STORYTELLER STAGE ── */}
-      <main className="relative z-10">
+      <main className="relative z-10 w-full h-screen overflow-hidden">
         <StoryStage />
       </main>
-
-      <Footer />
-      <BackToTop />
     </div>
   );
 };

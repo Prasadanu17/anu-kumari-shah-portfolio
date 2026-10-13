@@ -14,10 +14,9 @@ const NAV_ITEMS = [
 ];
 
 const Navbar = () => {
-  const { personalInfo } = usePortfolio();
+  const { personalInfo, activeSection, setActiveSection } = usePortfolio();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,31 +26,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // IntersectionObserver to accurately track active section in viewport
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -40% 0px",
-      threshold: 0.1,
-    };
-
-    const handleIntersect = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-
-    NAV_ITEMS.forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    setActiveSection(id);
+    setIsMobileMenuOpen(false);
+    window.history.replaceState(null, '', `#${id}`);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
@@ -84,7 +64,11 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-10">
 
             {/* Monogram Brand */}
-            <a href="#home" className="flex items-center gap-3 group">
+            <a
+              href="#home"
+              onClick={(e) => handleNavClick(e, 'home')}
+              className="flex items-center gap-3 group"
+            >
               <div className="w-9 h-9 border border-[#1e6f5c]/40 rounded-lg flex items-center justify-center bg-[#1e6f5c]/10 group-hover:border-[#1e6f5c] group-hover:bg-[#1e6f5c]/20 transition-all duration-200 shadow-sm">
                 <span className="font-display font-bold text-xs text-[#F4F5F4] tracking-tight">
                   AK
@@ -106,6 +90,7 @@ const Navbar = () => {
                 <a
                   key={item.label}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.id)}
                   className={`text-[11px] font-mono transition-colors uppercase tracking-wider relative group py-1 ${
                     activeSection === item.id
                       ? "text-[#F4F5F4]"
@@ -170,12 +155,12 @@ const Navbar = () => {
                   <a
                     key={item.label}
                     href={item.href}
+                    onClick={(e) => handleNavClick(e, item.id)}
                     className={`flex items-center justify-between text-xs font-mono uppercase tracking-wider py-2 border-b border-white/[0.04] transition-colors ${
                       activeSection === item.id
                         ? "text-[#F4F5F4]"
                         : "text-[#8E9793] hover:text-[#F4F5F4]"
                     }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <span>{item.label}</span>
                     <span className={`text-[10px] font-mono ${

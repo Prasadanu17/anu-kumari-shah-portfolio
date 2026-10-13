@@ -116,24 +116,31 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
       onClick={() => onSelect(index)}
       initial={false}
       animate={{
-        opacity: isActive ? 0 : 1,
-        scale: isActive ? 0.8 : 1,
-        rotate: isActive ? 0 : baseRotate,
-        x: isActive ? 0 : baseX,
-        y: isActive ? 0 : baseY,
-        zIndex: baseZ,
+        opacity: 1,
+        scale: isActive ? 1.05 : 1,
+        rotate: isActive ? baseRotate * 0.4 : baseRotate,
+        x: baseX,
+        y: isActive ? baseY - 24 : baseY,
+        zIndex: isActive ? 50 : baseZ,
       }}
       whileHover={{
-        scale: 1.04,
-        y: baseY - 15,
-        rotate: baseRotate * 0.5,
-        transition: { duration: 0.3 },
+        scale: isActive ? 1.07 : 1.04,
+        y: (isActive ? baseY - 24 : baseY) - 12,
+        rotate: baseRotate * 0.3,
+        zIndex: 60,
+        transition: { duration: 0.2 },
       }}
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
-      className="absolute top-0 left-0 w-[250px] sm:w-[320px] aspect-[3/4] cursor-pointer origin-bottom"
+      transition={{ type: "spring", stiffness: 220, damping: 25 }}
+      className={`absolute top-0 left-0 w-[240px] sm:w-[285px] aspect-[3/4] cursor-pointer origin-bottom transition-all duration-300 ${
+        isActive
+          ? 'ring-2 ring-[#10b981] rounded-2xl shadow-[0_12px_36px_rgba(16,185,129,0.35)]'
+          : 'hover:shadow-[0_10px_25px_rgba(0,0,0,0.6)]'
+      }`}
       style={{ transformStyle: "preserve-3d" }}
     >
-      <div className="w-full h-full rounded-2xl overflow-hidden border border-white/15 bg-[#0d1310] shadow-2xl flex flex-col hover:border-[#1e6f5c]/60 transition-colors">
+      <div className={`w-full h-full rounded-2xl overflow-hidden border bg-[#0d1310] shadow-2xl flex flex-col transition-colors ${
+        isActive ? 'border-[#10b981]' : 'border-white/15 hover:border-[#10b981]/70'
+      }`}>
         <div className="relative flex-1 overflow-hidden bg-black">
           <img
             src={project.image}

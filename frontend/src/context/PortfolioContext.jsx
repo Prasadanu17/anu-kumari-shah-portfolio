@@ -36,6 +36,7 @@ export const PortfolioProvider = ({ children }) => {
   const [experience, setExperience] = useState(defaultExperience);
   const [certifications, setCertifications] = useState(defaultCertifications);
   const [achievements, setAchievements] = useState(defaultAchievements);
+  const [activeSection, setActiveSection] = useState('home');
   const [loading, setLoading] = useState(true);
 
   const loadData = async () => {
@@ -97,6 +98,8 @@ export const PortfolioProvider = ({ children }) => {
         experience,
         certifications,
         achievements,
+        activeSection,
+        setActiveSection,
         loading,
         refreshData: loadData,
         submitContactForm,
@@ -121,6 +124,8 @@ export const usePortfolio = () => {
       experience: defaultExperience,
       certifications: defaultCertifications,
       achievements: defaultAchievements,
+      activeSection: 'home',
+      setActiveSection: () => {},
       loading: false,
       refreshData: () => {},
       submitContactForm,

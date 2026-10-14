@@ -120,9 +120,8 @@ const StoryStage = () => {
       if (normalizedDelta > 0) {
         // Scrolling DOWN
         if (hasOverflow && !isAtBottom) {
-          // Still scrolling inside the section: if wheel target wasn't the scroll container, scroll it
-          if (el && !el.contains(e.target)) {
-            el.scrollBy({ top: normalizedDelta, behavior: 'auto' });
+          if (el) {
+            el.scrollTop = Math.min(maxScroll, el.scrollTop + normalizedDelta);
           }
           return;
         }
@@ -136,9 +135,8 @@ const StoryStage = () => {
       } else if (normalizedDelta < 0) {
         // Scrolling UP
         if (hasOverflow && !isAtTop) {
-          // Still scrolling up inside the section
-          if (el && !el.contains(e.target)) {
-            el.scrollBy({ top: normalizedDelta, behavior: 'auto' });
+          if (el) {
+            el.scrollTop = Math.max(0, el.scrollTop + normalizedDelta);
           }
           return;
         }
@@ -273,6 +271,9 @@ const StoryStage = () => {
           ========================================================================= */}
       <div
         ref={contentScrollRef}
+        data-lenis-prevent="true"
+        data-lenis-prevent-wheel="true"
+        data-lenis-prevent-touch="true"
         className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-14 sm:pt-16 pb-2"
       >
         <AnimatePresence mode="wait" custom={direction}>

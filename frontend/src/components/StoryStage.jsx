@@ -407,9 +407,9 @@ const StoryStage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 pointer-events-none"
+            className="fixed bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-30 hidden md:flex flex-col items-center gap-1 pointer-events-none"
           >
-            <span className="text-[9px] font-mono text-[#C8B99F] tracking-[0.25em] uppercase">
+            <span className="text-[8.5px] font-mono text-[#C8B99F] tracking-[0.25em] uppercase">
               SCROLL TO ADVANCE STORY
             </span>
             <motion.div

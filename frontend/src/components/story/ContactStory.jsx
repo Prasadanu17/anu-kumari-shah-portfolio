@@ -32,24 +32,24 @@ const ContactCard = ({ label, value, href, external, icon: Icon, index }) => {
       rel={external ? 'noopener noreferrer' : undefined}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, x: -25 }}
+      initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: false, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className="group relative p-2.5 sm:p-4 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#1c1c1c]/90 transition-all duration-300"
+      className="group relative p-2 sm:p-3.5 rounded-lg sm:rounded-xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-300 min-w-0"
     >
-      <div className="absolute top-3.5 right-3.5 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#EAD9B8] group-hover:shadow-[0_0_8px_rgba(234,217,184,0.6)] transition-all duration-300" />
+      <div className="absolute top-2 sm:top-3 right-2 sm:right-3 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#EAD9B8] group-hover:shadow-[0_0_8px_rgba(234,217,184,0.6)] transition-all duration-300" />
 
-      <div className="relative z-10 flex items-center gap-3.5" style={{ transform: 'translateZ(15px)' }}>
-        <div className="w-6 h-6 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-colors shrink-0">
+      <div className="relative z-10 flex items-center gap-2 sm:gap-3" style={{ transform: 'translateZ(15px)' }}>
+        <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-colors shrink-0">
           <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <span className="text-[7px] sm:text-[9px] font-mono text-[#C8B99F] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold block">
+          <span className="text-[6.5px] sm:text-[9px] font-mono text-[#C8B99F] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold block truncate">
             {label}
           </span>
-          <span className="text-[9px] sm:text-xs font-mono font-medium text-[#F5EBDD] group-hover:text-[#EAD9B8] transition-colors truncate block">
+          <span className="text-[8px] sm:text-xs font-mono font-medium text-[#F5EBDD] group-hover:text-[#EAD9B8] transition-colors truncate block">
             {value}
           </span>
         </div>
@@ -88,7 +88,7 @@ const ContactForm = () => {
     }
   };
 
-  const inputClass = 'w-full bg-white/[0.03] border border-[#8E8170]/30 rounded-lg px-2.5 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs font-mono text-[#F5EBDD] placeholder-[#C8B99F]/60 focus:outline-none focus:border-[#EAD9B8] focus:bg-white/[0.05] transition-all duration-200';
+  const inputClass = 'w-full bg-white/[0.03] border border-[#8E8170]/30 rounded-lg px-2.5 sm:px-3 py-1 sm:py-2 text-[9px] sm:text-xs font-mono text-[#F5EBDD] placeholder-[#C8B99F]/60 focus:outline-none focus:border-[#EAD9B8] focus:bg-white/[0.05] transition-all duration-200';
 
   return (
     <motion.div
@@ -96,18 +96,18 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: '-50px' }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="relative p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-2.5 sm:space-y-3"
+      className="relative p-2.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-2 sm:space-y-3 min-w-0"
     >
       <div>
-        <h3 className="text-sm sm:text-lg font-display font-bold text-[#EAD9B8]">
+        <h3 className="text-xs sm:text-base font-display font-bold text-[#EAD9B8] leading-tight">
           Send a direct message
         </h3>
-        <p className="text-[9px] sm:text-[11px] font-mono text-[#C8B99F] mt-0.5">
+        <p className="text-[8px] sm:text-[11px] font-mono text-[#C8B99F] mt-0.5 leading-tight">
           I respond to all inquiries within 24 hours.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-2.5">
+      <form onSubmit={handleSubmit} className="space-y-1.5 sm:space-y-2.5">
         <input
           type="text"
           name="name"
@@ -132,16 +132,16 @@ const ContactForm = () => {
           name="message"
           placeholder="YOUR MESSAGE"
           required
-          rows={3}
+          rows={2}
           value={formData.message}
           onChange={handleChange}
-          className={`${inputClass} resize-none`}
+          className={`${inputClass} resize-none sm:rows-3`}
         />
 
         <button
           type="submit"
           disabled={status !== 'idle'}
-          className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-[#EAD9B8] text-[#171717] text-[9px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest px-4 py-2 sm:py-2.5 rounded-lg hover:bg-[#d6c39f] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_20px_rgba(234,217,184,0.2)]"
+          className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-[#EAD9B8] text-[#171717] text-[8.5px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1.5 sm:py-2.5 rounded-lg hover:bg-[#d6c39f] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_20px_rgba(234,217,184,0.2)]"
         >
           <AnimatePresence mode="wait">
             {status === 'idle' && (
@@ -150,9 +150,9 @@ const ContactForm = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-1.5 sm:gap-2"
               >
-                <Send className="w-3.5 h-3.5" />
+                <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 SEND MESSAGE
               </motion.span>
             )}
@@ -162,10 +162,10 @@ const ContactForm = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-1.5 sm:gap-2"
               >
                 <motion.span
-                  className="w-3.5 h-3.5 border-2 border-[#171717]/40 border-t-[#171717] rounded-full"
+                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 border-2 border-[#171717]/40 border-t-[#171717] rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
                 />
@@ -178,9 +178,9 @@ const ContactForm = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-1.5 sm:gap-2"
               >
-                <Check className="w-3.5 h-3.5" />
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 MESSAGE SENT
               </motion.span>
             )}
@@ -201,30 +201,30 @@ const ContactStory = () => {
     { label: 'EMAIL', value: personalInfo.email, href: `mailto:${personalInfo.email}`, external: false, icon: Mail },
     { label: 'LINKEDIN', value: 'Anu Shah', href: personalInfo.linkedin, external: true, icon: Linkedin },
     { label: 'GITHUB', value: 'Prasadanu17', href: personalInfo.github, external: true, icon: Github },
-    { label: 'RESUME', value: 'Anu Kumari Shah-Resume.pdf', href: personalInfo.resume, external: true, icon: FileText },
+    { label: 'RESUME', value: 'Resume.pdf', href: personalInfo.resume, external: true, icon: FileText },
   ];
 
   return (
     <section
       id="contact"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-5xl mx-auto z-10 py-2 sm:py-4 w-full"
+      className="relative flex flex-col justify-center px-3 sm:px-6 lg:px-12 max-w-5xl mx-auto z-10 pt-2 pb-14 sm:pt-4 sm:pb-4 w-full"
     >
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-3 sm:space-y-5">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-1.5 sm:space-y-2">
+        <div className="flex flex-col items-center text-center space-y-1 sm:space-y-1.5">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: '-100px' }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3"
+            className="flex items-center gap-2 sm:gap-3"
           >
-            <div className="h-px w-10 bg-[#8E8170]/40" />
-            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
+            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
+            <span className="text-[8px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold truncate">
               10 / CONTACT
             </span>
-            <div className="h-px w-10 bg-[#8E8170]/40" />
+            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
@@ -232,7 +232,7 @@ const ContactStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: '-100px' }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-[#EAD9B8] text-xl sm:text-3xl tracking-tight uppercase"
+            className="font-display font-extrabold text-[#EAD9B8] text-[clamp(1.05rem,3.8vw,2rem)] sm:text-3xl tracking-tight uppercase"
           >
             LET'S BUILD SOMETHING MEANINGFUL.
           </motion.h2>
@@ -242,22 +242,22 @@ const ContactStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: '-100px' }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-lg leading-relaxed"
+            className="text-[#F5EBDD] text-[8.5px] sm:text-sm font-light max-w-lg leading-relaxed px-2"
           >
             Open to opportunities, engineering collaborations, and impactful AI/ML & full-stack roles.
           </motion.p>
         </div>
 
         {/* Two Columns: Links + Form */}
-        <div className="grid grid-cols-1 md:grid-cols-2 pt-3 border-t border-[#8E8170]/25 gap-4 sm:gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 pt-2 sm:pt-3 border-t border-[#8E8170]/25 gap-3 sm:gap-6 items-start">
 
-          {/* Left: Contact links */}
-          <div className="space-y-2.5 sm:space-y-3">
-            <span className="text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.25em] font-bold block">
+          {/* Left: Contact links in 2x2 grid on mobile & tablet */}
+          <div className="space-y-1.5 sm:space-y-3 min-w-0">
+            <span className="text-[7.5px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.2em] font-bold block">
               // DIRECT CHANNELS & PROFILES
             </span>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2 sm:gap-2.5">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2.5">
               {contacts.map((contact, idx) => (
                 <ContactCard key={contact.label} {...contact} index={idx} />
               ))}
@@ -269,7 +269,7 @@ const ContactStory = () => {
         </div>
 
         {/* Minimal Footer Credits */}
-        <div className="pt-2 sm:pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] sm:text-[10px] font-mono text-[#C8B99F] gap-1.5">
+        <div className="pt-2 sm:pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[7.5px] sm:text-[10px] font-mono text-[#C8B99F] gap-1 text-center sm:text-left">
           <span>© {new Date().getFullYear()} ANU KUMARI SHAH • ALL RIGHTS RESERVED</span>
           <span className="text-[#EAD9B8]">GANGTOK, SIKKIM • AI/ML & FULL-STACK</span>
         </div>

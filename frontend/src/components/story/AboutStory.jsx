@@ -31,24 +31,24 @@ const HoverPhoto = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-center w-full min-h-[180px] sm:min-h-[380px]">
+    <div className="relative flex flex-col items-center justify-center w-full min-h-[160px] sm:min-h-[380px] py-1">
       {/* Ambient Glow behind circle */}
-      <div className="absolute w-[140px] h-[140px] sm:w-[360px] sm:h-[360px] rounded-full bg-[#EAD9B8]/5 blur-[40px] sm:blur-[80px] pointer-events-none" />
+      <div className="absolute w-[130px] h-[130px] sm:w-[320px] sm:h-[320px] rounded-full bg-[#EAD9B8]/5 blur-[35px] sm:blur-[70px] pointer-events-none" />
 
       <motion.div
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative w-[clamp(120px,22vw,330px)] h-[clamp(120px,22vw,330px)] rounded-full 
+        className="relative w-[clamp(105px,18vw,290px)] h-[clamp(105px,18vw,290px)] rounded-full 
                    border-2 border-[#8E8170]/40 bg-[#171717]/80 backdrop-blur-md 
-                   shadow-[0_0_40px_rgba(234,217,184,0.1)] 
-                   hover:shadow-[0_0_60px_rgba(234,217,184,0.2)] 
+                   shadow-[0_0_35px_rgba(234,217,184,0.12)] 
+                   hover:shadow-[0_0_55px_rgba(234,217,184,0.25)] 
                    hover:border-[#EAD9B8] 
-                   transition-all duration-500 cursor-pointer group"
+                   transition-all duration-500 cursor-pointer group flex items-center justify-center"
       >
         {/* Inner circle container to hold image */}
-        <div className="absolute inset-1.5 sm:inset-2.5 rounded-full overflow-hidden border border-white/10">
+        <div className="absolute inset-1 sm:inset-2.5 rounded-full overflow-hidden border border-white/10">
           <img
             src="/assets/profile.jpeg"
             alt="Anu Kumari Shah"
@@ -61,7 +61,22 @@ const HoverPhoto = () => {
 
         {/* Outer Tech Orbit Rings */}
         <div className="absolute -inset-1.5 sm:-inset-3.5 rounded-full border border-dashed border-[#8E8170]/35 animate-[spin_25s_linear_infinite]" />
-        <div className="absolute -inset-3 sm:-inset-7 rounded-full border border-[#8E8170]/20" />
+        <div className="absolute -inset-3 sm:-inset-6 rounded-full border border-[#8E8170]/20" />
+
+        {/* Floating Mini Badge 1 — CGPA Top Right */}
+        <div className="absolute -top-1 -right-1 sm:top-2 sm:right-[-10px] px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#1c1c1c]/95 border border-[#8E8170]/40 backdrop-blur-md shadow-lg flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse shrink-0" />
+          <span className="text-[6px] sm:text-[10px] font-mono text-[#EAD9B8] font-bold whitespace-nowrap">
+            10.00 CGPA
+          </span>
+        </div>
+
+        {/* Floating Mini Badge 2 — Focus Bottom Left */}
+        <div className="absolute -bottom-1 -left-1 sm:bottom-2 sm:left-[-10px] px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#1c1c1c]/95 border border-[#8E8170]/40 backdrop-blur-md shadow-lg flex items-center gap-1">
+          <span className="text-[6px] sm:text-[10px] font-mono text-[#C8B99F] font-semibold whitespace-nowrap">
+            AI/ML × FULL-STACK
+          </span>
+        </div>
       </motion.div>
     </div>
   );
@@ -78,7 +93,7 @@ const AboutStory = () => {
       <div className="w-full grid grid-cols-2 items-center gap-2.5 sm:gap-6 lg:gap-12">
 
         {/* ================= LEFT COLUMN: NARRATIVE & EDUCATION (50%) ================= */}
-        <div className="space-y-2 sm:space-y-3.5 md:space-y-4">
+        <div className="space-y-2 sm:space-y-3.5 md:space-y-4 min-w-0">
 
           {/* Section Marker */}
           <motion.div
@@ -88,8 +103,8 @@ const AboutStory = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2 sm:gap-3"
           >
-            <span className="text-[7.5px] sm:text-xs font-mono text-[#C8B99F] tracking-wider sm:tracking-widest uppercase font-bold">02 / ABOUT ME</span>
-            <div className="h-px w-8 sm:w-12 bg-[#8E8170]/40" />
+            <span className="text-[7.5px] sm:text-xs font-mono text-[#C8B99F] tracking-wider sm:tracking-widest uppercase font-bold truncate">02 / ABOUT ME</span>
+            <div className="h-px w-6 sm:w-12 bg-[#8E8170]/40 shrink-0" />
           </motion.div>
 
           {/* Title */}
@@ -98,7 +113,7 @@ const AboutStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-[#EAD9B8] text-[clamp(0.95rem,2.8vw,2rem)] sm:text-2xl md:text-3xl tracking-tight uppercase leading-snug"
+            className="font-display font-extrabold text-[#EAD9B8] text-[clamp(0.95rem,3vw,2.2rem)] tracking-tight uppercase leading-snug"
           >
             ENGINEERING INTELLIGENT SYSTEMS
           </motion.h2>
@@ -125,9 +140,9 @@ const AboutStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="pt-2 sm:pt-4 border-t border-[#8E8170]/20 space-y-1.5 sm:space-y-2.5"
+            className="pt-1.5 sm:pt-4 border-t border-[#8E8170]/20 space-y-1 sm:space-y-2.5"
           >
-            <span className="text-[7.5px] sm:text-[11px] font-mono text-[#C8B99F] tracking-widest uppercase font-bold block">
+            <span className="text-[7px] sm:text-[11px] font-mono text-[#C8B99F] tracking-widest uppercase font-bold block">
               // ACADEMIC EDUCATION
             </span>
 
@@ -135,22 +150,22 @@ const AboutStory = () => {
               {education.map((edu) => (
                 <div
                   key={edu.id}
-                  className="p-1.5 sm:p-3.5 rounded-lg sm:rounded-xl bg-[#1c1c1c] border border-[#8E8170]/25 hover:border-[#EAD9B8]/40 transition-all duration-300 space-y-0.5 sm:space-y-1.5 shadow-lg"
+                  className="p-1.5 sm:p-3.5 rounded-lg sm:rounded-xl bg-[#1c1c1c] border border-[#8E8170]/25 hover:border-[#EAD9B8]/40 transition-all duration-300 space-y-0.5 sm:space-y-1.5 shadow-lg min-w-0"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[6.5px] sm:text-[10px] font-mono text-[#C8B99F]">
                       {edu.period}
                     </span>
-                    <span className="px-1 sm:px-2 py-0.5 rounded bg-[#EAD9B8]/15 border border-[#EAD9B8]/30 text-[#EAD9B8] text-[7px] sm:text-xs font-mono font-bold">
+                    <span className="px-1 sm:px-2 py-0.5 rounded bg-[#EAD9B8]/15 border border-[#EAD9B8]/30 text-[#EAD9B8] text-[6.5px] sm:text-xs font-mono font-bold">
                       CGPA: {edu.cgpa}
                     </span>
                   </div>
 
-                  <h3 className="font-display font-bold text-[8.5px] sm:text-sm text-[#EAD9B8] leading-tight">
+                  <h3 className="font-display font-bold text-[8px] sm:text-sm text-[#EAD9B8] leading-tight truncate sm:whitespace-normal">
                     {edu.degree}
                   </h3>
 
-                  <p className="text-[7px] sm:text-xs font-mono text-[#C8B99F]">
+                  <p className="text-[6.5px] sm:text-xs font-mono text-[#C8B99F] truncate sm:whitespace-normal">
                     {edu.institution}
                   </p>
 

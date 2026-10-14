@@ -14,21 +14,22 @@ import AchievementsStory from './story/AchievementsStory';
 import ResumeSection from './story/ResumeSection';
 import ContactStory from './story/ContactStory';
 import Footer from './Footer';
+import Skills3DUniverse from './3d/Skills3DUniverse';
 
 /* ==========================================================================
    STORYTELLER CHAPTER DEFINITIONS
    ========================================================================== */
 const CHAPTERS = [
-  { id: 'home',           number: '01', title: 'HOME',           label: 'Introduction',   Component: HomeStory },
-  { id: 'about',          number: '02', title: 'ABOUT',          label: 'Background',     Component: AboutStory },
-  { id: 'journey',        number: '03', title: 'JOURNEY',        label: 'Milestones',     Component: JourneyStory },
-  { id: 'skills',         number: '04', title: 'SKILLS',         label: 'Tech Stack',     Component: SkillsStory },
-  { id: 'projects',       number: '05', title: 'PROJECTS',       label: 'Selected Work',  Component: ProjectsStory },
-  { id: 'experience',     number: '06', title: 'EXPERIENCE',     label: 'Career & Work',  Component: ExperienceStory },
-  { id: 'certifications', number: '07', title: 'CERTIFICATIONS', label: 'Credentials',    Component: CertificationsStory },
-  { id: 'achievements',   number: '08', title: 'ACHIEVEMENTS',   label: 'Honors & Wins',  Component: AchievementsStory },
-  { id: 'resume',         number: '09', title: 'RESUME',         label: 'CV Overview',    Component: ResumeSection },
-  { id: 'contact',        number: '10', title: 'CONTACT',        label: 'Connect & Hire', Component: ContactStory },
+  { id: 'home', number: '01', title: 'HOME', label: 'Introduction', Component: HomeStory },
+  { id: 'about', number: '02', title: 'ABOUT', label: 'Background', Component: AboutStory },
+  { id: 'journey', number: '03', title: 'JOURNEY', label: 'Milestones', Component: JourneyStory },
+  { id: 'skills', number: '04', title: 'SKILLS', label: 'Tech Stack', Component: SkillsStory },
+  { id: 'projects', number: '05', title: 'PROJECTS', label: 'Selected Work', Component: ProjectsStory },
+  { id: 'experience', number: '06', title: 'EXPERIENCE', label: 'Career & Work', Component: ExperienceStory },
+  { id: 'certifications', number: '07', title: 'CERTIFICATIONS', label: 'Credentials', Component: CertificationsStory },
+  { id: 'achievements', number: '08', title: 'ACHIEVEMENTS', label: 'Honors & Wins', Component: AchievementsStory },
+  { id: 'resume', number: '09', title: 'RESUME', label: 'CV Overview', Component: ResumeSection },
+  { id: 'contact', number: '10', title: 'CONTACT', label: 'Connect & Hire', Component: ContactStory },
 ];
 
 const StoryStage = () => {
@@ -36,6 +37,14 @@ const StoryStage = () => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [showScrollHint, setShowScrollHint] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const lastScrollTimeRef = useRef(0);
   const contentScrollRef = useRef(null);
@@ -266,6 +275,9 @@ const StoryStage = () => {
       onTouchEnd={handleTouchEnd}
       className="relative w-full h-screen overflow-hidden text-[#F4F5F4] flex flex-col justify-between"
     >
+      {/* ── INTERACTIVE 3D SKILL UNIVERSE LAYER ── */}
+      <Skills3DUniverse currentChapterId={currentChapter.id} direction={direction} isMobile={isMobile} />
+
       {/* =========================================================================
           MAIN STAGE VIEWPORT (Full Screen, Cinematic Presentation)
           ========================================================================= */}
@@ -284,9 +296,8 @@ const StoryStage = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            className={`w-full min-h-full flex flex-col ${
-              currentChapter.id === 'journey' ? 'justify-start' : 'justify-center'
-            } py-1 sm:py-2`}
+            className={`w-full min-h-full flex flex-col ${currentChapter.id === 'journey' ? 'justify-start' : 'justify-center'
+              } py-1 sm:py-2`}
           >
             <CurrentComponent
               onNextChapter={() => goToChapter(currentChapterIndex + 1)}
@@ -317,11 +328,10 @@ const StoryStage = () => {
         <button
           onClick={() => goToChapter(currentChapterIndex - 1)}
           disabled={currentChapterIndex === 0}
-          className={`p-1.5 rounded-lg border transition-all duration-200 ${
-            currentChapterIndex === 0
+          className={`p-1.5 rounded-lg border transition-all duration-200 ${currentChapterIndex === 0
               ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
               : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
-          }`}
+            }`}
           aria-label="Previous Chapter"
         >
           <ChevronUp className="w-3.5 h-3.5" />
@@ -345,11 +355,10 @@ const StoryStage = () => {
 
                 {/* Dot Pip */}
                 <span
-                  className={`block rounded-full transition-all duration-300 ${
-                    isActive
+                  className={`block rounded-full transition-all duration-300 ${isActive
                       ? 'w-2.5 h-2.5 bg-[#EAD9B8] ring-2 ring-[#EAD9B8]/50 shadow-[0_0_10px_#EAD9B8]'
                       : 'w-1.5 h-1.5 bg-white/20 group-hover:bg-[#EAD9B8]/50'
-                  }`}
+                    }`}
                 />
               </button>
             );
@@ -360,11 +369,10 @@ const StoryStage = () => {
         <button
           onClick={() => goToChapter(currentChapterIndex + 1)}
           disabled={currentChapterIndex === CHAPTERS.length - 1}
-          className={`p-1.5 rounded-lg border transition-all duration-200 ${
-            currentChapterIndex === CHAPTERS.length - 1
+          className={`p-1.5 rounded-lg border transition-all duration-200 ${currentChapterIndex === CHAPTERS.length - 1
               ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
               : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
-          }`}
+            }`}
           aria-label="Next Chapter"
         >
           <ChevronDown className="w-3.5 h-3.5" />

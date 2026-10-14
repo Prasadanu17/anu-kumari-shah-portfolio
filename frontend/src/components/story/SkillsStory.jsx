@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { usePortfolio } from '../../context/PortfolioContext';
 // Importing logos from react-icons (you can replace these with your own SVGs)
-import { 
-  SiPython, SiNumpy, SiPandas, SiScikitlearn, SiPytorch, SiTensorflow, SiKeras, 
-  SiReact, SiJavascript, SiNodedotjs, SiFastapi, SiTailwindcss, SiHtml5, SiCss, 
-  SiBootstrap, SiPhp, SiCodeigniter, SiMysql, SiMongodb, SiGit, SiGithub, 
-  SiJupyter, SiGooglecolab 
+import {
+  SiPython, SiNumpy, SiPandas, SiScikitlearn, SiPytorch, SiTensorflow, SiKeras,
+  SiReact, SiJavascript, SiNodedotjs, SiFastapi, SiTailwindcss, SiHtml5, SiCss,
+  SiBootstrap, SiPhp, SiCodeigniter, SiMysql, SiMongodb, SiGit, SiGithub,
+  SiJupyter, SiGooglecolab
 } from 'react-icons/si';
 import { FaBrain, FaEye, FaChartBar, FaDatabase, FaCode, FaServer, FaPalette } from 'react-icons/fa';
 import { VscCode } from 'react-icons/vsc';
@@ -170,20 +170,41 @@ const SkillsStory = () => {
                   <div className="h-px w-full bg-[#8E8170]/20 pt-2" />
                 </div>
 
-                {/* Skill Items - Now with Original Brand Colors */}
-                <div className="flex flex-wrap gap-1 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
-                  {cat.skills.map((skill) => {
+                {/* Assembled Skill Items with Staggered 3D Flight Arrival & Name Labels */}
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
+                  {cat.skills.map((skill, skillIdx) => {
                     const { icon, color } = getSkillIcon(skill);
                     return (
                       <motion.div
                         key={skill}
-                        whileHover={{ scale: 1.15, y: -3 }}
-                        className="flex items-center justify-center p-1.5 sm:p-2 rounded-md sm:rounded-lg bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all duration-200 cursor-pointer"
-                        title={skill} // Tooltip on hover
-                        style={{ color }}
+                        initial={{ opacity: 0, scale: 0.5, y: 30 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: false, margin: "-40px" }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 160,
+                          damping: 18,
+                          delay: 0.08 + skillIdx * 0.035,
+                        }}
+                        whileHover={{ scale: 1.08, y: -2 }}
+                        className="group/skill relative flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:py-1.5 rounded-md sm:rounded-lg bg-white/[0.04] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-200 cursor-pointer shadow-md min-w-0"
                       >
-                        <span className="text-sm sm:text-xl" style={{ color }}>
+                        {/* Dynamic Brand Color Glow */}
+                        <div
+                          className="absolute inset-0 rounded-md sm:rounded-lg opacity-0 group-hover/skill:opacity-100 transition-opacity duration-300 pointer-events-none"
+                          style={{
+                            boxShadow: `0 0 16px ${color}44`,
+                          }}
+                        />
+
+                        {/* Official Brand Logo */}
+                        <span className="text-xs sm:text-base shrink-0 transition-transform duration-200 group-hover/skill:scale-110" style={{ color }}>
                           {icon}
+                        </span>
+
+                        {/* Skill Name Label */}
+                        <span className="text-[7.5px] sm:text-[11px] font-mono font-medium text-[#F5EBDD] group-hover/skill:text-[#EAD9B8] transition-colors whitespace-nowrap">
+                          {skill}
                         </span>
                       </motion.div>
                     );

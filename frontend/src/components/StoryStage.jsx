@@ -305,10 +305,10 @@ const StoryStage = () => {
           key={currentChapter.id}
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-2 bg-[#0d1310]/85 border border-[#1e6f5c]/40 px-3 py-1.5 rounded-full backdrop-blur-md shadow-xl"
+          className="flex items-center gap-2 bg-[#171717]/85 border border-[#8E8170]/40 px-3 py-1.5 rounded-full backdrop-blur-md shadow-xl"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-          <span className="text-[10px] font-mono text-[#8E9793] uppercase tracking-widest font-semibold">
+          <span className="text-[10px] font-mono text-[#EAD9B8] uppercase tracking-widest font-semibold">
             {currentChapter.number} // {currentChapter.title}
           </span>
         </motion.div>
@@ -320,7 +320,7 @@ const StoryStage = () => {
           className={`p-1.5 rounded-lg border transition-all duration-200 ${
             currentChapterIndex === 0
               ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
-              : 'border-white/10 bg-[#0d1310]/70 hover:border-[#10b981] hover:text-[#10b981] text-[#8E9793]'
+              : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
           }`}
           aria-label="Previous Chapter"
         >
@@ -328,7 +328,7 @@ const StoryStage = () => {
         </button>
 
         {/* 10 Chapter Progress Dots */}
-        <div className="flex flex-col items-center gap-2 py-2 px-1 bg-[#0d1310]/50 border border-white/5 rounded-full backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-2 py-2 px-1 bg-[#171717]/60 border border-[#8E8170]/20 rounded-full backdrop-blur-sm">
           {CHAPTERS.map((chap, idx) => {
             const isActive = currentChapterIndex === idx;
             return (
@@ -339,7 +339,7 @@ const StoryStage = () => {
                 aria-label={`Jump to chapter ${chap.number}: ${chap.title}`}
               >
                 {/* Floating tooltip */}
-                <span className="absolute right-6 px-2.5 py-1 rounded bg-[#0d1310] border border-[#1e6f5c]/50 text-[9px] font-mono uppercase tracking-wider text-[#F4F5F4] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity shadow-lg whitespace-nowrap z-50">
+                <span className="absolute right-6 px-2.5 py-1 rounded bg-[#171717] border border-[#8E8170]/40 text-[9px] font-mono uppercase tracking-wider text-[#EAD9B8] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity shadow-lg whitespace-nowrap z-50">
                   {chap.number} • {chap.title}
                 </span>
 
@@ -347,8 +347,8 @@ const StoryStage = () => {
                 <span
                   className={`block rounded-full transition-all duration-300 ${
                     isActive
-                      ? 'w-2.5 h-2.5 bg-[#10b981] ring-2 ring-[#10b981]/50 shadow-[0_0_10px_#10b981]'
-                      : 'w-1.5 h-1.5 bg-white/20 group-hover:bg-white/60'
+                      ? 'w-2.5 h-2.5 bg-[#EAD9B8] ring-2 ring-[#EAD9B8]/50 shadow-[0_0_10px_#EAD9B8]'
+                      : 'w-1.5 h-1.5 bg-white/20 group-hover:bg-[#EAD9B8]/50'
                   }`}
                 />
               </button>
@@ -363,7 +363,7 @@ const StoryStage = () => {
           className={`p-1.5 rounded-lg border transition-all duration-200 ${
             currentChapterIndex === CHAPTERS.length - 1
               ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
-              : 'border-white/10 bg-[#0d1310]/70 hover:border-[#10b981] hover:text-[#10b981] text-[#8E9793]'
+              : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
           }`}
           aria-label="Next Chapter"
         >
@@ -374,24 +374,24 @@ const StoryStage = () => {
       {/* =========================================================================
           MOBILE BOTTOM HUD (Story progress pill on small screens)
           ========================================================================= */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 md:hidden flex items-center gap-3 bg-[#0d1310]/90 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md shadow-2xl">
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 md:hidden flex items-center gap-3 bg-[#171717]/90 border border-[#8E8170]/30 px-4 py-2 rounded-full backdrop-blur-md shadow-2xl">
         <button
           onClick={() => goToChapter(currentChapterIndex - 1)}
           disabled={currentChapterIndex === 0}
-          className={`p-1 text-[#8E9793] ${currentChapterIndex === 0 ? 'opacity-20' : 'hover:text-white'}`}
+          className={`p-1 text-[#C8B99F] ${currentChapterIndex === 0 ? 'opacity-20' : 'hover:text-[#EAD9B8]'}`}
           aria-label="Previous Section"
         >
           <ChevronUp className="w-4 h-4" />
         </button>
 
-        <span className="text-[10px] font-mono text-[#10b981] tracking-widest font-bold">
+        <span className="text-[10px] font-mono text-[#EAD9B8] tracking-widest font-bold">
           {currentChapter.number} / 10 • {currentChapter.title}
         </span>
 
         <button
           onClick={() => goToChapter(currentChapterIndex + 1)}
           disabled={currentChapterIndex === CHAPTERS.length - 1}
-          className={`p-1 text-[#8E9793] ${currentChapterIndex === CHAPTERS.length - 1 ? 'opacity-20' : 'hover:text-white'}`}
+          className={`p-1 text-[#C8B99F] ${currentChapterIndex === CHAPTERS.length - 1 ? 'opacity-20' : 'hover:text-[#EAD9B8]'}`}
           aria-label="Next Section"
         >
           <ChevronDown className="w-4 h-4" />
@@ -409,7 +409,7 @@ const StoryStage = () => {
             exit={{ opacity: 0, y: 10 }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 pointer-events-none"
           >
-            <span className="text-[9px] font-mono text-[#8E9793] tracking-[0.25em] uppercase">
+            <span className="text-[9px] font-mono text-[#C8B99F] tracking-[0.25em] uppercase">
               SCROLL TO ADVANCE STORY
             </span>
             <motion.div

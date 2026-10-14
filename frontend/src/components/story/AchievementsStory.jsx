@@ -34,11 +34,11 @@ const AchievementsStory = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3"
           >
-            <div className="h-px w-10 bg-[#1e6f5c]/40" />
-            <span className="text-xs font-mono text-[#10b981] tracking-widest uppercase font-bold">
+            <div className="h-px w-10 bg-[#8E8170]/40" />
+            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
               08 / ACHIEVEMENTS & RECOGNITION
             </span>
-            <div className="h-px w-10 bg-[#1e6f5c]/40" />
+            <div className="h-px w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
@@ -46,7 +46,7 @@ const AchievementsStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-3xl text-[#F4F5F4] tracking-tight uppercase"
+            className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase"
           >
             HONORS & COMMUNITY
           </motion.h2>
@@ -56,7 +56,7 @@ const AchievementsStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#8E9793] text-xs sm:text-sm font-light max-w-xl leading-relaxed"
+            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-xl leading-relaxed"
           >
             Verified competition milestones and student leadership initiatives during undergraduate and post-graduate studies.
           </motion.p>
@@ -73,22 +73,22 @@ const AchievementsStory = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-80px" }}
                 transition={{ duration: 0.6, delay: idx * 0.12 }}
-                className="p-2.5 sm:p-6 rounded-xl sm:rounded-2xl bg-[#0d1310] border border-white/10 hover:border-[#1e6f5c]/60 transition-all duration-300 shadow-xl space-y-2 sm:space-y-4 group relative overflow-hidden"
+                className="p-2.5 sm:p-6 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/60 transition-all duration-300 shadow-xl space-y-2 sm:space-y-4 group relative overflow-hidden"
               >
                 <div className="flex items-center justify-between">
-                  <div className="w-6 h-6 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#1e6f5c]/10 border border-[#1e6f5c]/30 flex items-center justify-center text-[#1e6f5c] group-hover:bg-[#1e6f5c] group-hover:text-white transition-all duration-300">
+                  <div className="w-6 h-6 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/[0.04] border border-[#8E8170]/40 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-all duration-300">
                     <IconComponent className="w-3 h-3 sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[7px] sm:text-[10px] font-mono text-[#1e6f5c] font-bold uppercase tracking-wider">
+                  <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider">
                     {item.category}
                   </span>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-[10px] sm:text-lg font-display font-bold text-[#F4F5F4] group-hover:text-[#1e6f5c] transition-colors leading-snug">
+                  <h3 className="text-[10px] sm:text-lg font-display font-bold text-[#EAD9B8] group-hover:text-[#F5EBDD] transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-[8px] sm:text-xs text-[#8E9793] font-light leading-relaxed pt-0.5 sm:pt-1 hidden sm:block">
+                  <p className="text-[8px] sm:text-xs text-[#F5EBDD] font-light leading-relaxed pt-0.5 sm:pt-1 hidden sm:block">
                     {item.description}
                   </p>
                 </div>

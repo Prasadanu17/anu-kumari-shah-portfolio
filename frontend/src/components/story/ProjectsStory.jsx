@@ -42,27 +42,27 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
       transition={{ type: 'spring', stiffness: 220, damping: 25 }}
       className={`absolute top-0 left-0 w-[220px] sm:w-[260px] md:w-[280px] h-[310px] sm:h-[360px] md:h-[380px] cursor-pointer origin-bottom transition-all duration-300 ${
         isActive
-          ? 'ring-2 ring-[#10b981] rounded-2xl shadow-[0_12px_36px_rgba(16,185,129,0.35)]'
+          ? 'ring-2 ring-[#EAD9B8] rounded-2xl shadow-[0_12px_36px_rgba(234,217,184,0.18)]'
           : 'hover:shadow-[0_10px_25px_rgba(0,0,0,0.6)]'
       }`}
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div
-        className={`w-full h-full rounded-2xl overflow-hidden border bg-[#0d1310] shadow-2xl flex flex-col justify-between transition-colors group p-4 sm:p-5 ${
-          isActive ? 'border-[#10b981]' : 'border-white/15 hover:border-[#10b981]/70'
+        className={`w-full h-full rounded-2xl overflow-hidden border bg-[#171717] shadow-2xl flex flex-col justify-between transition-colors group p-4 sm:p-5 ${
+          isActive ? 'border-[#EAD9B8]' : 'border-[#8E8170]/30 hover:border-[#EAD9B8]/50'
         }`}
       >
         {/* Top telemetry bar */}
         <div>
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-            <span className="text-[9px] sm:text-[10px] font-mono text-[#8E9793] uppercase tracking-[0.2em]">
+          <div className="flex items-center justify-between pb-3 border-b border-[#8E8170]/20">
+            <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.2em]">
               PROJECT 0{index + 1}
             </span>
             <div className="flex items-center gap-1.5">
               {isActive && (
                 <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]" />
               )}
-              <span className="text-[9px] sm:text-[10px] font-mono text-[#10b981] uppercase tracking-[0.2em] font-bold">
+              <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.2em] font-bold">
                 {isAi ? 'AI/ML' : 'WEB'}
               </span>
             </div>
@@ -70,41 +70,41 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
 
           {/* Icon Header & Tag */}
           <div className="flex items-center gap-2.5 mt-4">
-            <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#10b981] group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:scale-105 transition-transform">
               {isAi ? <Cpu className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
             </div>
             {project.tag && (
-              <span className="text-[8px] sm:text-[9px] font-mono px-2 py-0.5 rounded bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/30 uppercase font-semibold">
+              <span className="text-[8px] sm:text-[9px] font-mono px-2 py-0.5 rounded bg-[#EAD9B8]/10 text-[#EAD9B8] border border-[#8E8170]/30 uppercase font-semibold">
                 {project.tag}
               </span>
             )}
           </div>
 
           {/* Project Title */}
-          <h3 className="text-sm sm:text-base font-display font-bold text-[#F4F5F4] leading-snug mt-3 line-clamp-2 group-hover:text-[#10b981] transition-colors">
+          <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-snug mt-3 line-clamp-2 group-hover:text-[#F5EBDD] transition-colors">
             {project.title}
           </h3>
 
           {/* Short Description */}
-          <p className="text-[11px] sm:text-xs text-[#8E9793] mt-2 line-clamp-3 leading-relaxed font-light">
+          <p className="text-[11px] sm:text-xs text-[#C8B99F] mt-2 line-clamp-3 leading-relaxed font-light">
             {project.description}
           </p>
         </div>
 
         {/* Technologies & View Action footer */}
-        <div className="pt-3 border-t border-white/[0.08] space-y-2.5">
+        <div className="pt-3 border-t border-[#8E8170]/20 space-y-2.5">
           <div className="flex flex-wrap gap-1 sm:gap-1.5 overflow-hidden">
             {project.technologies.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className="text-[8px] sm:text-[9px] font-mono text-[#8E9793] uppercase tracking-wider bg-white/[0.04] px-1.5 py-0.5 rounded border border-white/[0.05]"
+                className="text-[8px] sm:text-[9px] font-mono text-[#C8B99F] uppercase tracking-wider bg-white/[0.04] px-1.5 py-0.5 rounded border border-[#8E8170]/20"
               >
                 {t}
               </span>
             ))}
           </div>
 
-          <div className="flex items-center justify-between text-[10px] font-mono text-[#10b981] font-semibold pt-1">
+          <div className="flex items-center justify-between text-[10px] font-mono text-[#EAD9B8] font-semibold pt-1">
             <span className="tracking-wider">INSPECT SPECS</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </div>
@@ -127,17 +127,17 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       animate={{ opacity: 1, x: 0, scale: 1 }}
       exit={{ opacity: 0, x: -30, scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-      className="relative w-full bg-[#0d1310]/95 backdrop-blur-xl border border-[#1e6f5c]/50 rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden flex flex-col max-h-[75vh] overflow-y-auto"
+      className="relative w-full bg-[#171717] backdrop-blur-xl border border-[#8E8170]/40 rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden flex flex-col max-h-[75vh] overflow-y-auto"
       style={{ transformStyle: 'preserve-3d' }}
     >
       {/* Top Header: Badge & Close Button */}
       <div className="flex items-center justify-between gap-3">
-        <span className="inline-block text-[11px] font-mono uppercase bg-[#1e6f5c]/20 border border-[#1e6f5c]/40 text-[#10b981] px-3 py-1 rounded-md font-bold tracking-wider">
+        <span className="inline-block text-[11px] font-mono uppercase bg-[#EAD9B8]/10 border border-[#8E8170]/40 text-[#EAD9B8] px-3 py-1 rounded-md font-bold tracking-wider">
           {project.category === 'ai_ml' || project.category === 'ml' ? 'AI / ML' : 'FULL-STACK WEB'}
         </span>
         <button
           onClick={onClose}
-          className="p-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-[#8E9793] hover:text-[#F4F5F4] transition-all border border-white/10"
+          className="p-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-[#C8B99F] hover:text-[#EAD9B8] transition-all border border-[#8E8170]/30"
           aria-label="Close project detail"
         >
           <X className="w-4 h-4" />
@@ -145,7 +145,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-xl sm:text-2xl font-extrabold text-[#F4F5F4] mt-4 font-display leading-tight tracking-tight">
+      <h3 className="text-xl sm:text-2xl font-extrabold text-[#EAD9B8] mt-4 font-display leading-tight tracking-tight">
         {project.title}
       </h3>
 
@@ -154,7 +154,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
         {project.technologies.map((t) => (
           <span
             key={t}
-            className="px-2.5 py-1 text-[10px] font-mono rounded-md bg-white/[0.04] border border-white/[0.08] text-[#F4F5F4] uppercase tracking-wider font-semibold"
+            className="px-2.5 py-1 text-[10px] font-mono rounded-md bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] uppercase tracking-wider font-semibold"
           >
             {t}
           </span>
@@ -162,20 +162,20 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       </div>
 
       {/* Description */}
-      <p className="text-[#8E9793] text-xs sm:text-sm mt-3 leading-relaxed font-light">
+      <p className="text-[#F5EBDD] text-xs sm:text-sm mt-3 leading-relaxed font-light">
         {project.description}
       </p>
 
       {/* Key Architectural Features */}
       {project.keyFeatures && project.keyFeatures.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-white/[0.08]">
-          <span className="text-[10px] font-mono uppercase text-[#10b981] tracking-wider font-bold block mb-2">
+        <div className="mt-4 pt-4 border-t border-[#8E8170]/20">
+          <span className="text-[10px] font-mono uppercase text-[#EAD9B8] tracking-wider font-bold block mb-2">
             KEY ARCHITECTURAL HIGHLIGHTS
           </span>
           <ul className="space-y-1.5">
             {project.keyFeatures.map((feat, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-xs text-[#C5CCC8]">
-                <span className="text-[#10b981] mt-0.5">•</span>
+              <li key={idx} className="flex items-start gap-2 text-xs text-[#F5EBDD]">
+                <span className="text-[#EAD9B8] mt-0.5">•</span>
                 <span>{feat}</span>
               </li>
             ))}
@@ -184,15 +184,15 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       )}
 
       {/* Action CTA Buttons */}
-      <div className="flex flex-wrap items-center gap-3 mt-5 pt-4 border-t border-white/[0.08]">
+      <div className="flex flex-wrap items-center gap-3 mt-5 pt-4 border-t border-[#8E8170]/20">
         {project.github && (
           <a
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/15 bg-white/[0.04] text-[#F4F5F4] text-xs font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#8E8170]/40 bg-white/[0.04] text-[#F5EBDD] text-xs font-mono font-bold tracking-wider uppercase hover:bg-white/[0.08] hover:border-[#EAD9B8] transition-all"
           >
-            <Github className="w-4 h-4 text-[#10b981]" />
+            <Github className="w-4 h-4 text-[#EAD9B8]" />
             <span>SOURCE CODE</span>
           </a>
         )}
@@ -201,7 +201,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
             href={project.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1e6f5c] hover:bg-[#28967d] text-white text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-lg shadow-[#1e6f5c]/25"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#EAD9B8] hover:bg-[#d6c39f] text-[#171717] text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-lg"
           >
             <span>LAUNCH DEMO</span>
             <ExternalLink className="w-4 h-4" />
@@ -248,26 +248,26 @@ const ProjectsStory = () => {
         >
           <div className="space-y-1">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-[#10b981] tracking-widest uppercase font-bold">
+              <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
                 05 / PROJECTS
               </span>
-              <div className="h-px w-12 bg-[#1e6f5c]/40" />
+              <div className="h-px w-12 bg-[#8E8170]/40" />
             </div>
-            <h2 className="font-display font-extrabold text-xl sm:text-4xl text-[#F4F5F4] tracking-tight uppercase">
+            <h2 className="font-display font-extrabold text-xl sm:text-4xl text-[#EAD9B8] tracking-tight uppercase">
               SELECTED WORK
             </h2>
           </div>
 
           <Link
             to="/projects"
-            className="self-start sm:self-auto px-4 py-2 rounded-lg bg-[#1e6f5c] text-white text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#28967d] transition-colors shadow-md"
+            className="self-start sm:self-auto px-4 py-2 rounded-lg bg-[#1c1c1c] border border-[#8E8170]/40 text-[#EAD9B8] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#EAD9B8] hover:text-[#171717] transition-all shadow-md"
           >
             INDEX (ALL WORK) →
           </Link>
         </motion.div>
 
         {/* HINT TEXT */}
-        <p className="text-center text-[9px] sm:text-xs font-mono text-[#8E9793] tracking-[0.18em] sm:tracking-[0.35em] uppercase pointer-events-none transition-opacity duration-300">
+        <p className="text-center text-[9px] sm:text-xs font-mono text-[#C8B99F] tracking-[0.18em] sm:tracking-[0.35em] uppercase pointer-events-none transition-opacity duration-300">
           {currentProject
             ? "CLICK ON ANY CARD TO INSPECT // CLOSE TO RETURN TO CENTER"
             : "CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL SPECS"}
@@ -331,8 +331,8 @@ const ProjectsStory = () => {
                   onClick={() => setActiveProjIndex(idx)}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     activeProjIndex === idx
-                      ? 'w-6 bg-[#10b981]'
-                      : 'w-2 bg-white/20 hover:bg-white/40'
+                      ? 'w-6 bg-[#EAD9B8]'
+                      : 'w-2 bg-white/20 hover:bg-[#EAD9B8]/40'
                   }`}
                   aria-label={`Select project ${p.title}`}
                 />

@@ -27,14 +27,24 @@ export default {
           50: '#161d19',
           100: '#111815',
           200: '#0d1310',
-          300: '#0a0e0c',
-          400: '#070908',
         },
+        // Sophisticated Charcoal & Warm Cream Editorial Palette
+        charcoal: {
+          DEFAULT: '#171717',
+          50: '#262626',
+          100: '#1f1f1f',
+          200: '#1c1c1c',
+          300: '#171717',
+        },
+        cream: '#EAD9B8',        // Primary headings
+        ivory: '#F5EBDD',        // Body text & primary content
+        beige: '#C8B99F',        // Secondary text, dates, metadata
+        borderMuted: '#8E8170',  // Subtle borders & dividers
         titanium: {
-          border: 'rgba(255, 255, 255, 0.08)',
-          borderHover: 'rgba(30, 111, 92, 0.35)',
-          muted: '#8E9793',
-          faint: '#4E5753',
+          border: 'rgba(142, 129, 112, 0.2)',
+          borderHover: 'rgba(234, 217, 184, 0.4)',
+          muted: '#C8B99F',
+          faint: '#8E8170',
         },
         neural: {
           emerald: '#1e6f5c',
@@ -43,18 +53,18 @@ export default {
           amber: '#e9a84e',
         },
         // Semantic tokens
-        bgWarm: '#070908',
-        bgWarmSec: '#0d1310',
-        cardWarm: '#111815',
-        textCharcoal: '#F4F5F4',
-        textMutedWarm: '#8E9793',
-        borderWarm: 'rgba(255, 255, 255, 0.08)',
-        accentSlate: '#1e6f5c',
-        accentSubtle: '#8E9793',
-        bgDark: '#070908',
-        bgDarkSec: '#0d1310',
-        textLight: '#F4F5F4',
-        textMuted: '#8E9793',
+        bgWarm: '#171717',
+        bgWarmSec: '#1c1c1c',
+        cardWarm: '#1f1f1f',
+        textCharcoal: '#EAD9B8',
+        textMutedWarm: '#C8B99F',
+        borderWarm: 'rgba(142, 129, 112, 0.25)',
+        accentSlate: '#8E8170',
+        accentSubtle: '#C8B99F',
+        bgDark: '#171717',
+        bgDarkSec: '#1c1c1c',
+        textLight: '#EAD9B8',
+        textMuted: '#C8B99F',
         accentEmerald: '#1e6f5c',
         emeraldHighlight: '#28967d',
         primary: {

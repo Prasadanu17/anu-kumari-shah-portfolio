@@ -112,11 +112,11 @@ const SkillsStory = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3"
           >
-            <div className="h-px w-10 bg-[#1e6f5c]/40" />
-            <span className="text-xs font-mono text-[#10b981] tracking-widest uppercase font-bold">
+            <div className="h-px w-10 bg-[#8E8170]/40" />
+            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
               04 / TECHNICAL SKILLS
             </span>
-            <div className="h-px w-10 bg-[#1e6f5c]/40" />
+            <div className="h-px w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
@@ -124,7 +124,7 @@ const SkillsStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-3xl text-[#F4F5F4] tracking-tight uppercase"
+            className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase"
           >
             TECHNICAL CAPABILITIES
           </motion.h2>
@@ -134,7 +134,7 @@ const SkillsStory = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#8E9793] text-xs sm:text-sm font-light max-w-lg leading-relaxed"
+            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-lg leading-relaxed"
           >
             Categorized technical stack focused on building intelligent algorithms, scalable frontend architectures, and reliable database backends.
           </motion.p>
@@ -150,24 +150,24 @@ const SkillsStory = () => {
               viewport={{ once: false, margin: "-80px" }}
               transition={{ duration: 0.6, delay: idx * 0.15 }}
             >
-              <TiltCard className="p-2.5 sm:p-7 rounded-xl sm:rounded-2xl bg-[#0d1310] border border-white/10 hover:border-[#1e6f5c]/60 transition-all duration-300 shadow-xl flex flex-col justify-between space-y-2 sm:space-y-6 group h-full">
+              <TiltCard className="p-2.5 sm:p-7 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/25 hover:border-[#EAD9B8]/40 transition-all duration-300 shadow-xl flex flex-col justify-between space-y-2 sm:space-y-6 group h-full">
                 <div className="space-y-1.5 sm:space-y-3" style={{ transform: 'translateZ(30px)' }}>
                   <div className="flex items-center justify-between">
-                    <span className="text-[7px] sm:text-[10px] font-mono text-[#1e6f5c] font-bold uppercase tracking-wider sm:tracking-widest">
+                    <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider sm:tracking-widest">
                       CATEGORY 0{idx + 1}
                     </span>
-                    <span className="w-2 h-2 rounded-full bg-[#1e6f5c]/60 group-hover:bg-[#1e6f5c] transition-colors" />
+                    <span className="w-2 h-2 rounded-full bg-[#EAD9B8]/60 group-hover:bg-[#EAD9B8] transition-colors" />
                   </div>
 
-                  <h3 className="text-xs sm:text-xl font-display font-bold text-[#F4F5F4] tracking-tight group-hover:text-[#1e6f5c] transition-colors">
+                  <h3 className="text-xs sm:text-xl font-display font-bold text-[#EAD9B8] tracking-tight group-hover:text-[#F5EBDD] transition-colors">
                     {cat.category}
                   </h3>
 
-                  <p className="text-[8px] sm:text-xs font-mono text-[#8E9793] font-light hidden sm:block">
+                  <p className="text-[8px] sm:text-xs font-mono text-[#C8B99F] font-light hidden sm:block">
                     {cat.description}
                   </p>
 
-                  <div className="h-px w-full bg-white/[0.06] pt-2" />
+                  <div className="h-px w-full bg-[#8E8170]/20 pt-2" />
                 </div>
 
                 {/* Skill Items - Now with Original Brand Colors */}

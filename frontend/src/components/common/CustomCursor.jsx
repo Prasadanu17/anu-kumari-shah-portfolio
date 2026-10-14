@@ -47,16 +47,16 @@ export default function CustomCursor() {
 
     const onEnter = () => {
       outer.style.transform = 'translate(-50%, -50%) scale(1.6)';
-      outer.style.borderColor = '#38BDF8';
+      outer.style.borderColor = '#EAD9B8';
       inner.style.transform = 'translate(-50%, -50%) scale(0.5)';
-      inner.style.backgroundColor = '#38BDF8';
+      inner.style.backgroundColor = '#EAD9B8';
     };
 
     const onLeave = () => {
       outer.style.transform = 'translate(-50%, -50%) scale(1)';
-      outer.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+      outer.style.borderColor = 'rgba(234, 217, 184, 0.4)';
       inner.style.transform = 'translate(-50%, -50%) scale(1)';
-      inner.style.backgroundColor = '#38BDF8';
+      inner.style.backgroundColor = '#EAD9B8';
     };
 
     interactive.forEach(el => {
@@ -82,7 +82,7 @@ export default function CustomCursor() {
         id="cursor"
         className="
           hidden md:block fixed w-6 h-6 
-          border-2 border-primary-500 rounded-full 
+          border-2 border-[#EAD9B8] rounded-full 
           pointer-events-none z-[9999] 
           mix-blend-difference transition-transform duration-150
         "
@@ -94,7 +94,7 @@ export default function CustomCursor() {
         id="cursor-dot"
         className="
           hidden md:block fixed w-2 h-2 
-          bg-primary-500 rounded-full 
+          bg-[#EAD9B8] rounded-full 
           pointer-events-none z-[10000] 
           mix-blend-difference transition-transform duration-100
         "

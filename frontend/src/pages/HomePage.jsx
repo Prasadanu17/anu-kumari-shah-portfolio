@@ -8,7 +8,7 @@ import BackToTop from '../components/common/BackToTop';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-[#07080B] text-[#F4F4F6] relative overflow-x-hidden selection:bg-[#38BDF8] selection:text-[#07080B]">
+    <div className="min-h-screen bg-[#171717] text-[#F5EBDD] relative overflow-x-hidden selection:bg-[#EAD9B8] selection:text-[#171717]">
 
       {/* ── PERSISTENT 3D BACKGROUND ──────────────────────────────────────
           Mounted once at page level. Fixed to the viewport.

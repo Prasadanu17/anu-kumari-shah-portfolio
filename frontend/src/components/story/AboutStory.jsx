@@ -72,13 +72,13 @@ const AboutStory = () => {
   return (
     <section
       id="about"
-      className="min-h-0 sm:min-h-screen relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 py-2 sm:py-4 w-full"
     >
       {/* Grid Layout: Left Text & Education, Right 3D Photo */}
       <div className="grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center gap-3 sm:gap-[clamp(2rem,5vw,4rem)]">
 
         {/* ================= LEFT COLUMN: NARRATIVE CONTENT ================= */}
-        <div className="space-y-3 sm:space-y-7">
+        <div className="space-y-2.5 sm:space-y-4">
 
           {/* Section Marker */}
           <motion.div
@@ -88,17 +88,17 @@ const AboutStory = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3"
           >
-            <span className="text-[9px] sm:text-xs font-mono text-[#1e6f5c] tracking-wider sm:tracking-widest uppercase font-bold">01 / ABOUT ME</span>
+            <span className="text-[9px] sm:text-xs font-mono text-[#10b981] tracking-wider sm:tracking-widest uppercase font-bold">02 / ABOUT ME</span>
             <div className="h-px w-12 bg-[#1e6f5c]/40" />
           </motion.div>
 
           {/* Title */}
           <motion.h2
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display font-extrabold text-[#F4F5F4] text-lg sm:text-5xl tracking-tight uppercase"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-display font-extrabold text-[#F4F5F4] text-lg sm:text-3xl tracking-tight uppercase"
           >
             ENGINEERING INTELLIGENT SYSTEMS
           </motion.h2>

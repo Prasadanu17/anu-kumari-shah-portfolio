@@ -8,14 +8,14 @@ const ResumeSection = () => {
   return (
     <section
       id="resume"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-5xl mx-auto z-10 py-16"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-5xl mx-auto z-10 py-2 sm:py-4 w-full"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-        className="p-4 sm:p-12 rounded-2xl sm:rounded-3xl bg-[#0d1310] border-2 border-[#1e6f5c]/50 shadow-2xl relative overflow-hidden text-center space-y-3 sm:space-y-6"
+        transition={{ duration: 0.5 }}
+        className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0d1310] border-2 border-[#1e6f5c]/50 shadow-2xl relative overflow-hidden text-center space-y-3 sm:space-y-5"
       >
         {/* Background ambient glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#1e6f5c]/15 blur-[100px] rounded-full pointer-events-none" />

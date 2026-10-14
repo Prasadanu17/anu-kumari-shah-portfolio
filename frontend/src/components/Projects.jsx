@@ -32,19 +32,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
         {project.category === "ai_ml" || project.category === "ml" ? "AI / ML" : "FULL-STACK WEB"}
       </span>
 
-      {/* Project Image */}
-      {project.image && (
-        <div className="mt-5 rounded-xl overflow-hidden border border-white/10 bg-black aspect-video">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.src = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80';
-            }}
-          />
-        </div>
-      )}
+
 
       {/* Title */}
       <h3 className="text-xl sm:text-3xl font-bold text-[#F4F5F4] mt-5 font-display leading-tight">
@@ -138,33 +126,35 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
       }`}
       style={{ transformStyle: "preserve-3d" }}
     >
-      <div className={`w-full h-full rounded-2xl overflow-hidden border bg-[#0d1310] shadow-2xl flex flex-col transition-colors ${
+      <div className={`w-full h-full rounded-2xl overflow-hidden border bg-[#0d1310] shadow-2xl flex flex-col justify-between p-4 sm:p-5 transition-colors ${
         isActive ? 'border-[#10b981]' : 'border-white/15 hover:border-[#10b981]/70'
       }`}>
-        <div className="relative flex-1 overflow-hidden bg-black">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.src = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80';
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0d1310] via-transparent to-transparent" />
-        </div>
-
-        <div className="p-4 bg-[#0d1310] border-t border-white/[0.06]">
-          <div className="flex items-center justify-between mb-2">
+        <div>
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] mb-3">
             <span className="text-[9px] font-mono text-[#8E9793] uppercase tracking-wider">
               PROJECT 0{index + 1}
             </span>
-            <span className="text-[9px] font-mono text-[#1e6f5c] uppercase font-bold">
+            <span className="text-[9px] font-mono text-[#10b981] uppercase font-bold">
               {project.category === "ai_ml" || project.category === "ml" ? "AI/ML" : "WEB"}
             </span>
           </div>
-          <h3 className="text-xs sm:text-base font-bold text-[#F4F5F4] leading-tight line-clamp-2">
+          <h3 className="text-sm sm:text-base font-bold text-[#F4F5F4] leading-tight line-clamp-2">
             {project.title}
           </h3>
+          <p className="text-[11px] sm:text-xs text-[#8E9793] mt-2 line-clamp-3 leading-relaxed font-light">
+            {project.description}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/[0.08]">
+          {project.technologies.slice(0, 3).map((t) => (
+            <span
+              key={t}
+              className="text-[8px] sm:text-[9px] font-mono text-[#8E9793] uppercase bg-white/[0.04] px-1.5 py-0.5 rounded"
+            >
+              {t}
+            </span>
+          ))}
         </div>
       </div>
     </motion.div>

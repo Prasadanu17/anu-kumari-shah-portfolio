@@ -98,13 +98,13 @@ const SkillsStory = () => {
   return (
     <section
       id="skills"
-      className="relative flex flex-col px-4 sm:px-6 lg:px-12 pt-24 sm:pt-28 pb-12 sm:pb-20 max-w-7xl mx-auto z-10"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-2 sm:py-4 max-w-7xl mx-auto z-10 w-full"
       style={{ perspective: '1000px' }} // Essential for 3D effect
     >
-      <div className="w-full space-y-12">
+      <div className="w-full space-y-4 sm:space-y-6">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-4">
+        <div className="flex flex-col items-center text-center space-y-1.5 sm:space-y-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -113,28 +113,28 @@ const SkillsStory = () => {
             className="flex items-center gap-3"
           >
             <div className="h-px w-10 bg-[#1e6f5c]/40" />
-            <span className="text-xs font-mono text-[#1e6f5c] tracking-widest uppercase font-bold">
-              03 / WHAT I BUILD
+            <span className="text-xs font-mono text-[#10b981] tracking-widest uppercase font-bold">
+              04 / TECHNICAL SKILLS
             </span>
             <div className="h-px w-10 bg-[#1e6f5c]/40" />
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-5xl text-[#F4F5F4] tracking-tight uppercase"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-display font-extrabold text-xl sm:text-3xl text-[#F4F5F4] tracking-tight uppercase"
           >
             TECHNICAL CAPABILITIES
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-[#8E9793] text-[10px] sm:text-base font-light max-w-xl leading-relaxed"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-[#8E9793] text-xs sm:text-sm font-light max-w-lg leading-relaxed"
           >
             Categorized technical stack focused on building intelligent algorithms, scalable frontend architectures, and reliable database backends.
           </motion.p>

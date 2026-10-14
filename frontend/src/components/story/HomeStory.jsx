@@ -43,7 +43,7 @@ const HomeStory = () => {
       id="home"
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative flex flex-col justify-start sm:justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 pt-24 sm:pt-28 pb-8 sm:pb-16 overflow-hidden sm:min-h-screen"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto z-10 py-2 sm:py-4 w-full"
       style={{ perspective: 1200 }}
     >
       <div className="w-full grid grid-cols-[3fr_2fr] sm:grid-cols-[7fr_5fr] items-center relative z-10 gap-3 sm:gap-[clamp(1.5rem,4vw,3rem)]">

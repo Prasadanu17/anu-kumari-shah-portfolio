@@ -10,12 +10,12 @@ const ExperienceStory = () => {
   return (
     <section
       id="experience"
-      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-24 sm:pt-28 pb-12 sm:pb-20"
+      className="relative flex flex-col justify-center px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 py-4 sm:py-6 w-full min-h-[calc(100vh-6rem)]"
     >
-      <div className="space-y-12">
+      <div className="space-y-6 sm:space-y-8">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-4 mb-2 sm:mb-6">
+        <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3 mb-2 sm:mb-4">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}

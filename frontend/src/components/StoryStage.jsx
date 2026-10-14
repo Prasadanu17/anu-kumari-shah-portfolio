@@ -28,7 +28,7 @@ const CHAPTERS = [
   { id: 'certifications', number: '07', title: 'CERTIFICATIONS', label: 'Credentials',    Component: CertificationsStory },
   { id: 'achievements',   number: '08', title: 'ACHIEVEMENTS',   label: 'Honors & Wins',  Component: AchievementsStory },
   { id: 'resume',         number: '09', title: 'RESUME',         label: 'CV Overview',    Component: ResumeSection },
-  { id: 'contact',        number: '10', title: 'CONTACT',        label: 'Connect & Hire', Component: ContactStory, hasFooter: true },
+  { id: 'contact',        number: '10', title: 'CONTACT',        label: 'Connect & Hire', Component: ContactStory },
 ];
 
 const StoryStage = () => {
@@ -37,7 +37,7 @@ const StoryStage = () => {
   const [direction, setDirection] = useState(1);
   const [showScrollHint, setShowScrollHint] = useState(true);
 
-  const isCoolingDownRef = useRef(false);
+  const lastScrollTimeRef = useRef(0);
   const contentScrollRef = useRef(null);
   const touchStartY = useRef(0);
 
@@ -71,49 +71,88 @@ const StoryStage = () => {
 
   const goToChapter = (newIndex) => {
     if (newIndex < 0 || newIndex >= CHAPTERS.length || newIndex === currentChapterIndex) return;
-    setDirection(newIndex > currentChapterIndex ? 1 : -1);
+    const isForward = newIndex > currentChapterIndex;
+    setDirection(isForward ? 1 : -1);
     setCurrentChapterIndex(newIndex);
     const targetId = CHAPTERS[newIndex].id;
     setActiveSection(targetId);
     window.history.replaceState(null, '', `#${targetId}`);
 
-    // Reset content scroll to top
+    // Set scroll position cleanly on chapter switch
     if (contentScrollRef.current) {
-      contentScrollRef.current.scrollTop = 0;
+      if (isForward) {
+        contentScrollRef.current.scrollTop = 0;
+      } else {
+        // If returning backwards to a section with overflow, start near bottom so user scrolls up
+        requestAnimationFrame(() => {
+          if (contentScrollRef.current) {
+            const max = contentScrollRef.current.scrollHeight - contentScrollRef.current.clientHeight;
+            contentScrollRef.current.scrollTop = max > 50 ? max - 20 : 0;
+          }
+        });
+      }
     }
   };
 
-  // Scroll wheel handler with smart inner-content overflow detection
+  // Robust wheel handler: scrolls through section content if it has overflow, then advances to next chapter
   useEffect(() => {
     const handleWheel = (e) => {
-      if (isCoolingDownRef.current) return;
+      // Normalize delta across all devices
+      let normalizedDelta = e.deltaY;
+      if (e.deltaMode === 1) {
+        normalizedDelta *= 33;
+      } else if (e.deltaMode === 2) {
+        normalizedDelta *= window.innerHeight;
+      }
+
+      // Filter micro-movements
+      if (Math.abs(normalizedDelta) < 14) return;
 
       const el = contentScrollRef.current;
-      const isAtBottom = el ? el.scrollHeight - el.scrollTop <= el.clientHeight + 10 : true;
-      const isAtTop = el ? el.scrollTop <= 10 : true;
+      const maxScroll = el ? el.scrollHeight - el.clientHeight : 0;
+      const hasOverflow = maxScroll > 50;
 
-      if (e.deltaY > 25) {
-        // Scrolling down
-        if (isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
-          isCoolingDownRef.current = true;
-          goToChapter(currentChapterIndex + 1);
-          setTimeout(() => {
-            isCoolingDownRef.current = false;
-          }, 650);
+      const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 35 : true);
+      const isAtTop = !hasOverflow || (el ? el.scrollTop <= 35 : true);
+
+      const now = Date.now();
+
+      if (normalizedDelta > 0) {
+        // Scrolling DOWN
+        if (hasOverflow && !isAtBottom) {
+          // Still scrolling inside the section: if wheel target wasn't the scroll container, scroll it
+          if (el && !el.contains(e.target)) {
+            el.scrollBy({ top: normalizedDelta, behavior: 'auto' });
+          }
+          return;
         }
-      } else if (e.deltaY < -25) {
-        // Scrolling up
+
+        // Reached bottom of section: debounce before chapter jump
+        if (now - lastScrollTimeRef.current < 350) return;
+        if (isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
+          lastScrollTimeRef.current = now;
+          goToChapter(currentChapterIndex + 1);
+        }
+      } else if (normalizedDelta < 0) {
+        // Scrolling UP
+        if (hasOverflow && !isAtTop) {
+          // Still scrolling up inside the section
+          if (el && !el.contains(e.target)) {
+            el.scrollBy({ top: normalizedDelta, behavior: 'auto' });
+          }
+          return;
+        }
+
+        // Reached top of section: debounce before chapter jump
+        if (now - lastScrollTimeRef.current < 350) return;
         if (isAtTop && currentChapterIndex > 0) {
-          isCoolingDownRef.current = true;
+          lastScrollTimeRef.current = now;
           goToChapter(currentChapterIndex - 1);
-          setTimeout(() => {
-            isCoolingDownRef.current = false;
-          }, 650);
         }
       }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
   }, [currentChapterIndex]);
 
@@ -123,42 +162,45 @@ const StoryStage = () => {
   };
 
   const handleTouchEnd = (e) => {
-    if (isCoolingDownRef.current) return;
+    const now = Date.now();
+    if (now - lastScrollTimeRef.current < 350) return;
+
     const touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY.current - touchEndY;
 
-    const el = contentScrollRef.current;
-    const isAtBottom = el ? el.scrollHeight - el.scrollTop <= el.clientHeight + 15 : true;
-    const isAtTop = el ? el.scrollTop <= 15 : true;
+    if (Math.abs(diff) < 30) return;
 
-    if (diff > 50 && isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
-      isCoolingDownRef.current = true;
+    const el = contentScrollRef.current;
+    const maxScroll = el ? el.scrollHeight - el.clientHeight : 0;
+    const hasOverflow = maxScroll > 50;
+
+    const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 40 : true);
+    const isAtTop = !hasOverflow || (el ? el.scrollTop <= 40 : true);
+
+    if (diff > 0 && isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
+      lastScrollTimeRef.current = now;
       goToChapter(currentChapterIndex + 1);
-      setTimeout(() => {
-        isCoolingDownRef.current = false;
-      }, 650);
-    } else if (diff < -50 && isAtTop && currentChapterIndex > 0) {
-      isCoolingDownRef.current = true;
+    } else if (diff < 0 && isAtTop && currentChapterIndex > 0) {
+      lastScrollTimeRef.current = now;
       goToChapter(currentChapterIndex - 1);
-      setTimeout(() => {
-        isCoolingDownRef.current = false;
-      }, 650);
     }
   };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
+      const el = contentScrollRef.current;
+      const maxScroll = el ? el.scrollHeight - el.clientHeight : 0;
+      const hasOverflow = maxScroll > 50;
+      const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 40 : true);
+      const isAtTop = !hasOverflow || (el ? el.scrollTop <= 40 : true);
+
       if (['ArrowDown', 'PageDown'].includes(e.key)) {
-        const el = contentScrollRef.current;
-        const isAtBottom = el ? el.scrollHeight - el.scrollTop <= el.clientHeight + 10 : true;
         if (isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
           e.preventDefault();
           goToChapter(currentChapterIndex + 1);
         }
       } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
-        const el = contentScrollRef.current;
-        const isAtTop = el ? el.scrollTop <= 10 : true;
         if (isAtTop && currentChapterIndex > 0) {
           e.preventDefault();
           goToChapter(currentChapterIndex - 1);
@@ -192,32 +234,29 @@ const StoryStage = () => {
   const currentChapter = CHAPTERS[currentChapterIndex];
   const CurrentComponent = currentChapter.Component;
 
-  // Cinematic Storytelling Slide Animation Variants
+  // Cinematic Storytelling Slide Animation Variants (Fast, silky-smooth & GPU friendly)
   const storyVariants = {
     enter: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? 40 : -40,
-      scale: 0.98,
-      filter: 'blur(4px)',
+      y: dir > 0 ? 30 : -30,
+      scale: 0.99,
     }),
     center: {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: 'blur(0px)',
       transition: {
-        duration: 0.55,
-        ease: [0.16, 1, 0.3, 1], // easeOutExpo
+        duration: 0.38,
+        ease: [0.22, 1, 0.36, 1], // easeOutCubic
       },
     },
     exit: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? -40 : 40,
-      scale: 0.98,
-      filter: 'blur(4px)',
+      y: dir > 0 ? -30 : 30,
+      scale: 0.99,
       transition: {
-        duration: 0.4,
-        ease: [0.16, 1, 0.3, 1],
+        duration: 0.25,
+        ease: [0.22, 1, 0.36, 1],
       },
     }),
   };
@@ -234,8 +273,7 @@ const StoryStage = () => {
           ========================================================================= */}
       <div
         ref={contentScrollRef}
-        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-20 sm:pt-24 pb-8"
-        style={{ scrollBehavior: 'smooth' }}
+        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-14 sm:pt-16 pb-2"
       >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -245,16 +283,14 @@ const StoryStage = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            className="w-full min-h-[calc(100vh-8rem)] flex flex-col justify-center"
+            className={`w-full min-h-full flex flex-col ${
+              currentChapter.id === 'journey' ? 'justify-start' : 'justify-center'
+            } py-1 sm:py-2`}
           >
-            <CurrentComponent />
-
-            {/* Seamless Footer presentation on finale chapter */}
-            {currentChapter.hasFooter && (
-              <div className="mt-12">
-                <Footer />
-              </div>
-            )}
+            <CurrentComponent
+              onNextChapter={() => goToChapter(currentChapterIndex + 1)}
+              onPrevChapter={() => goToChapter(currentChapterIndex - 1)}
+            />
           </motion.div>
         </AnimatePresence>
       </div>

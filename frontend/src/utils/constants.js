@@ -150,16 +150,16 @@ export const projects = [
     category: "ai_ml",
     isProminent: true,
     tag: "FEATURED ML PROJECT",
-    description: "An interactive machine learning system designed to assess cardiovascular disease risk based on clinical health metrics with predictive modeling and real-time Streamlit visualization.",
-    technologies: ["Python", "Streamlit", "scikit-learn", "Pandas", "NumPy", "EDA"],
+    description: "An intelligent healthcare application that predicts the likelihood of cardiovascular disease using Machine Learning algorithms and Streamlit for real-time risk assessment.",
+    technologies: ["Python", "Streamlit", "Scikit-learn", "Pandas", "NumPy"],
     image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
     demo: "https://lnkd.in/gcDfsetc",
     github: "https://lnkd.in/g5We5FXK",
     keyFeatures: [
-      "Clinical metric preprocessing & data scaling",
-      "Machine learning disease classification model",
-      "Real-time health risk probability breakdown",
-      "Streamlit application interface"
+      "Interactive web application",
+      "User-friendly healthcare interface",
+      "Real-time prediction system",
+      "Machine Learning based analysis"
     ]
   },
   {

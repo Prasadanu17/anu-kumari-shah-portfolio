@@ -283,31 +283,5 @@ export default function Hero3DCanvas() {
     };
   }, []);
 
-  return (
-    <div className={`absolute inset-0 pointer-events-none z-0 overflow-hidden transition-opacity duration-700 ${isMobile ? 'opacity-45' : 'opacity-60'}`}>
-      <Canvas
-        camera={{ position: [0, 0, 6.2], fov: 45 }}
-        style={{ background: 'transparent' }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      >
-        {/* Soft, restrained lighting focused on emerald visual brand identity */}
-        <ambientLight intensity={0.45} />
-        <directionalLight position={[8, 8, 5]} intensity={0.9} color="#f4f5f4" />
-        <pointLight position={[-6, -6, -4]} intensity={0.6} color="#1e6f5c" />
-        <pointLight position={[6, -4, 4]} intensity={0.4} color="#28967d" />
-
-        <ParallaxCamera
-          mouse={mouse}
-          scrollInfo={scrollInfo}
-          isMobile={isMobile}
-          prefersReducedMotion={prefersReducedMotion}
-        />
-        <NeuralManifold
-          scrollInfo={scrollInfo}
-          isMobile={isMobile}
-          prefersReducedMotion={prefersReducedMotion}
-        />
-      </Canvas>
-    </div>
-  );
+  return null;
 }

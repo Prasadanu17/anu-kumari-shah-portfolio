@@ -1,27 +1,11 @@
 import React from 'react';
 import CustomCursor from '../components/common/CustomCursor';
-import Hero3DCanvas from '../components/Hero3DCanvas';
 import Navbar from '../components/Navbar';
 import StoryStage from '../components/StoryStage';
-import Footer from '../components/Footer';
-import BackToTop from '../components/common/BackToTop';
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#171717] text-[#F5EBDD] relative overflow-x-hidden selection:bg-[#EAD9B8] selection:text-[#171717]">
-
-      {/* ── PERSISTENT 3D BACKGROUND ──────────────────────────────────────
-          Mounted once at page level. Fixed to the viewport.
-          Never re-mounts or resets between sections.
-          Hero3DCanvas remains untouched as visual foundation.
-      ──────────────────────────────────────────────────────────────────── */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{ zIndex: 0 }}
-        aria-hidden="true"
-      >
-        <Hero3DCanvas />
-      </div>
 
       {/* ── INTERACTIVE OVERLAY & NAVIGATION ── */}
       <CustomCursor />

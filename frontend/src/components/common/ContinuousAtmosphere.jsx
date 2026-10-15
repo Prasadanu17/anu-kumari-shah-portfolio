@@ -1,12 +1,6 @@
-import React from 'react';
-import Hero3DCanvas from '../Hero3DCanvas';
-
-/* ─── Master Continuous Atmosphere Component ─── */
 export default function ContinuousAtmosphere() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* 3D Canvas Canvas World */}
-      <Hero3DCanvas />
 
       {/* Atmospheric Ambient Lighting Gradients — Emerald Brand Colors (#1e6f5c) */}
       <div

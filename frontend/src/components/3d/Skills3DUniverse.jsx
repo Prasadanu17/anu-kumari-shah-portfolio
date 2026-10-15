@@ -25,9 +25,21 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
   const tokenRefs = useRef({});
   const physicsState = useRef([]);
   const groupPos = useRef({ x: 0, y: 0 });
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, clientX: 0, clientY: 0, vx: 0, vy: 0 });
+  const mouseRef = useRef({
+    x: 0,
+    y: 0,
+    targetX: 0,
+    targetY: 0,
+    clientX: typeof window !== 'undefined' ? window.innerWidth * 0.5 : 600,
+    clientY: typeof window !== 'undefined' ? window.innerHeight * 0.5 : 400,
+    hasMoved: false,
+    vx: 0,
+    vy: 0,
+  });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [hoveredSkillId, setHoveredSkillId] = useState(null);
+
+  const isSkillsSection = currentChapterId === 'skills';
 
   // Consume portfolio context for cross-component interactivity
   const { hoveredCategory, selectedSkill, setSelectedSkill, setActiveSection } = usePortfolio();
@@ -105,24 +117,28 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
 
   // Global mouse / touch movement listener with velocity tracking
   useEffect(() => {
-    let lastX = 0;
-    let lastY = 0;
+    let lastX = typeof window !== 'undefined' ? window.innerWidth * 0.5 : 600;
+    let lastY = typeof window !== 'undefined' ? window.innerHeight * 0.5 : 400;
     let lastTime = performance.now();
 
     const handlePointerMove = (e) => {
-      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
-      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY) ?? 0;
+      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+      if (clientX === undefined || clientY === undefined) return;
 
       const now = performance.now();
       const dt = Math.max(1, now - lastTime);
-      mouseRef.current.vx = (clientX - lastX) / dt;
-      mouseRef.current.vy = (clientY - lastY) / dt;
+      const instantVx = (clientX - lastX) / dt;
+      const instantVy = (clientY - lastY) / dt;
+      mouseRef.current.vx = mouseRef.current.vx * 0.65 + instantVx * 0.35;
+      mouseRef.current.vy = mouseRef.current.vy * 0.65 + instantVy * 0.35;
       lastX = clientX;
       lastY = clientY;
       lastTime = now;
 
       mouseRef.current.clientX = clientX;
       mouseRef.current.clientY = clientY;
+      mouseRef.current.hasMoved = true;
 
       const w = window.innerWidth || 1;
       const h = window.innerHeight || 1;
@@ -248,34 +264,46 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       }
 
       // ── Every Other Section (Home, About, Journey, Projects, Experience, Certifications, Contact, etc.) ──
-      // Dynamic 3D constellation group that travels in the direction where the cursor goes!
-      const isHero = currentChapterId === 'home';
+      // Dynamic 3D constellation that follows directly wherever the cursor goes!
       const total = totalSkills;
       const goldenAngle = 2.39996;
-      const clusterRadius = isMobile ? 100 : (isHero ? 165 : 155);
+      // Fluid, compact satellite constellation around the cursor pointer
+      const clusterRadius = isMobile ? 65 : 98;
       const norm = skillIndex / Math.max(1, total - 1);
-      const innerClearance = isMobile ? 26 : 36;
-      const r = skillIndex === 0 ? 0 : innerClearance + Math.sqrt(norm) * (clusterRadius - innerClearance);
-      const theta = skillIndex * goldenAngle + (time * 0.08);
+      const innerClearance = isMobile ? 24 : 34; // Keeps immediate cursor arrow clear
+      const r = innerClearance + Math.sqrt(norm) * (clusterRadius - innerClearance);
+      const orbitSpeed = 0.42;
+      const theta = skillIndex * goldenAngle + (time * orbitSpeed);
 
-      const relX = Math.cos(theta) * r * 1.18;
-      const relY = Math.sin(theta) * r * 0.92;
-      const relZ = Math.sin(skillIndex * 1.7 + time * 0.2) * (isMobile ? 26 : 42);
+      // Orbital position relative to cursor center
+      const relX = Math.cos(theta) * r * 1.15;
+      const relY = Math.sin(theta) * r * 0.88;
+      const relZ = Math.sin(skillIndex * 1.7 + time * 0.7) * (isMobile ? 22 : 38);
 
-      // Depth parallax based on individual 3D depth
-      const depthFactor = (relZ + 50) / 100;
-      const parallaxX = mouse.x * 32 * depthFactor;
-      const parallaxY = mouse.y * 26 * depthFactor;
+      // Directional kinetic lag / comet trail behind cursor motion vector
+      const lagRatio = (skillIndex / Math.max(1, total - 1));
+      const vx = mouseRef.current.vx || 0;
+      const vy = mouseRef.current.vy || 0;
+      const vxClamped = Math.max(-55, Math.min(55, vx * 18));
+      const vyClamped = Math.max(-55, Math.min(55, vy * 18));
+      const trailX = -vxClamped * lagRatio;
+      const trailY = -vyClamped * lagRatio;
+
+      // Dynamic 3D banking and tilt towards cursor movement direction
+      const tiltX = -Math.max(-35, Math.min(35, vy * 24)) - (relY / clusterRadius) * 16;
+      const tiltY = Math.max(-35, Math.min(35, vx * 24)) + (relX / clusterRadius) * 16;
+      const tiltZ = Math.max(-28, Math.min(28, vx * 14));
 
       return {
-        x: groupPos.current.x + relX + parallaxX,
-        y: groupPos.current.y + relY + parallaxY,
+        x: groupPos.current.x + relX + trailX,
+        y: groupPos.current.y + relY + trailY,
         z: relZ,
-        scale: isHero ? 0.98 : 0.90,
-        opacity: isHero ? 0.96 : 0.90,
+        scale: isMobile ? 0.76 : 0.90,
+        opacity: 0.94,
         isDocked: false,
-        tiltX: -mouse.y * 24 * depthFactor,
-        tiltY: mouse.x * 26 * depthFactor,
+        tiltX,
+        tiltY,
+        tiltZ,
       };
     };
 
@@ -289,7 +317,7 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       groupPos.current = { x: w * 0.5, y: h * 0.5 };
 
       physicsState.current = activeSkills.map((skill, index) => {
-        // Start near center on first mount to let them slowly glide out
+        // Start near center on first mount to let them smoothly glide out
         const initX = w * 0.5 + (Math.random() - 0.5) * 60;
         const initY = h * 0.35 + (Math.random() - 0.5) * 60;
 
@@ -315,19 +343,18 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       const w = window.innerWidth || 1200;
       const h = window.innerHeight || 800;
       const totalSkills = activeSkills.length;
-      const isSkillsSection = currentChapterId === 'skills';
       const isHero = currentChapterId === 'home';
 
       // Fast, responsive mouse tracking
       const mouse = mouseRef.current;
-      mouse.x += (mouse.targetX - mouse.x) * 0.16;
-      mouse.y += (mouse.targetY - mouse.y) * 0.16;
+      mouse.x += (mouse.targetX - mouse.x) * 0.18;
+      mouse.y += (mouse.targetY - mouse.y) * 0.18;
 
       // Subtle breathing pulse on section transition
       let transitionPulseY = 0;
       if (transitionRef.current.active) {
         const elapsed = timestamp - transitionRef.current.startTime;
-        const dur = 1600; // ms: slow, gentle chapter transition flight
+        const dur = 1400; // ms: slow, gentle chapter transition flight
         if (elapsed < dur) {
           const progress = elapsed / dur;
           transitionPulseY = Math.sin(progress * Math.PI) * transitionRef.current.direction * 30;
@@ -341,24 +368,15 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       let targetGroupY = h * 0.5;
 
       if (!isSkillsSection) {
-        // Universal viewport center
-        const baseX = w * 0.50;
-        const baseY = isHero ? h * 0.48 : h * 0.50;
+        // WHEREVER CURSOR GOES, LOGOS GO THERE DIRECTLY
+        const curCursorX = mouse.hasMoved ? mouse.clientX : w * 0.5;
+        const curCursorY = mouse.hasMoved ? mouse.clientY : (isHero ? h * 0.46 : h * 0.5);
 
-        // Broad dynamic travel range: whole group sweeps in the direction of the cursor across all non-skills sections
-        const travelRangeX = isMobile ? w * 0.35 : w * 0.42;
-        const travelRangeY = isMobile ? h * 0.30 : h * 0.38;
+        targetGroupX = curCursorX;
+        targetGroupY = curCursorY;
 
-        // Dynamic velocity-assisted momentum
-        const velLeadX = Math.max(-40, Math.min(40, (mouseRef.current.vx || 0) * 14));
-        const velLeadY = Math.max(-40, Math.min(40, (mouseRef.current.vy || 0) * 14));
-
-        // Group follows cursor direction in every section apart from skills!
-        targetGroupX = baseX + mouse.x * travelRangeX + velLeadX;
-        targetGroupY = baseY + mouse.y * travelRangeY + velLeadY;
-
-        // Group spring follow with fluid responsiveness
-        const groupSpring = 0.14;
+        // Group spring follow with fluid, immediate responsiveness
+        const groupSpring = 0.22;
         groupPos.current.x += (targetGroupX - groupPos.current.x) * groupSpring;
         groupPos.current.y += (targetGroupY - groupPos.current.y) * groupSpring;
       }
@@ -382,25 +400,24 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
         const destY = target.y + floatY;
         const destZ = target.z;
 
-        // ── Interpolation: slow in skills section, snappy cursor-following in other sections ──
-        const lerpFactor = isSkillsSection ? 0.038 : 0.14;
+        // ── Interpolation: slow in skills section, swift following cursor in other sections ──
+        const lerpFactor = isSkillsSection ? 0.038 : (0.13 + ((index * 7) % 9) * 0.012);
         item.currentX += (destX - item.currentX) * lerpFactor;
         item.currentY += (destY - item.currentY) * lerpFactor;
         item.currentZ += (destZ - item.currentZ) * lerpFactor;
 
-        const scaleLerp = isSkillsSection ? 0.04 : 0.09;
+        const scaleLerp = isSkillsSection ? 0.04 : 0.12;
         item.currentScale += (target.scale - item.currentScale) * scaleLerp;
         item.currentOpacity += (target.opacity - item.currentOpacity) * scaleLerp;
 
         // Dynamic 3D banking tilt into cursor movement direction
-        const depthFactor = (destZ + 50) / 100;
-        const tiltX = target.tiltX ?? (-mouse.y * 20 * depthFactor);
-        const tiltY = target.tiltY ?? (mouse.x * 22 * depthFactor);
-        const tiltZ = !isSkillsSection ? (targetGroupX - groupPos.current.x) * 0.12 : ((destX - item.currentX) * 0.02);
+        const tiltX = target.tiltX ?? 0;
+        const tiltY = target.tiltY ?? 0;
+        const tiltZ = target.tiltZ ?? (!isSkillsSection ? (targetGroupX - groupPos.current.x) * 0.08 : ((destX - item.currentX) * 0.02));
 
-        item.currentRotX += (tiltX - item.currentRotX) * 0.09;
-        item.currentRotY += (tiltY - item.currentRotY) * 0.09;
-        item.currentRotZ += (tiltZ - item.currentRotZ) * 0.09;
+        item.currentRotX += (tiltX - item.currentRotX) * 0.12;
+        item.currentRotY += (tiltY - item.currentRotY) * 0.12;
+        item.currentRotZ += (tiltZ - item.currentRotZ) * 0.12;
 
         // GPU accelerated 3D transform
         node.style.transform = `translate3d(${item.currentX.toFixed(1)}px, ${item.currentY.toFixed(1)}px, ${item.currentZ.toFixed(1)}px) rotateX(${item.currentRotX.toFixed(1)}deg) rotateY(${item.currentRotY.toFixed(1)}deg) rotateZ(${item.currentRotZ.toFixed(1)}deg) scale(${item.currentScale.toFixed(2)})`;
@@ -447,7 +464,11 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
               }}
               onMouseEnter={() => setHoveredSkillId(skill.id)}
               onMouseLeave={() => setHoveredSkillId(null)}
-              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-auto cursor-pointer group select-none"
+              className={`absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 will-change-transform select-none ${
+                isSkillsSection
+                  ? 'pointer-events-auto cursor-pointer group'
+                  : 'pointer-events-none'
+              }`}
               style={{
                 transform: `translate3d(50vw, 50vh, 0px)`,
                 opacity: 0,

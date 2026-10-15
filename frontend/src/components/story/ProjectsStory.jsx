@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Github, X, Terminal, Cpu, Globe, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github, X, Terminal, Cpu, Globe, ArrowRight, Brain } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
 /* ==========================================================================
@@ -217,6 +217,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
    ========================================================================== */
 const ProjectsStory = () => {
   const { projects } = usePortfolio();
+  const [activeCategory, setActiveCategory] = useState('all'); // 'all' | 'ai_ml' | 'web'
   const [activeProjIndex, setActiveProjIndex] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -229,7 +230,16 @@ const ProjectsStory = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const featuredList = projects.slice(0, 6);
+  const featuredList = useMemo(() => {
+    if (activeCategory === 'ai_ml') {
+      return projects.filter((p) => p.category === 'ai_ml' || p.category === 'ml');
+    }
+    if (activeCategory === 'web') {
+      return projects.filter((p) => p.category === 'web' || p.category === 'fullstack');
+    }
+    return projects.slice(0, 6);
+  }, [projects, activeCategory]);
+
   const currentProject = activeProjIndex !== null ? featuredList[activeProjIndex] : null;
 
   return (
@@ -258,20 +268,74 @@ const ProjectsStory = () => {
             </h2>
           </div>
 
-          <Link
-            to="/projects"
-            className="self-start sm:self-auto px-4 py-2 rounded-lg bg-[#1c1c1c] border border-[#8E8170]/40 text-[#EAD9B8] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#EAD9B8] hover:text-[#171717] transition-all shadow-md"
-          >
-            INDEX (ALL WORK) →
-          </Link>
+          {/* Category Tabs: AI Projects & Full-Stack Websites */}
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <button
+              onClick={() => {
+                setActiveCategory('all');
+                setActiveProjIndex(null);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border ${
+                activeCategory === 'all'
+                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
+                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+              }`}
+            >
+              ALL (6)
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveCategory('ai_ml');
+                setActiveProjIndex(null);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
+                activeCategory === 'ai_ml'
+                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
+                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+              }`}
+            >
+              <Brain className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>AI PROJECTS (3)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveCategory('web');
+                setActiveProjIndex(null);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
+                activeCategory === 'web'
+                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
+                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+              }`}
+            >
+              <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>FULL-STACK WEB (3)</span>
+            </button>
+
+            <Link
+              to="/projects"
+              className="px-3 py-1.5 rounded-lg bg-[#1c1c1c] border border-[#8E8170]/40 text-[#EAD9B8] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#EAD9B8] hover:text-[#171717] transition-all shadow-md ml-0 sm:ml-1"
+            >
+              INDEX (ALL WORK) →
+            </Link>
+          </div>
         </motion.div>
 
-        {/* HINT TEXT */}
-        <p className="text-center text-[9px] sm:text-xs font-mono text-[#C8B99F] tracking-[0.18em] sm:tracking-[0.35em] uppercase pointer-events-none transition-opacity duration-300">
-          {currentProject
-            ? "CLICK ON ANY CARD TO INSPECT // CLOSE TO RETURN TO CENTER"
-            : "CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL SPECS"}
-        </p>
+        {/* SUBTITLE & HINT TEXT */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[9.5px] sm:text-xs font-mono text-[#C8B99F] pb-1 border-b border-white/[0.05]">
+          <span className="text-[#EAD9B8] uppercase tracking-wider font-semibold flex items-center gap-1.5">
+            {activeCategory === 'ai_ml' && '01 // ARTIFICIAL INTELLIGENCE & MACHINE LEARNING PROJECTS'}
+            {activeCategory === 'web' && '02 // FULL-STACK WEBSITE ENGINEERING PROJECTS'}
+            {activeCategory === 'all' && 'SELECTED ARCHIVE // AI & FULL-STACK SYSTEMS'}
+          </span>
+          <span className="tracking-[0.16em] uppercase text-[#8E8170] text-[9px] sm:text-[10px]">
+            {currentProject
+              ? 'CLICK ON ANY CARD TO INSPECT // CLOSE TO RETURN TO CENTER'
+              : 'CLICK ON ANY CARD TO SLIDE OPEN TECHNICAL SPECS'}
+          </span>
+        </div>
 
         {/* ================= MAIN STAGE ================= */}
         <div

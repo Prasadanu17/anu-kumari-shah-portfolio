@@ -16,7 +16,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Play,
-  Pause
+  Pause,
+  ExternalLink
 } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
@@ -29,10 +30,11 @@ const ROLE_CERTIFICATES = {
     organization: 'Groveus Informatics Pvt. Ltd.',
     period: 'March 2025 – May 2025',
     category: 'Professional Industry Internship',
-    credentialId: 'GROV-INT-2025-042',
+    credentialId: 'GRC20297',
     skills: ['PHP', 'CodeIgniter', 'MySQL', 'Full-Stack Web Dev', 'Bootstrap', 'AJAX'],
     description:
       'Successfully completed intensive full-stack web engineering internship, architecting commercial client platforms, server-side CodeIgniter MVC backends, and responsive database systems.',
+    image: '/assets/certificate/groveus_certificate.jpeg',
   },
 };
 
@@ -239,6 +241,7 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
    ========================================================================== */
 const ExperienceCertificateModal = ({ certData, onClose }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   if (!certData) return null;
 
@@ -288,52 +291,82 @@ const ExperienceCertificateModal = ({ certData, onClose }) => {
           </div>
         </div>
 
-        <div className="border border-[#8E8170]/40 rounded-xl p-4 sm:p-5 bg-[#1b1b1b]/95 text-center space-y-3 shadow-inner relative overflow-hidden">
-          <div className="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-[#EAD9B8]/60" />
-          <div className="absolute top-2 right-2 w-2 h-2 border-t-2 border-r-2 border-[#EAD9B8]/60" />
-          <div className="absolute bottom-2 left-2 w-2 h-2 border-b-2 border-l-2 border-[#EAD9B8]/60" />
-          <div className="absolute bottom-2 right-2 w-2 h-2 border-b-2 border-r-2 border-[#EAD9B8]/60" />
+        {certData.image && !imageError ? (
+          <div className="space-y-3">
+            <div className="relative rounded-xl overflow-hidden border-2 border-[#EAD9B8]/70 shadow-[0_15px_40px_rgba(0,0,0,0.85)] bg-black/40 group">
+              <img
+                src={certData.image}
+                alt={certData.title}
+                onError={() => setImageError(true)}
+                className="w-full max-h-[360px] object-contain mx-auto rounded-lg transition-transform duration-300 group-hover:scale-[1.01]"
+              />
+              <div className="absolute top-2 right-2 flex items-center gap-2">
+                <a
+                  href={certData.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded-lg bg-[#171717]/85 border border-[#EAD9B8]/50 text-[10px] font-mono text-[#EAD9B8] hover:bg-[#EAD9B8] hover:text-[#171717] transition-all flex items-center gap-1 shadow-lg backdrop-blur-md"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  <span>FULL VIEW</span>
+                </a>
+              </div>
+            </div>
 
-          <div className="flex items-center justify-between text-[9px] font-mono text-[#C8B99F] border-b border-[#8E8170]/20 pb-2">
-            <span className="text-[#EAD9B8] font-bold uppercase">{certData.category}</span>
-            <span className="text-emerald-400 flex items-center gap-1 font-semibold">
-              <CheckCircle2 className="w-3 h-3" /> VERIFIED CREDENTIAL
-            </span>
+            <div className="p-2.5 rounded-xl bg-black/30 border border-[#8E8170]/30 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
+              <span>ISSUER: <strong className="text-[#EAD9B8]">{certData.organization}</strong></span>
+              <span>ID: <strong className="text-[#F5EBDD]">{certData.credentialId}</strong></span>
+              <span>PERIOD: <strong className="text-[#EAD9B8]">{certData.period}</strong></span>
+            </div>
           </div>
+        ) : (
+          <div className="border border-[#8E8170]/40 rounded-xl p-4 sm:p-5 bg-[#1b1b1b]/95 text-center space-y-3 shadow-inner relative overflow-hidden">
+            <div className="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-[#EAD9B8]/60" />
+            <div className="absolute top-2 right-2 w-2 h-2 border-t-2 border-r-2 border-[#EAD9B8]/60" />
+            <div className="absolute bottom-2 left-2 w-2 h-2 border-b-2 border-l-2 border-[#EAD9B8]/60" />
+            <div className="absolute bottom-2 right-2 w-2 h-2 border-b-2 border-r-2 border-[#EAD9B8]/60" />
 
-          <div className="space-y-1 py-1">
-            <span className="text-[8.5px] font-mono text-[#C8B99F] tracking-widest uppercase block">
-              THIS IS PROUDLY CONFERRED TO
-            </span>
-            <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[#EAD9B8] uppercase tracking-wide">
-              ANU KUMARI SHAH
-            </h2>
-            <div className="w-16 h-0.5 bg-[#8E8170]/40 mx-auto rounded-full" />
-            <p className="text-xs sm:text-sm font-display font-semibold text-[#F5EBDD] pt-1">
-              For distinguished engineering contributions at {certData.organization}
-            </p>
-          </div>
-
-          <p className="text-[10.5px] sm:text-[11px] text-[#C8B99F] font-light leading-relaxed bg-black/25 p-2.5 rounded-lg border border-white/5">
-            {certData.description}
-          </p>
-
-          <div className="pt-2 border-t border-[#8E8170]/20 flex flex-wrap gap-1 justify-center">
-            {certData.skills.map((skill) => (
-              <span
-                key={skill}
-                className="px-2 py-0.5 rounded text-[8.5px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD]"
-              >
-                {skill}
+            <div className="flex items-center justify-between text-[9px] font-mono text-[#C8B99F] border-b border-[#8E8170]/20 pb-2">
+              <span className="text-[#EAD9B8] font-bold uppercase">{certData.category}</span>
+              <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                <CheckCircle2 className="w-3 h-3" /> VERIFIED CREDENTIAL
               </span>
-            ))}
-          </div>
+            </div>
 
-          <div className="pt-2 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
-            <span>ISSUER: <strong className="text-[#EAD9B8]">{certData.organization}</strong></span>
-            <span>PERIOD: <strong className="text-[#F5EBDD]">{certData.period}</strong></span>
+            <div className="space-y-1 py-1">
+              <span className="text-[8.5px] font-mono text-[#C8B99F] tracking-widest uppercase block">
+                THIS IS PROUDLY CONFERRED TO
+              </span>
+              <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[#EAD9B8] uppercase tracking-wide">
+                ANU KUMARI SHAH
+              </h2>
+              <div className="w-16 h-0.5 bg-[#8E8170]/40 mx-auto rounded-full" />
+              <p className="text-xs sm:text-sm font-display font-semibold text-[#F5EBDD] pt-1">
+                For distinguished engineering contributions at {certData.organization}
+              </p>
+            </div>
+
+            <p className="text-[10.5px] sm:text-[11px] text-[#C8B99F] font-light leading-relaxed bg-black/25 p-2.5 rounded-lg border border-white/5">
+              {certData.description}
+            </p>
+
+            <div className="pt-2 border-t border-[#8E8170]/20 flex flex-wrap gap-1 justify-center">
+              {certData.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="px-2 py-0.5 rounded text-[8.5px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD]"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            <div className="pt-2 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
+              <span>ISSUER: <strong className="text-[#EAD9B8]">{certData.organization}</strong></span>
+              <span>PERIOD: <strong className="text-[#F5EBDD]">{certData.period}</strong></span>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex items-center justify-between gap-2 pt-1 flex-wrap">
           <button

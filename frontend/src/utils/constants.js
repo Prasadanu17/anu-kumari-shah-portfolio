@@ -273,10 +273,23 @@ export const certifications = [
     organization: "Groveus Informatics Pvt. Ltd.",
     date: "2025",
     category: "Professional Internship",
-    credentialId: "GROV-INT-2025-042",
+    credentialId: "GRC20297",
     skills: ["PHP", "CodeIgniter", "MySQL", "Full-Stack Web Dev"],
     description: "Successfully built production web applications, client backend APIs, and dynamic database schemas during intensive industry internship.",
+    image: "/assets/certificate/groveus_certificate.jpeg",
     link: null
+  },
+  {
+    id: 5,
+    title: "Runner-Up — Coding Challenge (Transformation-2025)",
+    organization: "SRM University Sikkim (School of IT)",
+    date: "Nov 2025",
+    category: "Competitive Coding",
+    credentialId: "SRM-TRANS-2025-RUNNERUP",
+    skills: ["Competitive Coding", "Algorithms", "Problem Solving", "Rapid Development"],
+    description: "Awarded Runner-Up in the Coding Challenge at Transformation 2025 Tech Fest organized by the School of Information Technology, SRM University Sikkim.",
+    image: "/assets/certificate/runner-up.jpeg",
+    link: "/assets/certificate/runner-up.pdf"
   }
 ];
 

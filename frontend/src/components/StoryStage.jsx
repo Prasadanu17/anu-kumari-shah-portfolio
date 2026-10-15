@@ -307,77 +307,7 @@ const StoryStage = () => {
         </AnimatePresence>
       </div>
 
-      {/* =========================================================================
-          FLOATING STORYTELLER HUD (Right edge chapter indicator & navigator)
-          ========================================================================= */}
-      <div className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-end gap-3 pointer-events-auto">
-        {/* Active Chapter Badge */}
-        <motion.div
-          key={currentChapter.id}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-2 bg-[#171717]/85 border border-[#8E8170]/40 px-3 py-1.5 rounded-full backdrop-blur-md shadow-xl"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-          <span className="text-[10px] font-mono text-[#EAD9B8] uppercase tracking-widest font-semibold">
-            {currentChapter.number} // {currentChapter.title}
-          </span>
-        </motion.div>
 
-        {/* Up Arrow */}
-        <button
-          onClick={() => goToChapter(currentChapterIndex - 1)}
-          disabled={currentChapterIndex === 0}
-          className={`p-1.5 rounded-lg border transition-all duration-200 ${currentChapterIndex === 0
-              ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
-              : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
-            }`}
-          aria-label="Previous Chapter"
-        >
-          <ChevronUp className="w-3.5 h-3.5" />
-        </button>
-
-        {/* 10 Chapter Progress Dots */}
-        <div className="flex flex-col items-center gap-2 py-2 px-1 bg-[#171717]/60 border border-[#8E8170]/20 rounded-full backdrop-blur-sm">
-          {CHAPTERS.map((chap, idx) => {
-            const isActive = currentChapterIndex === idx;
-            return (
-              <button
-                key={chap.id}
-                onClick={() => goToChapter(idx)}
-                className="group relative flex items-center justify-center p-1"
-                aria-label={`Jump to chapter ${chap.number}: ${chap.title}`}
-              >
-                {/* Floating tooltip */}
-                <span className="absolute right-6 px-2.5 py-1 rounded bg-[#171717] border border-[#8E8170]/40 text-[9px] font-mono uppercase tracking-wider text-[#EAD9B8] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity shadow-lg whitespace-nowrap z-50">
-                  {chap.number} • {chap.title}
-                </span>
-
-                {/* Dot Pip */}
-                <span
-                  className={`block rounded-full transition-all duration-300 ${isActive
-                      ? 'w-2.5 h-2.5 bg-[#EAD9B8] ring-2 ring-[#EAD9B8]/50 shadow-[0_0_10px_#EAD9B8]'
-                      : 'w-1.5 h-1.5 bg-white/20 group-hover:bg-[#EAD9B8]/50'
-                    }`}
-                />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Down Arrow */}
-        <button
-          onClick={() => goToChapter(currentChapterIndex + 1)}
-          disabled={currentChapterIndex === CHAPTERS.length - 1}
-          className={`p-1.5 rounded-lg border transition-all duration-200 ${currentChapterIndex === CHAPTERS.length - 1
-              ? 'opacity-20 border-white/5 cursor-not-allowed text-white/30'
-              : 'border-[#8E8170]/30 bg-[#171717]/70 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F]'
-            }`}
-          aria-label="Next Chapter"
-        >
-          <ChevronDown className="w-3.5 h-3.5" />
-        </button>
-      </div>
 
       {/* =========================================================================
           MOBILE BOTTOM HUD (Story progress pill on small screens)

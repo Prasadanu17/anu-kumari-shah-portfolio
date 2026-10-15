@@ -19,7 +19,8 @@ import {
   Cpu,
   Play,
   Pause,
-  RotateCw
+  RotateCw,
+  Code2
 } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
@@ -50,6 +51,12 @@ const CATEGORY_META = {
     foilGlow: 'rgba(168, 85, 247, 0.22)',
     accent: '#a855f7',
     icon: Layers,
+  },
+  'Competitive Coding': {
+    badge: 'bg-rose-500/10 text-rose-300 border-rose-500/30',
+    foilGlow: 'rgba(244, 63, 94, 0.22)',
+    accent: '#f43f5e',
+    icon: Code2,
   },
 };
 
@@ -316,6 +323,11 @@ export default function CertificationsStory() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [inspectedCert, setInspectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [inspectedCert]);
 
   const total = certifications.length;
   const activeCert = certifications[activeIndex] || certifications[0];
@@ -549,38 +561,79 @@ export default function CertificationsStory() {
                 </div>
               </div>
 
-              {/* Certificate Frame */}
-              <div className="border border-[#8E8170]/40 rounded-xl p-4 sm:p-6 bg-[#1c1c1c]/90 text-center space-y-3">
-                <div className="flex items-center justify-between text-[9px] font-mono text-[#C8B99F] border-b border-[#8E8170]/20 pb-2">
-                  <span className="text-[#EAD9B8] font-bold uppercase">{inspectedCert.category}</span>
-                  <span className="text-emerald-400 flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> VERIFIED
-                  </span>
-                </div>
+              {/* Certificate Display: Visual Document Image or Parchment Fallback */}
+              {inspectedCert.image && !imageError ? (
+                <div className="space-y-3">
+                  <div className="relative rounded-xl overflow-hidden border-2 border-[#EAD9B8]/70 shadow-[0_15px_40px_rgba(0,0,0,0.85)] bg-black/40 group">
+                    <img
+                      src={inspectedCert.image}
+                      alt={inspectedCert.title}
+                      onError={() => setImageError(true)}
+                      className="w-full max-h-[380px] object-contain mx-auto rounded-lg transition-transform duration-300 group-hover:scale-[1.01]"
+                    />
+                    <div className="absolute top-2 right-2 flex items-center gap-2">
+                      <a
+                        href={inspectedCert.image}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2.5 py-1 rounded-lg bg-[#171717]/85 border border-[#EAD9B8]/50 text-[10px] font-mono text-[#EAD9B8] hover:bg-[#EAD9B8] hover:text-[#171717] transition-all flex items-center gap-1 shadow-lg backdrop-blur-md"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>OPEN FULL VIEW</span>
+                      </a>
+                      {inspectedCert.link && (
+                        <a
+                          href={inspectedCert.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1 rounded-lg bg-[#171717]/85 border border-[#EAD9B8]/50 text-[10px] font-mono text-[#EAD9B8] hover:bg-[#EAD9B8] hover:text-[#171717] transition-all flex items-center gap-1 shadow-lg backdrop-blur-md"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          <span>DOCUMENT</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
 
-                <div className="space-y-1.5 py-1">
-                  <span className="text-[9px] font-mono text-[#C8B99F] tracking-widest uppercase block">
-                    RECIPIENT
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[#EAD9B8] uppercase">
-                    ANU KUMARI SHAH
-                  </h2>
-                  <div className="w-16 h-0.5 bg-[#8E8170]/40 mx-auto rounded-full" />
-                  <h4 className="text-xs sm:text-sm font-display font-bold text-[#F5EBDD] pt-1">
-                    {inspectedCert.title}
-                  </h4>
+                  <div className="p-2.5 rounded-xl bg-black/30 border border-[#8E8170]/30 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
+                    <span>ISSUER: <strong className="text-[#EAD9B8]">{inspectedCert.organization}</strong></span>
+                    <span>ID: <strong className="text-[#F5EBDD]">{inspectedCert.credentialId}</strong></span>
+                    <span>DATE: <strong className="text-[#EAD9B8]">{inspectedCert.date}</strong></span>
+                  </div>
                 </div>
+              ) : (
+                <div className="border border-[#8E8170]/40 rounded-xl p-4 sm:p-6 bg-[#1c1c1c]/90 text-center space-y-3">
+                  <div className="flex items-center justify-between text-[9px] font-mono text-[#C8B99F] border-b border-[#8E8170]/20 pb-2">
+                    <span className="text-[#EAD9B8] font-bold uppercase">{inspectedCert.category}</span>
+                    <span className="text-emerald-400 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" /> VERIFIED
+                    </span>
+                  </div>
 
-                <p className="text-[11px] text-[#C8B99F] font-light leading-relaxed bg-black/20 p-2.5 rounded border border-white/5">
-                  {inspectedCert.description}
-                </p>
+                  <div className="space-y-1.5 py-1">
+                    <span className="text-[9px] font-mono text-[#C8B99F] tracking-widest uppercase block">
+                      RECIPIENT
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[#EAD9B8] uppercase">
+                      ANU KUMARI SHAH
+                    </h2>
+                    <div className="w-16 h-0.5 bg-[#8E8170]/40 mx-auto rounded-full" />
+                    <h4 className="text-xs sm:text-sm font-display font-bold text-[#F5EBDD] pt-1">
+                      {inspectedCert.title}
+                    </h4>
+                  </div>
 
-                <div className="pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
-                  <span>ISSUER: <strong className="text-[#EAD9B8]">{inspectedCert.organization}</strong></span>
-                  <span>ID: <strong className="text-[#F5EBDD]">{inspectedCert.credentialId}</strong></span>
-                  <span>DATE: <strong className="text-[#EAD9B8]">{inspectedCert.date}</strong></span>
+                  <p className="text-[11px] text-[#C8B99F] font-light leading-relaxed bg-black/20 p-2.5 rounded border border-white/5">
+                    {inspectedCert.description}
+                  </p>
+
+                  <div className="pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] font-mono text-[#C8B99F] gap-1.5">
+                    <span>ISSUER: <strong className="text-[#EAD9B8]">{inspectedCert.organization}</strong></span>
+                    <span>ID: <strong className="text-[#F5EBDD]">{inspectedCert.credentialId}</strong></span>
+                    <span>DATE: <strong className="text-[#EAD9B8]">{inspectedCert.date}</strong></span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex items-center justify-between pt-1">
                 <span className="text-[9px] font-mono text-[#C8B99F]">

@@ -1,17 +1,23 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { SKILLS_UNIVERSE } from '../../data/skillsUniverseData';
+import { SKILLS_UNIVERSE, SKILL_CATEGORIES } from '../../data/skillsUniverseData';
+import { usePortfolio } from '../../context/PortfolioContext';
+import { X, Sparkles, ExternalLink } from 'lucide-react';
 
 /* ==========================================================================
-   INTERACTIVE 3D SKILL UNIVERSE — DYNAMIC TRANSITION & SECTION POSITIONING
-   1. Section Transitions: When advancing to the next section, logos FIRST disperse
-      and stream forward dynamically in 3D, and THEN converge & come together
-      into their tight, cohesive cluster at the new section's position.
-   2. Modern Professional Positioning:
-      - In Home: Central 3D wireframe corridor.
-      - In About, Journey, Skills, Projects, Contact: Positioned ABOVE the section
-        content in the open upper canopy, so cards and text remain 100% visible.
-   3. Fast, snappy cursor follow in the direction of the mouse.
-   4. Pure brand logos only (no text labels or pills).
+   INTERACTIVE 3D SKILL UNIVERSE — CREATIVE, DYNAMIC & RESPONSIVE CHOREOGRAPHY
+   1. Respective Category Coordinates:
+      - AI/ML logos float above Category 01 on the left.
+      - Full-Stack logos float right above Category 02 in the center.
+      - Databases & Tools logos float above Category 03 on the right.
+   2. Intelligent Category Spotlight:
+      - Hovering on any Category card highlights its 3D constellation with
+        expanded orbital radius, enhanced glow, and gentle forward tilt.
+   3. Interactive Holographic Inspection:
+      - Clicking any 3D logo opens a sleek holographic glass modal with skill
+        details, category info, and deep-link actions.
+   4. Slow, Cinematic Zero-Gravity Physics:
+      - Silky-smooth lerping (factor 0.038) allows logos to drift peacefully
+        into place with continuous subtle orbital levitation.
    ========================================================================== */
 
 export default function Skills3DUniverse({ currentChapterId = 'home', direction = 1, isMobile = false }) {
@@ -21,18 +27,60 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
   const groupPos = useRef({ x: 0, y: 0 });
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, clientX: 0, clientY: 0, vx: 0, vy: 0 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [hoveredSkillId, setHoveredSkillId] = useState(null);
 
-  // Transition tracking: "first it should (disperse in 3D), then come together"
+  // Consume portfolio context for cross-component interactivity
+  const { hoveredCategory, selectedSkill, setSelectedSkill, setActiveSection } = usePortfolio();
+
+  // Transition tracking for slow, graceful section travel
   const prevChapterRef = useRef(currentChapterId);
   const transitionRef = useRef({ active: false, startTime: 0, direction: 1 });
 
   // Filter skills for mobile vs desktop for optimal 60fps performance
   const activeSkills = useMemo(() => {
     if (isMobile) {
-      return SKILLS_UNIVERSE.filter((_, idx) => idx % 2 === 0);
+      return SKILLS_UNIVERSE.filter((skill, idx) => {
+        if (skill.category === SKILL_CATEGORIES.AIML) return idx % 2 === 0;
+        if (skill.category === SKILL_CATEGORIES.FULLSTACK) return idx % 2 === 0;
+        return true;
+      });
     }
     return SKILLS_UNIVERSE;
   }, [isMobile]);
+
+  // Group active skills by category and map intra-category metadata
+  const categorizedSkills = useMemo(() => {
+    const catMap = {
+      [SKILL_CATEGORIES.AIML]: [],
+      [SKILL_CATEGORIES.FULLSTACK]: [],
+      [SKILL_CATEGORIES.DBTOOLS]: [],
+    };
+
+    activeSkills.forEach((skill) => {
+      const cat = skill.category || SKILL_CATEGORIES.AIML;
+      if (!catMap[cat]) catMap[cat] = [];
+      catMap[cat].push(skill);
+    });
+
+    const meta = {};
+    Object.entries(catMap).forEach(([catKey, skills]) => {
+      let catIndex = 1;
+      if (catKey === SKILL_CATEGORIES.AIML) catIndex = 0;
+      else if (catKey === SKILL_CATEGORIES.FULLSTACK) catIndex = 1;
+      else if (catKey === SKILL_CATEGORIES.DBTOOLS) catIndex = 2;
+
+      skills.forEach((skill, itemIndex) => {
+        meta[skill.id] = {
+          catIndex,
+          catName: catKey,
+          itemIndexInCat: itemIndex,
+          totalInCat: skills.length,
+        };
+      });
+    });
+
+    return meta;
+  }, [activeSkills]);
 
   // Reduced motion preference listener
   useEffect(() => {
@@ -43,7 +91,7 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // Detect section chapter changes and trigger transition burst
+  // Detect section chapter changes and trigger slow transition flight
   useEffect(() => {
     if (prevChapterRef.current !== currentChapterId) {
       transitionRef.current = {
@@ -54,54 +102,6 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       prevChapterRef.current = currentChapterId;
     }
   }, [currentChapterId, direction]);
-
-  // Initialize group layout and relative offsets for each logo in the group
-  useEffect(() => {
-    const w = window.innerWidth || 1200;
-    const h = window.innerHeight || 800;
-
-    const baseX = isMobile ? w * 0.5 : w * 0.52;
-    const baseY = currentChapterId === 'home' ? h * 0.46 : h * 0.15;
-    groupPos.current = { x: baseX, y: baseY };
-
-    const total = activeSkills.length;
-    const goldenAngle = 2.39996; // ~137.5 degrees
-    const clusterRadius = isMobile ? 95 : 140; // Compact group radius in px
-
-    physicsState.current = activeSkills.map((skill, index) => {
-      // Golden spiral distribution creates a natural, compact 3D orb/cluster
-      const norm = index / Math.max(1, total - 1);
-      const r = index === 0 ? 0 : (isMobile ? 26 : 34) + Math.sqrt(norm) * (clusterRadius - (isMobile ? 26 : 34));
-      const theta = index * goldenAngle;
-
-      const relX = Math.cos(theta) * r * 1.15;
-      const relY = Math.sin(theta) * r * 0.9;
-      const relZ = Math.sin(index * 1.7) * (isMobile ? 25 : 40);
-
-      const initX = baseX + relX;
-      const initY = baseY + relY;
-
-      return {
-        id: skill.id,
-        relX,
-        relY,
-        relZ,
-        currentX: initX,
-        currentY: initY,
-        currentZ: relZ,
-        currentRotX: 0,
-        currentRotY: 0,
-        currentRotZ: 0,
-        currentScale: 1,
-        currentOpacity: 0.95,
-        targetScale: 1,
-        targetOpacity: 0.95,
-        floatSpeed: 0.7 + (index % 4) * 0.25,
-        floatAmp: 4 + (index % 3) * 3,
-        phase: (index * 0.6) % (Math.PI * 2),
-      };
-    });
-  }, [activeSkills, isMobile]);
 
   // Global mouse / touch movement listener with velocity tracking
   useEffect(() => {
@@ -115,12 +115,8 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
 
       const now = performance.now();
       const dt = Math.max(1, now - lastTime);
-      const vx = (clientX - lastX) / dt;
-      const vy = (clientY - lastY) / dt;
-
-      mouseRef.current.vx = vx;
-      mouseRef.current.vy = vy;
-
+      mouseRef.current.vx = (clientX - lastX) / dt;
+      mouseRef.current.vy = (clientY - lastY) / dt;
       lastX = clientX;
       lastY = clientY;
       lastTime = now;
@@ -128,7 +124,6 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
       mouseRef.current.clientX = clientX;
       mouseRef.current.clientY = clientY;
 
-      // Normalized coordinates (-1 to 1) from viewport center
       const w = window.innerWidth || 1;
       const h = window.innerHeight || 1;
       mouseRef.current.targetX = (clientX / w - 0.5) * 2;
@@ -136,10 +131,12 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
     };
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
     window.addEventListener('touchmove', handlePointerMove, { passive: true });
 
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('mousemove', handlePointerMove);
       window.removeEventListener('touchmove', handlePointerMove);
     };
   }, []);
@@ -151,214 +148,261 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
     let animId;
     let startTime = performance.now();
 
+    // Helper to calculate target destination for a skill based on section
+    const computeSkillTarget = (skill, skillIndex, totalSkills, w, h, time) => {
+      const meta = categorizedSkills[skill.id] || { catIndex: 1, catName: '', itemIndexInCat: 0, totalInCat: 1 };
+      const isThisCategoryHovered = hoveredCategory && hoveredCategory === meta.catName;
+      const isOtherCategoryHovered = hoveredCategory && hoveredCategory !== meta.catName;
+      const isThisSkillSelected = selectedSkill && (selectedSkill.id === skill.id || selectedSkill === skill.name || selectedSkill.name === skill.name);
+
+      // ── Chapter 04: SKILLS — Respective Category Badges in the Cards ──
+      if (currentChapterId === 'skills') {
+        const { catIndex, itemIndexInCat, totalInCat } = meta;
+
+        // Query the exact DOM badge element for this skill inside the category cards
+        let targetEl = document.querySelector(`[data-skill-name="${skill.name}"]`);
+        if (!targetEl && skill.aliases) {
+          for (const alias of skill.aliases) {
+            targetEl = document.querySelector(`[data-skill-name="${alias}"]`);
+            if (targetEl) break;
+          }
+        }
+        if (!targetEl) {
+          targetEl = document.querySelector(`[data-skill-name="${skill.id}"]`);
+        }
+
+        // If the badge is found in the DOM, glide directly onto its respective badge slot!
+        if (targetEl) {
+          const rect = targetEl.getBoundingClientRect();
+          const targetX = rect.left + (isMobile ? 14 : 18);
+          const targetY = rect.top + rect.height / 2;
+          const targetZ = isThisSkillSelected ? 45 : (isThisCategoryHovered ? 18 : 8);
+          const targetScale = isThisSkillSelected ? 1.05 : (isThisCategoryHovered ? 0.76 : (isMobile ? 0.58 : 0.66));
+          const targetOpacity = isOtherCategoryHovered ? 0.40 : 1.0;
+
+          return {
+            x: targetX,
+            y: targetY,
+            z: targetZ,
+            scale: targetScale,
+            opacity: targetOpacity,
+            isDocked: true,
+          };
+        }
+
+        if (isMobile) {
+          // Mobile fallback: graceful canopy arch across the top
+          const colCenterX = w * 0.5;
+          const colCenterY = h * 0.12;
+          const angle = (skillIndex / Math.max(1, totalSkills)) * Math.PI * 2;
+          return {
+            x: colCenterX + Math.cos(angle) * 38,
+            y: colCenterY + Math.sin(angle) * 20,
+            z: Math.sin(skillIndex * 1.5) * 20,
+            scale: 0.82,
+            opacity: 0.88,
+          };
+        }
+
+        // Desktop fallback: Align precisely with 3-column category grid
+        const maxContainer = 1280;
+        const padding = w >= 1024 ? 48 : (w >= 640 ? 24 : 16);
+        const containerW = Math.min(w, maxContainer) - padding * 2;
+        const leftOffset = (w - Math.min(w, maxContainer)) / 2 + padding;
+        const colW = containerW / 3;
+        const colCenterX = leftOffset + colW * (catIndex + 0.5);
+
+        const baseCenterY = catIndex === 1 ? h * 0.345 : h * 0.22;
+        const colCenterY = isThisCategoryHovered ? baseCenterY + 12 : baseCenterY;
+
+        const orbitSpeed = 0.12;
+        const angle = (itemIndexInCat / Math.max(1, totalInCat)) * Math.PI * 2 + (catIndex * 0.8) + (time * orbitSpeed);
+        const radiusX = isThisCategoryHovered ? 74 : (catIndex === 1 ? 62 : 60);
+        const radiusY = isThisCategoryHovered ? 26 : (catIndex === 1 ? 16 : 24);
+        const offX = Math.cos(angle) * radiusX;
+        const offY = Math.sin(angle) * radiusY;
+        const offZ = Math.sin(itemIndexInCat * 1.8 + time * 0.3) * (isThisCategoryHovered ? 40 : 26);
+
+        let scale = 0.88;
+        let opacity = 0.95;
+
+        if (isThisSkillSelected) {
+          scale = 1.25;
+          opacity = 1.0;
+        } else if (isThisCategoryHovered) {
+          scale = 1.05;
+          opacity = 1.0;
+        } else if (isOtherCategoryHovered) {
+          scale = 0.75;
+          opacity = 0.35;
+        }
+
+        return {
+          x: colCenterX + offX,
+          y: colCenterY + offY,
+          z: isThisSkillSelected ? offZ + 60 : offZ,
+          scale,
+          opacity,
+          isDocked: false,
+        };
+      }
+
+      // ── Every Other Section (Home, About, Journey, Projects, Experience, Certifications, Contact, etc.) ──
+      // Dynamic 3D constellation group that travels in the direction where the cursor goes!
+      const isHero = currentChapterId === 'home';
+      const total = totalSkills;
+      const goldenAngle = 2.39996;
+      const clusterRadius = isMobile ? 100 : (isHero ? 165 : 155);
+      const norm = skillIndex / Math.max(1, total - 1);
+      const innerClearance = isMobile ? 26 : 36;
+      const r = skillIndex === 0 ? 0 : innerClearance + Math.sqrt(norm) * (clusterRadius - innerClearance);
+      const theta = skillIndex * goldenAngle + (time * 0.08);
+
+      const relX = Math.cos(theta) * r * 1.18;
+      const relY = Math.sin(theta) * r * 0.92;
+      const relZ = Math.sin(skillIndex * 1.7 + time * 0.2) * (isMobile ? 26 : 42);
+
+      // Depth parallax based on individual 3D depth
+      const depthFactor = (relZ + 50) / 100;
+      const parallaxX = mouse.x * 32 * depthFactor;
+      const parallaxY = mouse.y * 26 * depthFactor;
+
+      return {
+        x: groupPos.current.x + relX + parallaxX,
+        y: groupPos.current.y + relY + parallaxY,
+        z: relZ,
+        scale: isHero ? 0.98 : 0.90,
+        opacity: isHero ? 0.96 : 0.90,
+        isDocked: false,
+        tiltX: -mouse.y * 24 * depthFactor,
+        tiltY: mouse.x * 26 * depthFactor,
+      };
+    };
+
+    // Initialize state if empty or changed
+    if (!physicsState.current || physicsState.current.length !== activeSkills.length) {
+      const w = window.innerWidth || 1200;
+      const h = window.innerHeight || 800;
+      const total = activeSkills.length;
+
+      // Initialize group position centered
+      groupPos.current = { x: w * 0.5, y: h * 0.5 };
+
+      physicsState.current = activeSkills.map((skill, index) => {
+        // Start near center on first mount to let them slowly glide out
+        const initX = w * 0.5 + (Math.random() - 0.5) * 60;
+        const initY = h * 0.35 + (Math.random() - 0.5) * 60;
+
+        return {
+          id: skill.id,
+          currentX: initX,
+          currentY: initY,
+          currentZ: 0,
+          currentRotX: 0,
+          currentRotY: 0,
+          currentRotZ: 0,
+          currentScale: 0.6,
+          currentOpacity: 0,
+          floatSpeed: 0.45 + (index % 4) * 0.15,
+          floatAmp: 4 + (index % 3) * 2.5,
+          phase: (index * 0.7) % (Math.PI * 2),
+        };
+      });
+    }
+
     const updatePhysics = (timestamp) => {
       const time = (timestamp - startTime) * 0.001; // seconds
       const w = window.innerWidth || 1200;
       const h = window.innerHeight || 800;
+      const totalSkills = activeSkills.length;
+      const isSkillsSection = currentChapterId === 'skills';
+      const isHero = currentChapterId === 'home';
 
-      // Ensure state is populated
-      if (!physicsState.current || physicsState.current.length === 0) {
-        const baseX = isMobile ? w * 0.5 : w * 0.52;
-        const baseY = currentChapterId === 'home' ? h * 0.46 : h * 0.15;
-        groupPos.current = { x: baseX, y: baseY };
-
-        const total = activeSkills.length;
-        const goldenAngle = 2.39996;
-        const clusterRadius = isMobile ? 95 : 140;
-
-        physicsState.current = activeSkills.map((skill, index) => {
-          const norm = index / Math.max(1, total - 1);
-          const r = index === 0 ? 0 : (isMobile ? 26 : 34) + Math.sqrt(norm) * (clusterRadius - (isMobile ? 26 : 34));
-          const theta = index * goldenAngle;
-          const relX = Math.cos(theta) * r * 1.15;
-          const relY = Math.sin(theta) * r * 0.9;
-          const relZ = Math.sin(index * 1.7) * (isMobile ? 25 : 40);
-
-          return {
-            id: skill.id,
-            relX,
-            relY,
-            relZ,
-            currentX: baseX + relX,
-            currentY: baseY + relY,
-            currentZ: relZ,
-            currentRotX: 0,
-            currentRotY: 0,
-            currentRotZ: 0,
-            currentScale: 1,
-            currentOpacity: 0.95,
-            targetScale: 1,
-            targetOpacity: 0.95,
-            floatSpeed: 0.7 + (index % 4) * 0.25,
-            floatAmp: 4 + (index % 3) * 3,
-            phase: (index * 0.6) % (Math.PI * 2),
-          };
-        });
-      }
-
-      // Fast mouse lerping for responsive cursor tracking
+      // Fast, responsive mouse tracking
       const mouse = mouseRef.current;
-      mouse.x += (mouse.targetX - mouse.x) * 0.25;
-      mouse.y += (mouse.targetY - mouse.y) * 0.25;
+      mouse.x += (mouse.targetX - mouse.x) * 0.16;
+      mouse.y += (mouse.targetY - mouse.y) * 0.16;
 
-      // ── 1. Calculate Transition Burst Physics ("First Disperse, Then Come Together") ──
-      let spreadFactor = 0;
-      let travelBurstY = 0;
+      // Subtle breathing pulse on section transition
+      let transitionPulseY = 0;
       if (transitionRef.current.active) {
         const elapsed = timestamp - transitionRef.current.startTime;
-        const dur = 850; // ms
+        const dur = 1600; // ms: slow, gentle chapter transition flight
         if (elapsed < dur) {
-          const progress = elapsed / dur; // 0 to 1
-          // Bell-curve expansion: rapidly bursts outwards, then smoothly converges back to 0
-          spreadFactor = Math.sin(progress * Math.PI) * Math.pow(1 - progress, 0.4);
-          travelBurstY = Math.sin(progress * Math.PI) * transitionRef.current.direction * 110;
+          const progress = elapsed / dur;
+          transitionPulseY = Math.sin(progress * Math.PI) * transitionRef.current.direction * 30;
         } else {
           transitionRef.current.active = false;
         }
       }
 
-      // ── 2. Calculate Base Position Per Section (Keep Group ABOVE Section Content) ──
-      const isHero = currentChapterId === 'home';
-      let baseX = w * 0.52;
-      let baseY = h * 0.46;
-      let travelRangeX = w * 0.18;
-      let travelRangeY = h * 0.16;
-      let targetOpacity = 0.95;
-      let targetScale = 1.0;
+      // ── Cursor-Following Group Positioning in Every Section Apart From Skills ──
+      let targetGroupX = w * 0.5;
+      let targetGroupY = h * 0.5;
 
-      switch (currentChapterId) {
-        case 'home':
-          // Featured in central 3D wireframe corridor between heading and photo
-          baseX = isMobile ? w * 0.5 : w * 0.52;
-          baseY = h * 0.46;
-          travelRangeX = isMobile ? w * 0.14 : w * 0.18;
-          travelRangeY = isMobile ? h * 0.12 : h * 0.18;
-          targetOpacity = isMobile ? 0.85 : 0.95;
-          targetScale = 1.0;
-          break;
+      if (!isSkillsSection) {
+        // Universal viewport center
+        const baseX = w * 0.50;
+        const baseY = isHero ? h * 0.48 : h * 0.50;
 
-        case 'about':
-          // Kept ABOVE the section content (in open upper canopy above education cards)
-          baseX = isMobile ? w * 0.5 : w * 0.50;
-          baseY = isMobile ? h * 0.14 : h * 0.15;
-          travelRangeX = isMobile ? w * 0.15 : w * 0.22;
-          travelRangeY = h * 0.06; // Limited vertical range so it stays above cards
-          targetOpacity = 0.88;
-          targetScale = 0.84;
-          break;
+        // Broad dynamic travel range: whole group sweeps in the direction of the cursor across all non-skills sections
+        const travelRangeX = isMobile ? w * 0.35 : w * 0.42;
+        const travelRangeY = isMobile ? h * 0.30 : h * 0.38;
 
-        case 'journey':
-          // Kept ABOVE the journey roadmap
-          baseX = isMobile ? w * 0.5 : w * 0.52;
-          baseY = isMobile ? h * 0.14 : h * 0.15;
-          travelRangeX = isMobile ? w * 0.15 : w * 0.22;
-          travelRangeY = h * 0.06;
-          targetOpacity = 0.85;
-          targetScale = 0.84;
-          break;
+        // Dynamic velocity-assisted momentum
+        const velLeadX = Math.max(-40, Math.min(40, (mouseRef.current.vx || 0) * 14));
+        const velLeadY = Math.max(-40, Math.min(40, (mouseRef.current.vy || 0) * 14));
 
-        case 'skills':
-          // Crowning 3D constellation floating directly ABOVE the 3 category cards
-          baseX = isMobile ? w * 0.5 : w * 0.50;
-          baseY = isMobile ? h * 0.13 : h * 0.14;
-          travelRangeX = isMobile ? w * 0.15 : w * 0.22;
-          travelRangeY = h * 0.05;
-          targetOpacity = 0.90;
-          targetScale = 0.86;
-          break;
+        // Group follows cursor direction in every section apart from skills!
+        targetGroupX = baseX + mouse.x * travelRangeX + velLeadX;
+        targetGroupY = baseY + mouse.y * travelRangeY + velLeadY;
 
-        case 'projects':
-          // Kept ABOVE the project cards
-          baseX = isMobile ? w * 0.5 : w * 0.50;
-          baseY = isMobile ? h * 0.14 : h * 0.15;
-          travelRangeX = isMobile ? w * 0.15 : w * 0.20;
-          travelRangeY = h * 0.05;
-          targetOpacity = 0.80;
-          targetScale = 0.80;
-          break;
-
-        case 'contact':
-          // Floating in upper orbit above contact form
-          baseX = isMobile ? w * 0.5 : w * 0.50;
-          baseY = isMobile ? h * 0.14 : h * 0.15;
-          travelRangeX = isMobile ? w * 0.15 : w * 0.20;
-          travelRangeY = h * 0.05;
-          targetOpacity = 0.80;
-          targetScale = 0.80;
-          break;
-
-        default:
-          // Subsequent sections: subtle ambient presence above content
-          baseX = w * 0.50;
-          baseY = h * 0.15;
-          travelRangeX = w * 0.15;
-          travelRangeY = h * 0.05;
-          targetOpacity = 0.65;
-          targetScale = 0.76;
-          break;
+        // Group spring follow with fluid responsiveness
+        const groupSpring = 0.14;
+        groupPos.current.x += (targetGroupX - groupPos.current.x) * groupSpring;
+        groupPos.current.y += (targetGroupY - groupPos.current.y) * groupSpring;
       }
 
-      // ── 3. Group Follows Cursor Direction Fast & Smoothly ──
-      const rawTargetX = baseX + mouse.x * travelRangeX;
-      // In Hero, clamp leftward reach so cluster never overlaps heading text
-      const targetGroupX = isHero
-        ? (isMobile ? rawTargetX : Math.max(w * 0.46, Math.min(w * 0.65, rawTargetX)))
-        : rawTargetX;
-      const targetGroupY = baseY + mouse.y * travelRangeY;
-
-      // Fast group spring follow (0.18 for instant, snappy tracking)
-      const groupSpring = 0.18;
-      groupPos.current.x += (targetGroupX - groupPos.current.x) * groupSpring;
-      groupPos.current.y += (targetGroupY - groupPos.current.y) * groupSpring;
-
-      // ── 4. Update Each Individual Logo in the Group ──
-      physicsState.current.forEach((item) => {
-        const node = tokenRefs.current[item.id];
+      // Update each skill logo position
+      physicsState.current.forEach((item, index) => {
+        const skill = activeSkills[index];
+        if (!skill) return;
+        const node = tokenRefs.current[skill.id];
         if (!node) return;
 
-        // Transition Dispersion: "First disperse outwards, then come together"
-        const spreadMult = 1 + spreadFactor * 2.2;
-        const dispersionX = Math.cos(item.phase) * 60 * spreadFactor;
-        const dispersionY = Math.sin(item.phase) * 45 * spreadFactor + travelBurstY;
-        const dispersionZ = Math.sin(item.phase * 2) * 75 * spreadFactor;
+        // Destination for this skill in the current section
+        const target = computeSkillTarget(skill, index, totalSkills, w, h, time);
 
-        const currentRelX = item.relX * spreadMult + dispersionX;
-        const currentRelY = item.relY * spreadMult + dispersionY;
-        const currentRelZ = item.relZ + dispersionZ;
+        // Gentle levitation (subtler when docked to badge slot)
+        const ampMult = target.isDocked ? 0.25 : 1.0;
+        const floatX = Math.cos(time * item.floatSpeed + item.phase) * (item.floatAmp * 0.4 * ampMult);
+        const floatY = (Math.sin(time * item.floatSpeed + item.phase) * item.floatAmp + transitionPulseY) * ampMult;
 
-        // Harmonic ambient levitation within the cluster
-        const floatX = Math.cos(time * item.floatSpeed + item.phase) * (item.floatAmp * 0.5);
-        const floatY = Math.sin(time * item.floatSpeed + item.phase) * item.floatAmp;
+        const destX = target.x + floatX;
+        const destY = target.y + floatY;
+        const destZ = target.z;
 
-        // 3D Depth Parallax
-        const depthFactor = (currentRelZ + 50) / 100;
-        const parallaxX = mouse.x * 24 * depthFactor;
-        const parallaxY = mouse.y * 20 * depthFactor;
+        // ── Interpolation: slow in skills section, snappy cursor-following in other sections ──
+        const lerpFactor = isSkillsSection ? 0.038 : 0.14;
+        item.currentX += (destX - item.currentX) * lerpFactor;
+        item.currentY += (destY - item.currentY) * lerpFactor;
+        item.currentZ += (destZ - item.currentZ) * lerpFactor;
 
-        // Final destination for this logo
-        const destX = groupPos.current.x + currentRelX + floatX + parallaxX;
-        const destY = groupPos.current.y + currentRelY + floatY + parallaxY;
-        const destZ = currentRelZ;
+        const scaleLerp = isSkillsSection ? 0.04 : 0.09;
+        item.currentScale += (target.scale - item.currentScale) * scaleLerp;
+        item.currentOpacity += (target.opacity - item.currentOpacity) * scaleLerp;
 
-        // Fast spring follow to keep logos tightly grouped while moving (0.20)
-        const spring = 0.20;
-        item.currentX += (destX - item.currentX) * spring;
-        item.currentY += (destY - item.currentY) * spring;
-        item.currentZ += (destZ - item.currentZ) * spring;
+        // Dynamic 3D banking tilt into cursor movement direction
+        const depthFactor = (destZ + 50) / 100;
+        const tiltX = target.tiltX ?? (-mouse.y * 20 * depthFactor);
+        const tiltY = target.tiltY ?? (mouse.x * 22 * depthFactor);
+        const tiltZ = !isSkillsSection ? (targetGroupX - groupPos.current.x) * 0.12 : ((destX - item.currentX) * 0.02);
 
-        item.currentScale += (targetScale - item.currentScale) * 0.12;
-        item.currentOpacity += (targetOpacity - item.currentOpacity) * 0.12;
+        item.currentRotX += (tiltX - item.currentRotX) * 0.09;
+        item.currentRotY += (tiltY - item.currentRotY) * 0.09;
+        item.currentRotZ += (tiltZ - item.currentRotZ) * 0.09;
 
-        // 3D Tilt Orientation: fast responsive banking into the motion direction
-        const tiltX = -mouse.y * 20 * depthFactor;
-        const tiltY = mouse.x * 24 * depthFactor;
-        const tiltZ = (targetGroupX - groupPos.current.x) * 0.10;
-
-        item.currentRotX += (tiltX - item.currentRotX) * 0.14;
-        item.currentRotY += (tiltY - item.currentRotY) * 0.14;
-        item.currentRotZ += (tiltZ - item.currentRotZ) * 0.14;
-
-        // Direct DOM transform injection for 60fps GPU acceleration
+        // GPU accelerated 3D transform
         node.style.transform = `translate3d(${item.currentX.toFixed(1)}px, ${item.currentY.toFixed(1)}px, ${item.currentZ.toFixed(1)}px) rotateX(${item.currentRotX.toFixed(1)}deg) rotateY(${item.currentRotY.toFixed(1)}deg) rotateZ(${item.currentRotZ.toFixed(1)}deg) scale(${item.currentScale.toFixed(2)})`;
         node.style.opacity = item.currentOpacity.toFixed(2);
       });
@@ -368,56 +412,155 @@ export default function Skills3DUniverse({ currentChapterId = 'home', direction 
 
     animId = requestAnimationFrame(updatePhysics);
     return () => cancelAnimationFrame(animId);
-  }, [currentChapterId, activeSkills, prefersReducedMotion, isMobile]);
+  }, [currentChapterId, activeSkills, categorizedSkills, hoveredCategory, selectedSkill, prefersReducedMotion, isMobile]);
+
+  // Find active inspected skill data
+  const inspectedSkillData = useMemo(() => {
+    if (!selectedSkill) return null;
+    return SKILLS_UNIVERSE.find(
+      (s) => s.id === selectedSkill.id || s.name === selectedSkill || s.name === selectedSkill?.name
+    ) || null;
+  }, [selectedSkill]);
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 pointer-events-none z-10 overflow-hidden opacity-100 transition-opacity duration-500"
-      style={{ perspective: 1200, transformStyle: 'preserve-3d' }}
-      aria-hidden="true"
-    >
-      {activeSkills.map((skill) => {
-        const { Icon } = skill;
-        return (
-          <div
-            key={skill.id}
-            ref={(el) => {
-              tokenRefs.current[skill.id] = el;
-            }}
-            className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-auto cursor-pointer group select-none"
-            style={{
-              transform: `translate3d(50vw, 50vh, 0px)`,
-              opacity: 0.9,
-            }}
-          >
-            {/* Pure 3D Glassmorphic Skill Medallion — ONLY LOGO, NO NAME */}
-            <div
-              className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#171717]/90 border border-[#8E8170]/40 backdrop-blur-md shadow-2xl transition-all duration-300 group-hover:border-[#EAD9B8] group-hover:scale-130 group-hover:bg-[#222222] flex items-center justify-center cursor-pointer"
-              style={{
-                boxShadow: `0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px ${skill.glowColor}`,
-              }}
-              title={skill.name}
-            >
-              {/* Inner soft glow ring */}
-              <div
-                className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-20 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none"
-                style={{
-                  boxShadow: `inset 0 0 10px ${skill.glowColor}`,
-                }}
-              />
+    <>
+      <div
+        ref={containerRef}
+        className="fixed inset-0 pointer-events-none z-10 overflow-hidden opacity-100 transition-opacity duration-500"
+        style={{ perspective: 1200, transformStyle: 'preserve-3d' }}
+        aria-hidden="true"
+      >
+        {activeSkills.map((skill) => {
+          const { Icon } = skill;
+          const isSelected = selectedSkill && (selectedSkill.id === skill.id || selectedSkill === skill.name || selectedSkill.name === skill.name);
+          const isHovered = hoveredSkillId === skill.id;
 
-              {/* Official Brand Logo Icon */}
-              <span
-                className="text-base sm:text-xl shrink-0 transition-transform duration-300 group-hover:scale-115 drop-shadow-md select-none"
-                style={{ color: skill.brandColor }}
+          return (
+            <div
+              key={skill.id}
+              ref={(el) => {
+                tokenRefs.current[skill.id] = el;
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedSkill(isSelected ? null : skill);
+              }}
+              onMouseEnter={() => setHoveredSkillId(skill.id)}
+              onMouseLeave={() => setHoveredSkillId(null)}
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-auto cursor-pointer group select-none"
+              style={{
+                transform: `translate3d(50vw, 50vh, 0px)`,
+                opacity: 0,
+              }}
+            >
+              {/* Pure 3D Glassmorphic Skill Medallion */}
+              <div
+                className={`relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl backdrop-blur-md shadow-2xl transition-all duration-300 flex items-center justify-center cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#252525] border-[#EAD9B8] scale-125'
+                    : 'bg-[#171717]/90 border-[#8E8170]/40 group-hover:border-[#EAD9B8] group-hover:scale-125 group-hover:bg-[#222222]'
+                }`}
+                style={{
+                  boxShadow: isSelected
+                    ? `0 12px 32px rgba(0, 0, 0, 0.9), 0 0 24px ${skill.glowColor}`
+                    : `0 8px 24px rgba(0, 0, 0, 0.75), 0 0 16px ${skill.glowColor}`,
+                }}
               >
-                <Icon />
+                {/* Inner soft glow ring */}
+                <div
+                  className={`absolute inset-0 rounded-xl sm:rounded-2xl transition-opacity duration-300 pointer-events-none ${
+                    isSelected ? 'opacity-80' : 'opacity-20 group-hover:opacity-70'
+                  }`}
+                  style={{
+                    boxShadow: `inset 0 0 10px ${skill.glowColor}`,
+                  }}
+                />
+
+                {/* Official Brand Logo Icon */}
+                <span
+                  className="text-base sm:text-xl shrink-0 transition-transform duration-300 group-hover:scale-115 drop-shadow-md select-none"
+                  style={{ color: skill.brandColor }}
+                >
+                  <Icon />
+                </span>
+
+                {/* Micro floating name badge on hover */}
+                <div
+                  className={`absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-[#171717]/95 border border-[#8E8170]/50 text-[9px] font-mono text-[#EAD9B8] whitespace-nowrap shadow-lg transition-all duration-200 pointer-events-none ${
+                    isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                  }`}
+                >
+                  {skill.name}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* =========================================================================
+          INTERACTIVE HOLOGRAPHIC SKILL INSPECTOR MODAL
+          ========================================================================= */}
+      {inspectedSkillData && (
+        <div
+          onClick={() => setSelectedSkill(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm pointer-events-auto transition-opacity"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm rounded-2xl bg-[#1a1a1a]/95 border border-[#EAD9B8]/40 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(234,217,184,0.15)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedSkill(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:text-[#EAD9B8] text-[#C8B99F] transition-colors"
+              aria-label="Close Inspector"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Header with Icon and Title */}
+            <div className="flex items-center gap-3.5 mb-3">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#242424] border border-[#8E8170]/40 shadow-inner"
+                style={{ color: inspectedSkillData.brandColor, boxShadow: `0 0 16px ${inspectedSkillData.glowColor}` }}
+              >
+                <inspectedSkillData.Icon className="text-2xl" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono uppercase text-[#C8B99F] tracking-wider font-semibold">
+                  {inspectedSkillData.category}
+                </span>
+                <h4 className="text-lg font-display font-extrabold text-[#EAD9B8] tracking-tight">
+                  {inspectedSkillData.name}
+                </h4>
+              </div>
+            </div>
+
+            {/* Skill Description */}
+            <p className="text-xs text-[#F5EBDD] font-light leading-relaxed mb-4 bg-white/[0.02] p-3 rounded-lg border border-white/5">
+              {inspectedSkillData.description}
+            </p>
+
+            {/* Quick Actions */}
+            <div className="flex items-center justify-between pt-1">
+              <span className="flex items-center gap-1.5 text-[10px] font-mono text-[#10b981]">
+                <Sparkles className="w-3 h-3" /> Production Ready
               </span>
+              <button
+                onClick={() => {
+                  setSelectedSkill(null);
+                  setActiveSection('projects');
+                  window.history.replaceState(null, '', '#projects');
+                }}
+                className="flex items-center gap-1.5 text-[10px] font-mono text-[#EAD9B8] hover:text-white px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 border border-[#8E8170]/40 transition-colors"
+              >
+                View in Projects <ExternalLink className="w-3 h-3" />
+              </button>
             </div>
           </div>
-        );
-      })}
-    </div>
+        </div>
+      )}
+    </>
   );
 }

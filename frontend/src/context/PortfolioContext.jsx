@@ -38,6 +38,8 @@ export const PortfolioProvider = ({ children }) => {
   const [achievements, setAchievements] = useState(defaultAchievements);
   const [activeSection, setActiveSection] = useState('home');
   const [loading, setLoading] = useState(true);
+  const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [selectedSkill, setSelectedSkill] = useState(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -100,6 +102,10 @@ export const PortfolioProvider = ({ children }) => {
         achievements,
         activeSection,
         setActiveSection,
+        hoveredCategory,
+        setHoveredCategory,
+        selectedSkill,
+        setSelectedSkill,
         loading,
         refreshData: loadData,
         submitContactForm,
@@ -126,6 +132,10 @@ export const usePortfolio = () => {
       achievements: defaultAchievements,
       activeSection: 'home',
       setActiveSection: () => {},
+      hoveredCategory: null,
+      setHoveredCategory: () => {},
+      selectedSkill: null,
+      setSelectedSkill: () => {},
       loading: false,
       refreshData: () => {},
       submitContactForm,

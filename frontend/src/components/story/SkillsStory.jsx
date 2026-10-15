@@ -93,7 +93,13 @@ const TiltCard = ({ children, className }) => {
 };
 
 const SkillsStory = () => {
-  const { skillsCategorized } = usePortfolio();
+  const {
+    skillsCategorized,
+    hoveredCategory,
+    setHoveredCategory,
+    selectedSkill,
+    setSelectedSkill,
+  } = usePortfolio();
 
   return (
     <section
@@ -142,26 +148,36 @@ const SkillsStory = () => {
 
         {/* 3 Categorized Layout Columns */}
         <div className="grid grid-cols-3 pt-4 gap-2 sm:gap-[clamp(0.75rem,2vw,1.5rem)]">
-          {skillsCategorized.map((cat, idx) => (
-            <motion.div
-              key={cat.category}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: idx * 0.15 }}
-            >
-              <TiltCard className="p-2.5 sm:p-7 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/25 hover:border-[#EAD9B8]/40 transition-all duration-300 shadow-xl flex flex-col justify-between space-y-2 sm:space-y-6 group h-full">
-                <div className="space-y-1.5 sm:space-y-3" style={{ transform: 'translateZ(30px)' }}>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider sm:tracking-widest">
-                      CATEGORY 0{idx + 1}
-                    </span>
-                    <span className="w-2 h-2 rounded-full bg-[#EAD9B8]/60 group-hover:bg-[#EAD9B8] transition-colors" />
-                  </div>
+          {skillsCategorized.map((cat, idx) => {
+            const isHovered = hoveredCategory === cat.category;
+            return (
+              <motion.div
+                key={cat.category}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-80px" }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                onMouseEnter={() => setHoveredCategory(cat.category)}
+                onMouseLeave={() => setHoveredCategory(null)}
+              >
+                <TiltCard className={`p-2.5 sm:p-7 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border transition-all duration-300 shadow-xl flex flex-col justify-between space-y-2 sm:space-y-6 group h-full ${
+                  isHovered
+                    ? 'border-[#EAD9B8]/80 shadow-[0_0_30px_rgba(234,217,184,0.15)] bg-[#1e1e1e]'
+                    : 'border-[#8E8170]/25 hover:border-[#EAD9B8]/40'
+                }`}>
+                  <div className="space-y-1.5 sm:space-y-3" style={{ transform: 'translateZ(30px)' }}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider sm:tracking-widest">
+                        CATEGORY 0{idx + 1}
+                      </span>
+                      <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        isHovered ? 'bg-[#EAD9B8] scale-125 shadow-[0_0_8px_#EAD9B8]' : 'bg-[#EAD9B8]/60 group-hover:bg-[#EAD9B8]'
+                      }`} />
+                    </div>
 
-                  <h3 className="text-xs sm:text-xl font-display font-bold text-[#EAD9B8] tracking-tight group-hover:text-[#F5EBDD] transition-colors">
-                    {cat.category}
-                  </h3>
+                    <h3 className="text-xs sm:text-xl font-display font-bold text-[#EAD9B8] tracking-tight group-hover:text-[#F5EBDD] transition-colors">
+                      {cat.category}
+                    </h3>
 
                   <p className="text-[8px] sm:text-xs font-mono text-[#C8B99F] font-light hidden sm:block">
                     {cat.description}
@@ -174,9 +190,12 @@ const SkillsStory = () => {
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
                   {cat.skills.map((skill, skillIdx) => {
                     const { icon, color } = getSkillIcon(skill);
+                    const isSelected = selectedSkill === skill || selectedSkill?.name === skill;
                     return (
                       <motion.div
                         key={skill}
+                        data-skill-name={skill}
+                        onClick={() => setSelectedSkill(isSelected ? null : skill)}
                         initial={{ opacity: 0, scale: 0.5, y: 30 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0 }}
                         viewport={{ once: false, margin: "-40px" }}
@@ -187,13 +206,19 @@ const SkillsStory = () => {
                           delay: 0.08 + skillIdx * 0.035,
                         }}
                         whileHover={{ scale: 1.08, y: -2 }}
-                        className="group/skill relative flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:py-1.5 rounded-md sm:rounded-lg bg-white/[0.04] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-200 cursor-pointer shadow-md min-w-0"
+                        className={`group/skill relative flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-all duration-200 cursor-pointer shadow-md min-w-0 ${
+                          isSelected
+                            ? 'bg-[#2a2a2a] border-[#EAD9B8] ring-1 ring-[#EAD9B8]/50 shadow-[0_0_12px_rgba(234,217,184,0.3)]'
+                            : 'bg-white/[0.04] border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222]'
+                        }`}
                       >
                         {/* Dynamic Brand Color Glow */}
                         <div
-                          className="absolute inset-0 rounded-md sm:rounded-lg opacity-0 group-hover/skill:opacity-100 transition-opacity duration-300 pointer-events-none"
+                          className={`absolute inset-0 rounded-md sm:rounded-lg transition-opacity duration-300 pointer-events-none ${
+                            isSelected ? 'opacity-100' : 'opacity-0 group-hover/skill:opacity-100'
+                          }`}
                           style={{
-                            boxShadow: `0 0 16px ${color}44`,
+                            boxShadow: `0 0 16px ${color}55`,
                           }}
                         />
 
@@ -212,8 +237,9 @@ const SkillsStory = () => {
                 </div>
               </TiltCard>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
       </div>
     </section>

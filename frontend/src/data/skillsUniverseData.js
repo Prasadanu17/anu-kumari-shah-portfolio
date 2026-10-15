@@ -14,13 +14,15 @@ import {
   SiCss,
   SiBootstrap,
   SiPhp,
+  SiCodeigniter,
   SiMysql,
   SiMongodb,
   SiGit,
   SiGithub,
   SiJupyter,
+  SiGooglecolab,
 } from 'react-icons/si';
-import { FaBrain, FaEye, FaNetworkWired } from 'react-icons/fa';
+import { FaBrain, FaEye, FaNetworkWired, FaChartBar, FaPalette, FaDatabase } from 'react-icons/fa';
 import { VscCode } from 'react-icons/vsc';
 
 export const SKILL_CATEGORIES = {
@@ -30,7 +32,7 @@ export const SKILL_CATEGORIES = {
 };
 
 export const SKILLS_UNIVERSE = [
-  // ── AI & Machine Learning (9 skills) ──
+  // ── AI & Machine Learning (11 skills) ──
   {
     id: 'python',
     name: 'Python',
@@ -55,7 +57,8 @@ export const SKILLS_UNIVERSE = [
   },
   {
     id: 'tensorflow',
-    name: 'TensorFlow',
+    name: 'TensorFlow/Keras',
+    aliases: ['TensorFlow', 'Keras'],
     category: SKILL_CATEGORIES.AIML,
     Icon: SiTensorflow,
     brandColor: '#FF6F00',
@@ -130,11 +133,34 @@ export const SKILLS_UNIVERSE = [
     hero: { xPct: 46, yPct: 8, z: 25, scale: 0.92, floatSpeed: 1.15, floatAmp: 13, phase: 0.8 },
     travel: { xPct: 32, yPct: 60, z: 5 },
   },
+  {
+    id: 'eda',
+    name: 'EDA',
+    category: SKILL_CATEGORIES.AIML,
+    Icon: FaChartBar,
+    brandColor: '#E67E22',
+    glowColor: 'rgba(230, 126, 34, 0.55)',
+    description: 'Exploratory data analysis, statistical distributions & pattern recognition.',
+    hero: { xPct: 20, yPct: 88, z: 20, scale: 0.90, floatSpeed: 0.9, floatAmp: 11, phase: 1.3 },
+    travel: { xPct: 22, yPct: 50, z: 10 },
+  },
+  {
+    id: 'explainable-ai',
+    name: 'Explainable AI',
+    category: SKILL_CATEGORIES.AIML,
+    Icon: FaBrain,
+    brandColor: '#1ABC9C',
+    glowColor: 'rgba(26, 188, 156, 0.55)',
+    description: 'SHAP & LIME interpretability techniques for transparent machine learning models.',
+    hero: { xPct: 10, yPct: 40, z: 30, scale: 0.92, floatSpeed: 1.0, floatAmp: 12, phase: 2.5 },
+    travel: { xPct: 16, yPct: 58, z: 15 },
+  },
 
-  // ── Full-Stack Development (9 skills) ──
+  // ── Full-Stack Development (10 skills) ──
   {
     id: 'react',
     name: 'React.js',
+    aliases: ['React'],
     category: SKILL_CATEGORIES.FULLSTACK,
     Icon: SiReact,
     brandColor: '#61DAFB',
@@ -167,7 +193,8 @@ export const SKILLS_UNIVERSE = [
   },
   {
     id: 'html5',
-    name: 'HTML5',
+    name: 'HTML',
+    aliases: ['HTML5'],
     category: SKILL_CATEGORIES.FULLSTACK,
     Icon: SiHtml5,
     brandColor: '#E34F26',
@@ -178,7 +205,8 @@ export const SKILLS_UNIVERSE = [
   },
   {
     id: 'css3',
-    name: 'CSS3',
+    name: 'CSS',
+    aliases: ['CSS3'],
     category: SKILL_CATEGORIES.FULLSTACK,
     Icon: SiCss,
     brandColor: '#1572B6',
@@ -231,8 +259,19 @@ export const SKILLS_UNIVERSE = [
     hero: { xPct: 93, yPct: 88, z: 10, scale: 0.9, floatSpeed: 1.1, floatAmp: 11, phase: 1.1 },
     travel: { xPct: 78, yPct: 72, z: 5 },
   },
+  {
+    id: 'codeigniter',
+    name: 'CodeIgniter',
+    category: SKILL_CATEGORIES.FULLSTACK,
+    Icon: SiCodeigniter,
+    brandColor: '#EF4223',
+    glowColor: 'rgba(239, 66, 35, 0.55)',
+    description: 'Lightweight PHP MVC framework for rapid, structured web applications.',
+    hero: { xPct: 80, yPct: 92, z: 15, scale: 0.90, floatSpeed: 0.85, floatAmp: 12, phase: 3.1 },
+    travel: { xPct: 70, yPct: 85, z: 10 },
+  },
 
-  // ── Databases & Tools (6 skills) ──
+  // ── Databases & Tools (9 skills) ──
   {
     id: 'vscode',
     name: 'VS Code',
@@ -298,5 +337,38 @@ export const SKILLS_UNIVERSE = [
     description: 'CI/CD automation, collaborative development & open-source repositories.',
     hero: { xPct: 78, yPct: 22, z: -15, scale: 0.88, floatSpeed: 0.85, floatAmp: 11, phase: 3.5 },
     travel: { xPct: 70, yPct: 42, z: -10 },
+  },
+  {
+    id: 'google-colab',
+    name: 'Google Colab',
+    category: SKILL_CATEGORIES.DBTOOLS,
+    Icon: SiGooglecolab,
+    brandColor: '#F9AB00',
+    glowColor: 'rgba(249, 171, 0, 0.55)',
+    description: 'Cloud Jupyter notebook environment with accelerated GPU/TPU runtimes.',
+    hero: { xPct: 48, yPct: 92, z: 25, scale: 0.90, floatSpeed: 1.0, floatAmp: 11, phase: 1.6 },
+    travel: { xPct: 40, yPct: 78, z: 12 },
+  },
+  {
+    id: 'canva',
+    name: 'Canva',
+    category: SKILL_CATEGORIES.DBTOOLS,
+    Icon: FaPalette,
+    brandColor: '#00C4CC',
+    glowColor: 'rgba(0, 196, 204, 0.55)',
+    description: 'Visual asset design, design mockups & presentation graphics.',
+    hero: { xPct: 68, yPct: 92, z: 10, scale: 0.88, floatSpeed: 0.9, floatAmp: 10, phase: 3.8 },
+    travel: { xPct: 58, yPct: 85, z: 5 },
+  },
+  {
+    id: 'phpmyadmin',
+    name: 'phpMyAdmin',
+    category: SKILL_CATEGORIES.DBTOOLS,
+    Icon: FaDatabase,
+    brandColor: '#6C78AF',
+    glowColor: 'rgba(108, 120, 175, 0.55)',
+    description: 'Web-based graphical administration tool for MySQL database systems.',
+    hero: { xPct: 38, yPct: 92, z: 20, scale: 0.88, floatSpeed: 1.1, floatAmp: 11, phase: 0.6 },
+    travel: { xPct: 32, yPct: 82, z: 15 },
   },
 ];

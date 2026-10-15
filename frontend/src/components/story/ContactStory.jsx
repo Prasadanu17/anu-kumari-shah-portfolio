@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Send, Check, Mail, Github, Linkedin, FileText } from 'lucide-react';
+import { Send, Check, Mail, Github, Linkedin, FileText, AlertCircle } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
 /* ==========================================================================
@@ -65,6 +65,7 @@ const ContactForm = () => {
   const { personalInfo, submitContactForm } = usePortfolio();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle');
+  const [feedbackMsg, setFeedbackMsg] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -73,18 +74,28 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
+    setFeedbackMsg('');
 
     try {
       await submitContactForm(formData);
       setStatus('sent');
+      setFeedbackMsg('Thank you! Your message was delivered successfully.');
       setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => {
+        setStatus('idle');
+        setFeedbackMsg('');
+      }, 4000);
     } catch (error) {
-      console.error('API submission fallback to mailto:', error);
+      console.warn('Web3Forms submission notice:', error.message || error);
+      // Fallback: open mail client
       window.location.href = `mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`;
-      setStatus('sent');
+      setStatus('fallback');
+      setFeedbackMsg('Redirecting to your mail client...');
       setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => {
+        setStatus('idle');
+        setFeedbackMsg('');
+      }, 4000);
     }
   };
 
@@ -138,9 +149,15 @@ const ContactForm = () => {
           className={`${inputClass} resize-none sm:rows-3`}
         />
 
+        {feedbackMsg && (
+          <p className="text-[8px] sm:text-[10px] font-mono text-[#EAD9B8] bg-white/[0.04] p-1.5 rounded border border-[#8E8170]/30">
+            {feedbackMsg}
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={status !== 'idle'}
+          disabled={status === 'sending'}
           className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-[#EAD9B8] text-[#171717] text-[8.5px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1.5 sm:py-2.5 rounded-lg hover:bg-[#d6c39f] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_20px_rgba(234,217,184,0.2)]"
         >
           <AnimatePresence mode="wait">
@@ -178,10 +195,22 @@ const ContactForm = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 sm:gap-2"
+                className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
               >
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-700" />
                 MESSAGE SENT
+              </motion.span>
+            )}
+            {status === 'fallback' && (
+              <motion.span
+                key="fallback"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
+              >
+                <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-700" />
+                OPENING MAIL CLIENT
               </motion.span>
             )}
           </AnimatePresence>

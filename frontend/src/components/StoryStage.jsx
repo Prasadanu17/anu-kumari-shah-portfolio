@@ -14,7 +14,6 @@ import AchievementsStory from './story/AchievementsStory';
 import ResumeSection from './story/ResumeSection';
 import ContactStory from './story/ContactStory';
 import Footer from './Footer';
-import Skills3DUniverse from './3d/Skills3DUniverse';
 
 /* ==========================================================================
    STORYTELLER CHAPTER DEFINITIONS
@@ -37,14 +36,6 @@ const StoryStage = () => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [showScrollHint, setShowScrollHint] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const lastScrollTimeRef = useRef(0);
   const contentScrollRef = useRef(null);
@@ -275,8 +266,6 @@ const StoryStage = () => {
       onTouchEnd={handleTouchEnd}
       className="relative w-full h-screen overflow-hidden text-[#F4F5F4] flex flex-col justify-between"
     >
-      {/* ── INTERACTIVE 3D SKILL UNIVERSE LAYER ── */}
-      <Skills3DUniverse currentChapterId={currentChapter.id} direction={direction} isMobile={isMobile} />
 
       {/* =========================================================================
           MAIN STAGE VIEWPORT (Full Screen, Cinematic Presentation)

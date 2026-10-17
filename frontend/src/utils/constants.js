@@ -150,11 +150,11 @@ export const projects = [
     category: "ai_ml",
     isProminent: true,
     tag: "FEATURED ML PROJECT",
-    description: "An intelligent healthcare application that predicts the likelihood of cardiovascular disease using Machine Learning algorithms and Streamlit for real-time risk assessment.",
+    description: "An intelligent healthcare application that predicts the likelihood of heart disease using Machine Learning and Streamlit for real-time risk assessment.",
     technologies: ["Python", "Streamlit", "Scikit-learn", "Pandas", "NumPy"],
-    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
-    demo: "https://lnkd.in/gcDfsetc",
-    github: "https://lnkd.in/g5We5FXK",
+    image: "/projects/Heart_disease_pred_AI.jpeg",
+    demo: "https://heart-healthprediction.streamlit.app/",
+    github: "https://github.com/Prasadanu17/heart-disease-prediction",
     keyFeatures: [
       "Interactive web application",
       "User-friendly healthcare interface",
@@ -166,7 +166,7 @@ export const projects = [
     id: 3,
     title: "Breast Cancer Classification System",
     category: "ai_ml",
-    isProminent: true,
+    isProminent: false,
     tag: "DEEP LEARNING PROJECT",
     description: "A deep learning neural network model built with TensorFlow and Keras to classify medical imaging / diagnostic feature data for early breast cancer diagnosis.",
     technologies: ["Python", "TensorFlow", "Keras", "Neural Networks", "scikit-learn", "Pandas"],
@@ -184,7 +184,7 @@ export const projects = [
     id: 4,
     title: "Sikkim Homestay Booking Platform",
     category: "web",
-    isProminent: false,
+    isProminent: true,
     tag: "FULL-STACK WEB",
     description: "A modern travel and homestay booking platform highlighting authentic homestay experiences across Sikkim with smooth interactive UI transitions.",
     technologies: ["React.js", "JavaScript", "Tailwind CSS", "Framer Motion"],
@@ -229,6 +229,42 @@ export const projects = [
       "Translucent UI glassmorphism elements",
       "Filterable interior portfolio gallery",
       "Consultation scheduling request module"
+    ]
+  },
+  {
+    id: 7,
+    title: "Hotel Shivaratna",
+    category: "web",
+    isProminent: false,
+    tag: "CLIENT PROJECT",
+    description: "A luxury hospitality & mountain retreat web platform developed for Hotel Shivaratna in Rinchenpong, West Sikkim. Features online room booking inquiries, multi-district travel guides, an interactive photo gallery, and smooth responsive design.",
+    technologies: ["React.js", "Vite", "Tailwind CSS", "Framer Motion", "Lucide React"],
+    image: "/projects/shivaratna.jpg",
+    demo: "https://www.hotelshivaratna.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Online room booking & consultation inquiry interface",
+      "Comprehensive Sikkim 4-district interactive travel guides",
+      "Dynamic photo gallery showcase with luxury aesthetic",
+      "Fully responsive mobile & desktop UI architecture"
+    ]
+  },
+  {
+    id: 8,
+    title: "Priyansu Tours & Travels",
+    category: "web",
+    isProminent: false,
+    tag: "CLIENT PROJECT",
+    description: "A comprehensive travel agency & tour booking portal developed for Priyansu Tours & Travels in Gangtok, Sikkim. Features customized Himalayan tour packages, vehicle fleet bookings (car & bike rentals), hotel reservations, and multi-district Sikkim destination guides.",
+    technologies: ["React.js", "Vite", "Tailwind CSS", "Lucide React"],
+    image: "/projects/priyansu_hero.png",
+    demo: "https://www.priyansutravels.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Customized tour packages across Sikkim, Darjeeling, Kalimpong & Bhutan",
+      "Fleet booking system for car & bike rentals across mountain routes",
+      "Hotel accommodation reservation & WhatsApp direct booking integration",
+      "Comprehensive 4-district Sikkim destination and travel itinerary guides"
     ]
   }
 ];
@@ -314,10 +350,10 @@ export const experience = [
       "Developing modern responsive frontend UI using React.js and Tailwind CSS",
       "Building backend services and dynamic web features for client projects",
       "Ensuring clean architecture, mobile optimization, and secure web practices",
-      "Engineered client websites including Priansu website and Secretna Hotel"
+      "Engineered client websites including Priyansu Tours & Travels and Hotel Shivaratna"
     ],
     technologies: ["React.js", "Tailwind CSS", "Frontend Dev", "Backend Dev", "Dynamic Web Dev", "Client Projects"],
-    projectsMentioned: ["Priansu website", "Secretna Hotel"]
+    projectsMentioned: ["Priyansu Tours & Travels", "Hotel Shivaratna"]
   },
   {
     id: 2,

@@ -68,25 +68,44 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
             </div>
           </div>
 
-          {/* Icon Header & Tag */}
-          <div className="flex items-center gap-2.5 mt-4">
-            <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:scale-105 transition-transform">
-              {isAi ? <Cpu className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+          {/* Project Preview Thumbnail */}
+          {project.image ? (
+            <div className="relative w-full h-24 sm:h-28 mt-2.5 rounded-xl overflow-hidden border border-[#8E8170]/30 bg-black/40 group/img shrink-0">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-60 pointer-events-none" />
+              {project.tag && (
+                <span className="absolute bottom-1.5 left-2 text-[7.5px] sm:text-[8.5px] font-mono px-2 py-0.5 rounded bg-[#171717]/90 text-[#EAD9B8] border border-[#8E8170]/30 uppercase font-semibold backdrop-blur-md">
+                  {project.tag}
+                </span>
+              )}
             </div>
-            {project.tag && (
-              <span className="text-[8px] sm:text-[9px] font-mono px-2 py-0.5 rounded bg-[#EAD9B8]/10 text-[#EAD9B8] border border-[#8E8170]/30 uppercase font-semibold">
-                {project.tag}
-              </span>
-            )}
-          </div>
+          ) : (
+            <div className="flex items-center gap-2.5 mt-3">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:scale-105 transition-transform">
+                {isAi ? <Cpu className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+              </div>
+              {project.tag && (
+                <span className="text-[8px] sm:text-[9px] font-mono px-2 py-0.5 rounded bg-[#EAD9B8]/10 text-[#EAD9B8] border border-[#8E8170]/30 uppercase font-semibold">
+                  {project.tag}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Project Title */}
-          <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-snug mt-3 line-clamp-2 group-hover:text-[#F5EBDD] transition-colors">
+          <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-snug mt-2 line-clamp-1 group-hover:text-[#F5EBDD] transition-colors">
             {project.title}
           </h3>
 
           {/* Short Description */}
-          <p className="text-[11px] sm:text-xs text-[#C8B99F] mt-2 line-clamp-3 leading-relaxed font-light">
+          <p className="text-[11px] sm:text-xs text-[#C8B99F] mt-1 line-clamp-2 leading-relaxed font-light">
             {project.description}
           </p>
         </div>
@@ -143,6 +162,26 @@ const ProjectDetailPanel = ({ project, onClose }) => {
           <X className="w-4 h-4" />
         </button>
       </div>
+
+      {/* Featured Project Image */}
+      {project.image && (
+        <div className="relative w-full h-44 sm:h-56 mt-4 rounded-2xl overflow-hidden border border-[#8E8170]/35 bg-black/50 shadow-2xl group shrink-0">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-60 pointer-events-none" />
+          {project.tag && (
+            <span className="absolute bottom-2.5 left-3 text-[9px] font-mono font-semibold uppercase px-2.5 py-1 rounded bg-[#171717]/90 border border-[#8E8170]/40 text-[#EAD9B8] backdrop-blur-md">
+              {project.tag}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Title */}
       <h3 className="text-xl sm:text-2xl font-extrabold text-[#EAD9B8] mt-4 font-display leading-tight tracking-tight">
@@ -230,15 +269,27 @@ const ProjectsStory = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  const topProjects = useMemo(() => {
+    return projects.filter((p) => p.isProminent);
+  }, [projects]);
+
+  const topAiList = useMemo(() => {
+    return topProjects.filter((p) => p.category === 'ai_ml' || p.category === 'ml');
+  }, [topProjects]);
+
+  const topWebList = useMemo(() => {
+    return topProjects.filter((p) => p.category === 'web' || p.category === 'fullstack');
+  }, [topProjects]);
+
   const featuredList = useMemo(() => {
     if (activeCategory === 'ai_ml') {
-      return projects.filter((p) => p.category === 'ai_ml' || p.category === 'ml');
+      return topAiList;
     }
     if (activeCategory === 'web') {
-      return projects.filter((p) => p.category === 'web' || p.category === 'fullstack');
+      return topWebList;
     }
-    return projects.slice(0, 6);
-  }, [projects, activeCategory]);
+    return topProjects;
+  }, [topProjects, topAiList, topWebList, activeCategory]);
 
   const currentProject = activeProjIndex !== null ? featuredList[activeProjIndex] : null;
 
@@ -281,7 +332,7 @@ const ProjectsStory = () => {
                   : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
               }`}
             >
-              ALL (6)
+              TOP ({topProjects.length})
             </button>
 
             <button
@@ -296,7 +347,7 @@ const ProjectsStory = () => {
               }`}
             >
               <Brain className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>AI PROJECTS (3)</span>
+              <span>AI PROJECTS ({topAiList.length})</span>
             </button>
 
             <button
@@ -311,7 +362,7 @@ const ProjectsStory = () => {
               }`}
             >
               <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>FULL-STACK WEB (3)</span>
+              <span>FULL-STACK WEB ({topWebList.length})</span>
             </button>
 
             <Link
@@ -326,9 +377,9 @@ const ProjectsStory = () => {
         {/* SUBTITLE & HINT TEXT */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[9.5px] sm:text-xs font-mono text-[#C8B99F] pb-1 border-b border-white/[0.05]">
           <span className="text-[#EAD9B8] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-            {activeCategory === 'ai_ml' && '01 // ARTIFICIAL INTELLIGENCE & MACHINE LEARNING PROJECTS'}
-            {activeCategory === 'web' && '02 // FULL-STACK WEBSITE ENGINEERING PROJECTS'}
-            {activeCategory === 'all' && 'SELECTED ARCHIVE // AI & FULL-STACK SYSTEMS'}
+            {activeCategory === 'ai_ml' && '01 // FEATURED AI & MACHINE LEARNING HIGHLIGHTS'}
+            {activeCategory === 'web' && '02 // FEATURED FULL-STACK WEB APPLICATION'}
+            {activeCategory === 'all' && 'SELECTED ARCHIVE // TOP FLAGSHIP SYSTEMS'}
           </span>
           <span className="tracking-[0.16em] uppercase text-[#8E8170] text-[9px] sm:text-[10px]">
             {currentProject

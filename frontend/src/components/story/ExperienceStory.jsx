@@ -172,12 +172,12 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
         </div>
 
         {/* ── Key Deliverables ── */}
-        <div className="space-y-1.5 bg-black/30 p-3 rounded-xl border border-white/[0.05]">
+        <div className="space-y-1.5 bg-black/30 p-3 sm:p-4 rounded-xl border border-white/[0.05]">
           <span className="text-[9.5px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-wider block font-semibold">
             KEY PRODUCTION DELIVERABLES
           </span>
           <div className="space-y-1.5">
-            {role.highlights.slice(0, 3).map((item, idx) => (
+            {role.highlights.map((item, idx) => (
               <div key={idx} className="flex items-start gap-2">
                 <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${isCurrent ? 'text-emerald-400' : 'text-[#EAD9B8]'}`} />
                 <p className="text-xs sm:text-[13px] text-[#F5EBDD] font-light leading-snug">
@@ -191,7 +191,7 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
         {/* ── Shipped Commercial Projects ── */}
         {role.projectsMentioned && role.projectsMentioned.length > 0 && (
           <div className="space-y-1">
-            <span className="text-[8.5px] font-mono text-[#EAD9B8] uppercase tracking-wider flex items-center gap-1 font-bold">
+            <span className="text-[8.5px] sm:text-[9.5px] font-mono text-[#EAD9B8] uppercase tracking-wider flex items-center gap-1 font-bold">
               <FolderGit2 className="w-2.5 h-2.5 text-[#EAD9B8]" />
               SHIPPED CLIENT PLATFORMS ({role.projectsMentioned.length}):
             </span>
@@ -199,7 +199,7 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
               {role.projectsMentioned.map((proj) => (
                 <span
                   key={proj}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[9.5px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] hover:border-[#EAD9B8] hover:bg-[#EAD9B8]/10 transition-colors"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] hover:border-[#EAD9B8] hover:bg-[#EAD9B8]/10 transition-colors"
                 >
                   <Sparkles className="w-2 h-2 text-[#EAD9B8]" />
                   {proj}
@@ -210,24 +210,19 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
         )}
 
         {/* ── Tech Stack Chips ── */}
-        <div className="pt-1.5 border-t border-white/[0.06] flex items-center justify-between gap-2 flex-wrap">
-          <span className="text-[8.5px] font-mono text-[#C8B99F] uppercase font-semibold">
+        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between gap-2 flex-wrap">
+          <span className="text-[9px] font-mono text-[#C8B99F] uppercase font-semibold">
             TECH STACK:
           </span>
           <div className="flex flex-wrap gap-1">
-            {role.technologies.slice(0, 5).map((tech) => (
+            {role.technologies.map((tech) => (
               <span
                 key={tech}
-                className="px-1.5 py-0.5 rounded text-[8.5px] sm:text-[9px] font-mono bg-white/[0.03] border border-white/[0.08] text-[#C8B99F]"
+                className="px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono bg-white/[0.04] border border-white/[0.1] text-[#EAD9B8]/95"
               >
                 {tech}
               </span>
             ))}
-            {role.technologies.length > 5 && (
-              <span className="px-1 py-0.5 text-[8px] font-mono text-[#8E8170]">
-                +{role.technologies.length - 5}
-              </span>
-            )}
           </div>
         </div>
 
@@ -474,19 +469,18 @@ export default function ExperienceStory() {
 
         {/* ── Section Header ── */}
         <div className="flex flex-col items-center text-center space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
-            <span className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-              06 / WORK EXPERIENCE
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              06 // WORK EXPERIENCE
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
           </div>
 
-          <h2 className="font-display font-extrabold text-xl sm:text-2xl text-[#EAD9B8] tracking-tight uppercase">
+          <h2 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase">
             PRACTICAL INDUSTRY ROLES
           </h2>
 
-          <p className="text-[#C8B99F] text-[10px] sm:text-xs font-light max-w-lg leading-relaxed">
+          <p className="text-[#EAD9B8]/90 text-xs sm:text-sm font-light max-w-lg leading-relaxed">
             Delivering production software architectures, commercial client platforms, and high-performance web systems.
           </p>
 
@@ -498,14 +492,14 @@ export default function ExperienceStory() {
                 <button
                   key={exp.id}
                   onClick={() => handleSelect(idx)}
-                  className={`relative px-3 py-1 rounded-full text-[9.5px] sm:text-[10px] font-mono transition-all duration-300 border flex items-center gap-1.5 overflow-hidden ${
+                  className={`relative px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-mono transition-all duration-300 border flex items-center gap-1.5 overflow-hidden ${
                     isActive
                       ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] font-bold shadow-md scale-105'
                       : 'bg-white/[0.04] text-[#C8B99F] border-white/[0.1] hover:border-[#EAD9B8]/40 hover:text-white'
                   }`}
                 >
                   <span>0{idx + 1}</span>
-                  <span className="truncate max-w-[130px] sm:max-w-[160px]">{exp.company}</span>
+                  <span className="truncate max-w-[180px] sm:max-w-[220px]">{exp.company}</span>
 
                   {/* Active Auto-Advance Progress Line */}
                   {isActive && isAutoPlaying && (
@@ -524,7 +518,7 @@ export default function ExperienceStory() {
             {/* Auto-Play Toggle */}
             <button
               onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              className={`px-2 py-1 rounded-full text-[9px] font-mono border transition-all duration-200 flex items-center gap-1 ${
+              className={`px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-mono border transition-all duration-200 flex items-center gap-1 ${
                 isAutoPlaying
                   ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
                   : 'bg-white/5 text-[#C8B99F] border-white/[0.1] hover:text-white'
@@ -562,8 +556,8 @@ export default function ExperienceStory() {
                 animate="center"
                 exit="exit"
                 transition={{
-                  duration: 1.15,
-                  ease: [0.16, 1, 0.3, 1], // Slow, luxurious, continuous deceleration
+                  duration: 0.45,
+                  ease: [0.16, 1, 0.3, 1], // Smooth, responsive, continuous deceleration
                 }}
                 className="w-full flex justify-center"
               >
@@ -587,12 +581,12 @@ export default function ExperienceStory() {
         </div>
 
         {/* ── Sleek Minimalist Client Delivery Strip ── */}
-        <div className="w-full rounded-2xl bg-[#141414]/75 border border-white/[0.07] px-3 sm:px-4 py-1.5 flex flex-col sm:flex-row items-center justify-between gap-1 text-[9px] sm:text-[10px] font-mono text-[#C8B99F] backdrop-blur-xl">
+        <div className="w-full rounded-2xl bg-[#141414]/75 border border-white/[0.07] px-3 sm:px-4 py-2 flex flex-col sm:flex-row items-center justify-between gap-1 text-[9.5px] sm:text-[11px] font-mono text-[#C8B99F] backdrop-blur-xl">
           <div className="flex items-center gap-1.5 text-center sm:text-left justify-center flex-wrap">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
             <span className="text-[#EAD9B8] font-bold">CLIENT IMPACT:</span>
             <span className="text-[#F5EBDD] font-light">
-              Priansu • Secretna Hotel • Mahendra Packers • Elite Interior
+              Priyansu Tours & Travels • Hotel Shivaratna • Mahendra Packers • Elite Interior
             </span>
           </div>
 

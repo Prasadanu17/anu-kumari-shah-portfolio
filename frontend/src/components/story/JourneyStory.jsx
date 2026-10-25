@@ -8,39 +8,38 @@ const JourneyStory = () => {
   return (
     <section
       id="journey"
-      className="relative flex flex-col justify-start px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 pt-8 sm:pt-12 pb-16 w-full"
+      className="relative flex flex-col justify-start px-4 sm:px-6 lg:px-12 max-w-6xl mx-auto z-10 py-2 sm:py-4 pb-16 w-full"
     >
       <div className="space-y-4 sm:space-y-6">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-1.5 sm:space-y-2">
+        <div className="flex flex-col items-center text-center space-y-2 pb-1">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-3"
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]"
           >
-            <div className="h-px w-10 bg-[#8E8170]/40" />
-            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-              03 / MY JOURNEY
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              03 // MY CAREER JOURNEY
             </span>
-            <div className="h-px w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase"
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase"
           >
             PATHWAY TO AI & FULL-STACK
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-xl leading-relaxed"
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="text-[#EAD9B8]/90 text-xs sm:text-sm font-light max-w-xl leading-relaxed"
           >
             A continuous evolution from undergraduate computer science foundations to real-world web production, advanced MCA studies, and intelligent AI system engineering.
           </motion.p>

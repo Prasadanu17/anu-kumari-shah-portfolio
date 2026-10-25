@@ -110,37 +110,33 @@ const SkillsStory = () => {
       <div className="w-full space-y-4 sm:space-y-6">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-1.5 sm:space-y-2">
+        <div className="flex flex-col items-center text-center space-y-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-3"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]"
           >
-            <div className="h-px w-10 bg-[#8E8170]/40" />
-            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-              04 / TECHNICAL SKILLS
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              04 // TECHNICAL SKILLS
             </span>
-            <div className="h-px w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase"
           >
             TECHNICAL CAPABILITIES
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-lg leading-relaxed"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="text-[#EAD9B8]/90 text-xs sm:text-sm font-light max-w-lg leading-relaxed"
           >
             Categorized technical stack focused on building intelligent algorithms, scalable frontend architectures, and reliable database backends.
           </motion.p>
@@ -153,10 +149,9 @@ const SkillsStory = () => {
             return (
               <motion.div
                 key={cat.category}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 onMouseEnter={() => setHoveredCategory(cat.category)}
                 onMouseLeave={() => setHoveredCategory(null)}
               >
@@ -196,14 +191,12 @@ const SkillsStory = () => {
                           key={skill}
                           data-skill-name={skill}
                           onClick={() => setSelectedSkill(isSelected ? null : skill)}
-                          initial={{ opacity: 0, scale: 0.5, y: 30 }}
-                          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                          viewport={{ once: false, margin: "-40px" }}
+                          initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
                           transition={{
-                            type: "spring",
-                            stiffness: 160,
-                            damping: 18,
-                            delay: 0.08 + skillIdx * 0.035,
+                            duration: 0.35,
+                            delay: 0.05 + skillIdx * 0.02,
+                            ease: [0.16, 1, 0.3, 1],
                           }}
                           whileHover={{ scale: 1.06, y: -2 }}
                           className={`group/skill relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer shadow-md min-w-0 ${

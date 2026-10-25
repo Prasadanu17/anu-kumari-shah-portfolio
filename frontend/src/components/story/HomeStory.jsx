@@ -142,28 +142,28 @@ const HomeStory = () => {
 
             {/* Floating Card 1 — AI Resume Analyzer (Top Right) */}
             <motion.div
-              style={{ x: winTranslateX, y: winTranslateY, transformZ: 25 }}
-              className="absolute top-2 right-2 sm:top-[6%] sm:right-[4%] w-[120px] sm:w-[150px] md:w-[clamp(130px,15vw,220px)] bg-[#1c1c1c]/95 border border-[#8E8170]/35 rounded-xl shadow-2xl p-2 sm:p-2.5 overflow-hidden z-20 backdrop-blur-md"
+              style={{ x: winTranslateX, y: winTranslateY, transformZ: 50 }}
+              className="absolute -top-2 right-0 sm:top-[4%] sm:-right-4 md:-right-6 lg:-right-8 w-[140px] sm:w-[165px] md:w-[190px] bg-[#1c1c1c]/95 border border-[#8E8170]/40 rounded-xl shadow-2xl p-2.5 sm:p-3 z-40 backdrop-blur-md"
             >
-              <div className="flex items-center justify-between pb-1 border-b border-[#8E8170]/20 mb-1">
-                <span className="text-[8px] sm:text-[9.5px] font-mono text-[#EAD9B8] font-bold uppercase truncate">AI RESUME</span>
+              <div className="flex items-center justify-between pb-1 border-b border-[#8E8170]/25 mb-1">
+                <span className="text-[9px] sm:text-[10px] font-mono text-[#EAD9B8] font-bold uppercase">AI RESUME</span>
                 <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse shrink-0 ml-1" />
               </div>
-              <p className="text-[9.5px] sm:text-[11px] text-[#F5EBDD] font-medium leading-tight truncate">SBERT & NLP</p>
-              <p className="text-[8px] sm:text-[9px] font-mono text-[#C8B99F] mt-0.5 line-clamp-1">ATS skill analysis</p>
+              <p className="text-[10px] sm:text-xs text-[#F5EBDD] font-medium leading-tight">SBERT & NLP</p>
+              <p className="text-[8.5px] sm:text-[9.5px] font-mono text-[#C8B99F] mt-0.5">ATS skill analysis</p>
             </motion.div>
 
             {/* Floating Card 2 — Heart Disease & Cancer ML (Bottom Left) */}
             <motion.div
-              style={{ x: winTranslateX, y: winTranslateY, transformZ: 35 }}
-              className="absolute bottom-2 left-2 sm:bottom-[8%] sm:left-[4%] w-[120px] sm:w-[150px] md:w-[clamp(130px,15vw,220px)] bg-[#1c1c1c]/95 border border-[#8E8170]/35 rounded-xl shadow-2xl p-2 sm:p-2.5 overflow-hidden z-20 backdrop-blur-md"
+              style={{ x: winTranslateX, y: winTranslateY, transformZ: 50 }}
+              className="absolute -bottom-2 left-0 sm:bottom-[6%] sm:-left-4 md:-left-6 lg:-left-8 w-[140px] sm:w-[165px] md:w-[190px] bg-[#1c1c1c]/95 border border-[#8E8170]/40 rounded-xl shadow-2xl p-2.5 sm:p-3 z-40 backdrop-blur-md"
             >
-              <div className="flex items-center justify-between pb-1 border-b border-[#8E8170]/20 mb-1">
-                <span className="text-[8px] sm:text-[9.5px] font-mono text-[#EAD9B8] font-bold uppercase truncate">HEALTH ML</span>
-                <span className="text-[8px] font-mono text-[#C8B99F] shrink-0 ml-1">Streamlit</span>
+              <div className="flex items-center justify-between pb-1 border-b border-[#8E8170]/25 mb-1">
+                <span className="text-[9px] sm:text-[10px] font-mono text-[#EAD9B8] font-bold uppercase">HEALTH ML</span>
+                <span className="text-[8.5px] font-mono text-[#C8B99F] shrink-0 ml-1">Streamlit</span>
               </div>
-              <p className="text-[9.5px] sm:text-[11px] text-[#F5EBDD] font-medium leading-tight truncate">Heart & Cancer</p>
-              <p className="text-[8px] sm:text-[9px] font-mono text-[#C8B99F] mt-0.5 line-clamp-1">Neural net accuracy</p>
+              <p className="text-[10px] sm:text-xs text-[#F5EBDD] font-medium leading-tight">Heart & Cancer</p>
+              <p className="text-[8.5px] sm:text-[9.5px] font-mono text-[#C8B99F] mt-0.5">Neural net accuracy</p>
             </motion.div>
 
             {/* Center Profile Image in Refined 3D Titanium Frame */}
@@ -174,9 +174,9 @@ const HomeStory = () => {
               style={{
                 x: imgTranslateX,
                 y: imgTranslateY,
-                transformZ: 45,
+                transformZ: 30,
               }}
-              className="relative z-30 w-[150px] h-[210px] sm:w-[190px] sm:h-[265px] md:w-[clamp(180px,20vw,260px)] md:h-[clamp(250px,28vw,360px)] rounded-2xl border-2 border-[#8E8170]/35 bg-[#1c1c1c]/90 backdrop-blur-md overflow-hidden shadow-2xl group hover:border-[#EAD9B8]/60 transition-colors"
+              className="relative z-20 w-[150px] h-[210px] sm:w-[190px] sm:h-[265px] md:w-[clamp(180px,20vw,260px)] md:h-[clamp(250px,28vw,360px)] rounded-2xl border-2 border-[#8E8170]/35 bg-[#1c1c1c]/90 backdrop-blur-md overflow-hidden shadow-2xl group hover:border-[#EAD9B8]/60 transition-colors"
             >
               <img
                 src="/assets/profile.jpeg"

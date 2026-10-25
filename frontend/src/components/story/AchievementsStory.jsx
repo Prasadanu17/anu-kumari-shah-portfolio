@@ -26,37 +26,33 @@ const AchievementsStory = () => {
       <div className="space-y-4 sm:space-y-6">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-1.5 sm:space-y-2">
+        <div className="flex flex-col items-center text-center space-y-2 pb-1">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-3"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]"
           >
-            <div className="h-px w-10 bg-[#8E8170]/40" />
-            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-              08 / ACHIEVEMENTS & RECOGNITION
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              08 // ACHIEVEMENTS & RECOGNITION
             </span>
-            <div className="h-px w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase"
           >
-            HONORS & COMMUNITY
+            HONORS & COMMUNITY RECOGNITION
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-xl leading-relaxed"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="text-[#EAD9B8]/90 text-xs sm:text-sm font-light max-w-xl leading-relaxed"
           >
             Verified competition milestones and student leadership initiatives during undergraduate and post-graduate studies.
           </motion.p>
@@ -69,10 +65,9 @@ const AchievementsStory = () => {
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: idx * 0.12 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: idx * 0.1 }}
                 className="p-4 sm:p-6 rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/60 transition-all duration-300 shadow-xl space-y-3 group relative overflow-hidden"
               >
                 <div className="flex items-center justify-between">

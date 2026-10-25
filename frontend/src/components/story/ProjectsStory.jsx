@@ -11,10 +11,10 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
   const centerIndex = (total - 1) / 2;
   const offset = index - centerIndex;
 
-  // Fan rotation & offset geometry
-  const baseRotate = offset * (isMobile ? 3 : 5.5);
-  const baseX = offset * (isMobile ? 18 : 34);
-  const baseY = Math.abs(offset) * (isMobile ? 4 : 7);
+  // Fan rotation & offset geometry with clear visibility for every card
+  const baseRotate = offset * (isMobile ? 2.5 : 4);
+  const baseX = offset * (isMobile ? 55 : 115);
+  const baseY = Math.abs(offset) * (isMobile ? 4 : 8);
   const baseZ = total - Math.abs(offset);
 
   const isAi = project.category === 'ai_ml' || project.category === 'ml';
@@ -27,7 +27,7 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
       animate={{
         opacity: 1,
         scale: isActive ? 1.05 : 1,
-        rotate: isActive ? baseRotate * 0.4 : baseRotate,
+        rotate: isActive ? baseRotate * 0.3 : baseRotate,
         x: baseX,
         y: isActive ? baseY - 24 : baseY,
         zIndex: isActive ? 50 : baseZ,
@@ -35,11 +35,11 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
       whileHover={{
         scale: isActive ? 1.07 : 1.04,
         y: (isActive ? baseY - 24 : baseY) - 12,
-        rotate: baseRotate * 0.3,
+        rotate: baseRotate * 0.2,
         zIndex: 60,
         transition: { duration: 0.2 },
       }}
-      transition={{ type: 'spring', stiffness: 220, damping: 25 }}
+      transition={{ type: 'spring', stiffness: 240, damping: 26 }}
       className={`absolute top-0 left-0 w-[220px] sm:w-[260px] md:w-[280px] h-[310px] sm:h-[360px] md:h-[380px] cursor-pointer origin-bottom transition-all duration-300 ${
         isActive
           ? 'ring-2 ring-[#EAD9B8] rounded-2xl shadow-[0_12px_36px_rgba(234,217,184,0.18)]'
@@ -100,12 +100,12 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
           )}
 
           {/* Project Title */}
-          <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-snug mt-2 line-clamp-1 group-hover:text-[#F5EBDD] transition-colors">
+          <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-snug mt-2 line-clamp-2 group-hover:text-[#F5EBDD] transition-colors">
             {project.title}
           </h3>
 
           {/* Short Description */}
-          <p className="text-[11px] sm:text-xs text-[#C8B99F] mt-1 line-clamp-2 leading-relaxed font-light">
+          <p className="text-[11px] sm:text-xs text-[#F5EBDD]/90 mt-1 line-clamp-2 leading-relaxed font-light">
             {project.description}
           </p>
         </div>
@@ -307,15 +307,15 @@ const ProjectsStory = () => {
           transition={{ duration: 0.4 }}
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4"
         >
-          <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-                05 / PROJECTS
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+                05 // SELECTED WORK
               </span>
-              <div className="h-px w-12 bg-[#8E8170]/40" />
             </div>
-            <h2 className="font-display font-extrabold text-xl sm:text-4xl text-[#EAD9B8] tracking-tight uppercase">
-              SELECTED WORK
+            <h2 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase">
+              FEATURED PROJECTS & SYSTEMS
             </h2>
           </div>
 

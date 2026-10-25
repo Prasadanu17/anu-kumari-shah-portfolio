@@ -78,19 +78,9 @@ const StoryStage = () => {
     setActiveSection(targetId);
     window.history.replaceState(null, '', `#${targetId}`);
 
-    // Set scroll position cleanly on chapter switch
+    // Always reset scroll position cleanly to top on chapter switch so headings are 100% visible
     if (contentScrollRef.current) {
-      if (isForward) {
-        contentScrollRef.current.scrollTop = 0;
-      } else {
-        // If returning backwards to a section with overflow, start near bottom so user scrolls up
-        requestAnimationFrame(() => {
-          if (contentScrollRef.current) {
-            const max = contentScrollRef.current.scrollHeight - contentScrollRef.current.clientHeight;
-            contentScrollRef.current.scrollTop = max > 50 ? max - 20 : 0;
-          }
-        });
-      }
+      contentScrollRef.current.scrollTop = 0;
     }
   };
 
@@ -232,25 +222,25 @@ const StoryStage = () => {
   const storyVariants = {
     enter: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? 30 : -30,
-      scale: 0.99,
+      y: dir > 0 ? 24 : -24,
+      scale: 0.995,
     }),
     center: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.38,
-        ease: [0.22, 1, 0.36, 1], // easeOutCubic
+        duration: 0.36,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
     exit: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? -30 : 30,
-      scale: 0.99,
+      y: dir > 0 ? -24 : 24,
+      scale: 0.995,
       transition: {
-        duration: 0.25,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.22,
+        ease: [0.16, 1, 0.3, 1],
       },
     }),
   };
@@ -271,7 +261,7 @@ const StoryStage = () => {
         data-lenis-prevent="true"
         data-lenis-prevent-wheel="true"
         data-lenis-prevent-touch="true"
-        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-12 sm:pt-16 pb-16 md:pb-4 scroll-smooth"
+        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-20 sm:pt-24 md:pt-28 pb-16 md:pb-8 scroll-smooth"
       >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -281,7 +271,7 @@ const StoryStage = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            className="w-full min-h-full flex flex-col justify-start py-2 sm:py-4 my-auto"
+            className="w-full min-h-full flex flex-col justify-start py-2 sm:py-4"
           >
             <CurrentComponent
               onNextChapter={() => goToChapter(currentChapterIndex + 1)}

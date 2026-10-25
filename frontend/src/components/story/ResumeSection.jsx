@@ -12,9 +12,8 @@ const ResumeSection = () => {
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false, margin: "-80px" }}
-        transition={{ duration: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#171717] border border-[#8E8170]/40 shadow-2xl relative overflow-hidden text-center space-y-3 sm:space-y-5"
       >
         {/* Background ambient glow */}

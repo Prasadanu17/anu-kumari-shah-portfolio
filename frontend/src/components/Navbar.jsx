@@ -36,29 +36,25 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
       {/* Top Telemetry Status Bar */}
-      <div className="bg-[#171717]/90 border-b border-[#8E8170]/20 hidden md:block">
-        <div className="story-container py-1.5 flex items-center justify-between text-[10px] font-mono text-[#C8B99F]">
+      <div className="bg-[#171717]/95 border-b border-[#8E8170]/20 hidden md:block">
+        <div className="story-container py-1 flex items-center justify-between text-[10px] font-mono text-[#C8B99F]">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1e6f5c] animate-pulse" />
-            <span className="tracking-wider uppercase text-[#EAD9B8]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
+            <span className="tracking-wider uppercase text-[#EAD9B8] font-semibold">
               STATUS: OPEN TO AI/ML & FULL-STACK ROLES
             </span>
           </div>
           <div className="flex items-center gap-6">
-            <span className="text-[#C8B99F]">ICFAI UNIV • MCA CGPA: 10.00</span>
+            <span className="text-[#F5EBDD]/90">ICFAI UNIV • MCA CGPA: 10.00</span>
             <span className="text-[#8E8170]">|</span>
-            <span className="text-[#C8B99F]">GANGTOK, SIKKIM</span>
+            <span className="text-[#EAD9B8]">GANGTOK, SIKKIM</span>
           </div>
         </div>
       </div>
 
       {/* Main Navigation Bar */}
       <nav
-        className={`transition-all duration-300 ${
-          scrolled
-            ? "bg-[#171717]/95 backdrop-blur-md border-b border-[#8E8170]/25 shadow-2xl py-3"
-            : "bg-[#171717]/70 backdrop-blur-sm py-4 border-b border-[#8E8170]/15"
-        }`}
+        className="bg-[#171717]/90 backdrop-blur-md border-b border-[#8E8170]/25 shadow-lg py-2.5 transition-all duration-300"
       >
         <div className="story-container">
           <div className="flex items-center justify-between h-10">

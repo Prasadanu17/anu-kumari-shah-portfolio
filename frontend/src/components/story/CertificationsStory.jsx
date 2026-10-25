@@ -127,30 +127,30 @@ const CylindricalCard = ({
 
   if (isCenter) {
     cylinderX = 0;
-    cylinderZ = isMobile ? 35 : 70;
+    cylinderZ = isMobile ? 40 : 120;
     cylinderRotateY = 0;
     scale = 1;
     opacity = 1;
-    zIndex = 30;
+    zIndex = 40;
   } else if (isLeft) {
-    cylinderX = isMobile ? -85 : -270;
-    cylinderZ = isMobile ? -35 : -60;
-    cylinderRotateY = isMobile ? 22 : 32;
-    scale = isMobile ? 0.74 : 0.82;
-    opacity = isMobile ? 0.22 : 0.35;
+    cylinderX = isMobile ? -220 : -470;
+    cylinderZ = isMobile ? -80 : -140;
+    cylinderRotateY = isMobile ? 12 : 20;
+    scale = isMobile ? 0.72 : 0.78;
+    opacity = isMobile ? 0 : 0.36;
     zIndex = 10;
   } else if (isRight) {
-    cylinderX = isMobile ? 85 : 270;
-    cylinderZ = isMobile ? -35 : -60;
-    cylinderRotateY = isMobile ? -22 : -32;
-    scale = isMobile ? 0.74 : 0.82;
-    opacity = isMobile ? 0.22 : 0.35;
+    cylinderX = isMobile ? 220 : 470;
+    cylinderZ = isMobile ? -80 : -140;
+    cylinderRotateY = isMobile ? -12 : -20;
+    scale = isMobile ? 0.72 : 0.78;
+    opacity = isMobile ? 0 : 0.36;
     zIndex = 10;
   } else {
     cylinderX = 0;
-    cylinderZ = -140;
+    cylinderZ = -220;
     cylinderRotateY = 180;
-    scale = 0.65;
+    scale = 0.6;
     opacity = 0;
     zIndex = 0;
   }
@@ -180,30 +180,29 @@ const CylindricalCard = ({
         opacity,
       }}
       transition={{
-        duration: 1.15,
-        ease: [0.16, 1, 0.3, 1], // Slow, luxurious, continuous cylindrical deceleration
+        duration: 0.55,
+        ease: [0.16, 1, 0.3, 1], // Smooth, responsive, continuous cylindrical glide
       }}
       style={{
         zIndex,
         rotateX: isCenter ? rotateX : 0,
-        rotateY: isCenter ? rotateY : cylinderRotateY,
         transformStyle: 'preserve-3d',
       }}
-      className={`absolute w-[86vw] max-w-[320px] sm:max-w-[480px] md:max-w-[520px] rounded-2xl p-3.5 sm:p-5 select-none transition-all duration-300 ${
+      className={`absolute w-[88vw] max-w-[340px] sm:max-w-[490px] md:max-w-[530px] rounded-2xl p-4 sm:p-5 select-none transition-all duration-300 ${
         isCenter
-          ? 'bg-[#1b1b1b]/95 border-2 border-[#EAD9B8]/70 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_rgba(234,217,184,0.18)] backdrop-blur-xl cursor-default pointer-events-auto'
-          : 'bg-[#161616]/75 border border-[#8E8170]/30 shadow-xl backdrop-blur-md cursor-pointer hover:border-[#EAD9B8]/50 hover:opacity-55'
+          ? 'bg-[#181818] border-2 border-[#EAD9B8] shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_35px_rgba(234,217,184,0.2)] cursor-default pointer-events-auto'
+          : 'bg-[#141414] border border-[#8E8170]/40 shadow-xl cursor-pointer hover:border-[#EAD9B8]/70 hover:opacity-75'
       }`}
     >
       {/* 3D Holographic Foil Sheen & Circuit Watermark */}
       <motion.div
         className={`absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 ${
-          isCenter ? 'opacity-35' : 'opacity-10'
+          isCenter ? 'opacity-35' : 'opacity-15'
         }`}
         style={{
           background: isCenter
             ? `radial-gradient(circle 320px at ${sheenX} ${sheenY}, rgba(234, 217, 184, 0.35), rgba(99, 216, 181, 0.1) 40%, transparent 75%)`
-            : `linear-gradient(135deg, rgba(234, 217, 184, 0.12), transparent)`,
+            : `linear-gradient(135deg, rgba(234, 217, 184, 0.15), transparent)`,
         }}
       />
 
@@ -232,9 +231,9 @@ const CylindricalCard = ({
           </div>
         </div>
 
-        {/* Title, Organization & Date */}
-        <div className="space-y-0.5">
-          <h3 className="text-sm sm:text-lg font-display font-bold text-[#EAD9B8] leading-tight tracking-tight line-clamp-1">
+        {/* Title, Organization & Date — Fully readable without ellipsis */}
+        <div className="space-y-1">
+          <h3 className="text-sm sm:text-base md:text-lg font-display font-bold text-[#EAD9B8] leading-snug tracking-tight">
             {cert.title}
           </h3>
           <div className="flex items-center gap-2 text-[11px] sm:text-xs font-mono text-[#C8B99F]">
@@ -244,8 +243,8 @@ const CylindricalCard = ({
           </div>
         </div>
 
-        {/* Description */}
-        <p className="text-[10px] sm:text-[11px] text-[#C8B99F] font-light leading-relaxed line-clamp-2">
+        {/* Description — Full clear text with comfortable contrast */}
+        <p className="text-[11px] sm:text-xs text-[#F5EBDD]/90 font-light leading-relaxed">
           {cert.description}
         </p>
 
@@ -254,7 +253,7 @@ const CylindricalCard = ({
           {cert.skills.map((skill) => (
             <span
               key={skill}
-              className="px-2 py-0.5 text-[9px] font-mono rounded bg-white/[0.04] border border-[#8E8170]/25 text-[#F5EBDD]"
+              className="px-2 py-0.5 text-[9px] font-mono rounded bg-white/[0.05] border border-[#8E8170]/30 text-[#F5EBDD]"
             >
               {skill}
             </span>
@@ -392,21 +391,20 @@ export default function CertificationsStory() {
     >
       <div className="w-full space-y-2.5 sm:space-y-3.5">
 
-        {/* ── Compact Header ── */}
-        <div className="flex flex-col items-center text-center space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
-            <span className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
-              07 / CREDENTIALS & RADAR
+        {/* ── Prominent High-Contrast Section Header ── */}
+        <div className="flex flex-col items-center text-center space-y-2 pb-1">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              07 // CREDENTIALS & ACTIVE RADAR
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
           </div>
 
-          <h2 className="font-display font-extrabold text-xl sm:text-3xl text-[#EAD9B8] tracking-tight uppercase">
+          <h2 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#F5EBDD] tracking-tight uppercase">
             CONTINUOUS LEARNING & CREDENTIALS
           </h2>
 
-          <p className="text-[#C8B99F] text-[10px] sm:text-xs font-light max-w-md">
+          <p className="text-[#EAD9B8]/90 text-xs sm:text-sm font-light max-w-lg leading-relaxed">
             Interactive 3D cylindrical coverflow of verified credentials and active R&D radar.
           </p>
         </div>
@@ -415,18 +413,27 @@ export default function CertificationsStory() {
         <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
           {certifications.map((cert, idx) => {
             const isActive = idx === activeIndex;
+            const tabTitles = [
+              'Data Analytics',
+              'Design Competition',
+              'Coding Challenge',
+              'Web Dev Internship',
+              'Coding Runner-Up',
+            ];
+            const tabLabel = tabTitles[idx] || cert.category;
+
             return (
               <button
                 key={cert.id}
                 onClick={() => handleSelect(idx)}
-                className={`relative px-2.5 py-1 rounded-lg text-[9px] sm:text-[11px] font-mono transition-all duration-300 border flex items-center gap-1.5 overflow-hidden ${
+                className={`relative px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono transition-all duration-300 border flex items-center gap-1.5 overflow-hidden ${
                   isActive
                     ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] font-bold shadow-md scale-105'
-                    : 'bg-[#1c1c1c]/70 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+                    : 'bg-[#1c1c1c]/90 text-[#EAD9B8]/80 border-[#8E8170]/40 hover:border-[#EAD9B8] hover:text-[#F5EBDD]'
                 }`}
               >
                 <span>0{idx + 1}</span>
-                <span className="hidden sm:inline truncate max-w-[130px]">{cert.organization}</span>
+                <span className="font-semibold whitespace-nowrap">{tabLabel}</span>
 
                 {/* Slow Continuous Progress Bar on Active Tab */}
                 {isActive && isAutoPlaying && !inspectedCert && (
@@ -445,7 +452,7 @@ export default function CertificationsStory() {
           {/* Auto-Play Toggle */}
           <button
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            className={`px-2 py-1 rounded-lg text-[9px] font-mono border transition-all duration-200 flex items-center gap-1 ${
+            className={`px-2.5 py-1.5 rounded-lg text-[10px] font-mono border transition-all duration-200 flex items-center gap-1 ${
               isAutoPlaying
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
                 : 'bg-white/5 text-[#C8B99F] border-[#8E8170]/30 hover:text-white'
@@ -459,7 +466,7 @@ export default function CertificationsStory() {
 
         {/* ── 3D CYLINDRICAL COVERFLOW ARENA ── */}
         <div
-          className="relative w-full h-[280px] sm:h-[305px] flex items-center justify-center overflow-visible"
+          className="relative w-full h-[330px] sm:h-[365px] flex items-center justify-center overflow-visible"
           style={{ perspective: 1200, transformStyle: 'preserve-3d' }}
         >
           {/* Navigation Chevron Left */}

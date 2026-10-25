@@ -97,22 +97,22 @@ const AboutStory = () => {
 
           {/* Section Marker */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-2 sm:gap-3"
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]"
           >
-            <span className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-wider sm:tracking-widest uppercase font-bold truncate">02 / ABOUT ME</span>
-            <div className="h-px w-8 sm:w-12 bg-[#8E8170]/40 shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+              02 // ABOUT ME
+            </span>
           </motion.div>
 
           {/* Title */}
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
             className="font-display font-extrabold text-[#EAD9B8] text-2xl sm:text-3xl md:text-4xl tracking-tight uppercase leading-snug"
           >
             ENGINEERING INTELLIGENT SYSTEMS
@@ -120,10 +120,9 @@ const AboutStory = () => {
 
           {/* Clean Storytelling Narrative */}
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
             className="space-y-2 text-[#F5EBDD] text-xs sm:text-sm md:text-base font-light leading-relaxed"
           >
             <p>
@@ -136,13 +135,12 @@ const AboutStory = () => {
 
           {/* Education Information visually highlighted */}
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22 }}
             className="pt-2 sm:pt-4 border-t border-[#8E8170]/20 space-y-2 sm:space-y-3"
           >
-            <span className="text-[9.5px] sm:text-[11px] font-mono text-[#C8B99F] tracking-widest uppercase font-bold block">
+            <span className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold block">
               // ACADEMIC EDUCATION
             </span>
 
@@ -150,10 +148,10 @@ const AboutStory = () => {
               {education.map((edu) => (
                 <div
                   key={edu.id}
-                  className="p-3 sm:p-3.5 rounded-xl bg-[#1c1c1c] border border-[#8E8170]/25 hover:border-[#EAD9B8]/40 transition-all duration-300 space-y-1.5 shadow-lg min-w-0"
+                  className="p-3 sm:p-4 rounded-xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/50 transition-all duration-300 space-y-1.5 shadow-lg min-w-0"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F]">
+                    <span className="text-[9.5px] sm:text-[11px] font-mono text-[#C8B99F]">
                       {edu.period}
                     </span>
                     <span className="px-2 py-0.5 rounded bg-[#EAD9B8]/15 border border-[#EAD9B8]/30 text-[#EAD9B8] text-[9.5px] sm:text-xs font-mono font-bold">
@@ -169,7 +167,7 @@ const AboutStory = () => {
                     {edu.institution}
                   </p>
 
-                  <p className="text-[10px] sm:text-xs text-[#F5EBDD]/90 font-light pt-0.5 leading-relaxed">
+                  <p className="text-[11px] sm:text-xs text-[#F5EBDD]/90 font-light pt-0.5 leading-relaxed">
                     {edu.description}
                   </p>
                 </div>
@@ -181,10 +179,9 @@ const AboutStory = () => {
 
         {/* ================= RIGHT COLUMN: 3D HOVER CIRCULAR PHOTO ================= */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="relative w-full flex items-center justify-center my-2 sm:my-0"
         >
           <HoverPhoto />

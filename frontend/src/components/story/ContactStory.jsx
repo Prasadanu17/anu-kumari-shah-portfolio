@@ -32,10 +32,9 @@ const ContactCard = ({ label, value, href, external, icon: Icon, index }) => {
       rel={external ? 'noopener noreferrer' : undefined}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: false, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      initial={{ opacity: 0, x: -16 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
       className="group relative p-3 sm:p-3.5 rounded-xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-300 min-w-0"
     >
@@ -103,11 +102,10 @@ const ContactForm = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="relative p-3.5 sm:p-5 rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-2.5 sm:space-y-3 min-w-0"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, delay: 0.1 }}
+      className="relative p-4 sm:p-5 rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-3 min-w-0"
     >
       <div>
         <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-tight">
@@ -241,52 +239,49 @@ const ContactStory = () => {
       <div className="space-y-3 sm:space-y-5">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-1 sm:space-y-1.5">
+        <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: '-100px' }}
-            transition={{ duration: 0.5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
             className="flex items-center gap-2 sm:gap-3"
           >
             <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
-            <span className="text-[8px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold truncate">
+            <span className="text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold">
               10 / CONTACT
             </span>
             <div className="h-px w-6 sm:w-10 bg-[#8E8170]/40" />
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: '-100px' }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-extrabold text-[#EAD9B8] text-[clamp(1.05rem,3.8vw,2rem)] sm:text-3xl tracking-tight uppercase"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="font-display font-extrabold text-[#EAD9B8] text-xl sm:text-3xl tracking-tight uppercase"
           >
             LET'S BUILD SOMETHING MEANINGFUL.
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: '-100px' }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[#F5EBDD] text-[8.5px] sm:text-sm font-light max-w-lg leading-relaxed px-2"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="text-[#F5EBDD] text-xs sm:text-sm font-light max-w-lg leading-relaxed px-2"
           >
             Open to opportunities, engineering collaborations, and impactful AI/ML & full-stack roles.
           </motion.p>
         </div>
 
         {/* Two Columns: Links + Form */}
-        <div className="grid grid-cols-1 md:grid-cols-2 pt-2 sm:pt-3 border-t border-[#8E8170]/25 gap-3 sm:gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 pt-3 sm:pt-4 border-t border-[#8E8170]/25 gap-4 sm:gap-6 items-start">
 
           {/* Left: Contact links in 2x2 grid on mobile & tablet */}
-          <div className="space-y-1.5 sm:space-y-3 min-w-0">
-            <span className="text-[7.5px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.2em] font-bold block">
+          <div className="space-y-2 sm:space-y-3 min-w-0">
+            <span className="text-[9px] sm:text-xs font-mono text-[#C8B99F] uppercase tracking-[0.2em] font-bold block">
               // DIRECT CHANNELS & PROFILES
             </span>
 
-            <div className="grid grid-cols-2 gap-1.5 sm:gap-2.5">
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
               {contacts.map((contact, idx) => (
                 <ContactCard key={contact.label} {...contact} index={idx} />
               ))}
@@ -298,7 +293,7 @@ const ContactStory = () => {
         </div>
 
         {/* Minimal Footer Credits */}
-        <div className="pt-2 sm:pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[7.5px] sm:text-[10px] font-mono text-[#C8B99F] gap-1 text-center sm:text-left">
+        <div className="pt-3 border-t border-[#8E8170]/20 flex flex-col sm:flex-row items-center justify-between text-[9px] sm:text-[11px] font-mono text-[#C8B99F] gap-1 text-center sm:text-left">
           <span>© {new Date().getFullYear()} ANU KUMARI SHAH • ALL RIGHTS RESERVED</span>
           <span className="text-[#EAD9B8]">GANGTOK, SIKKIM • AI/ML & FULL-STACK</span>
         </div>

@@ -28,21 +28,21 @@ const ResumeSection = () => {
         </div>
 
         <div className="relative z-10 space-y-2">
-          <h2 className="font-display font-extrabold text-lg sm:text-4xl text-[#EAD9B8] tracking-tight uppercase">
+          <h2 className="font-display font-extrabold text-xl sm:text-3xl md:text-4xl text-[#EAD9B8] tracking-tight uppercase">
             WANT TO KNOW MORE ABOUT MY JOURNEY?
           </h2>
-          <p className="text-[9px] sm:text-sm text-[#F5EBDD] font-light max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#F5EBDD] font-light max-w-lg mx-auto leading-relaxed">
             Download or view my complete technical resume detailing education, project architecture, machine learning stack, and work experience.
           </p>
         </div>
 
         {/* CTAs */}
-        <div className="relative z-10 flex flex-wrap items-center justify-center gap-2 sm:gap-4 pt-1 sm:pt-2">
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
           <a
             href={personalInfo.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-[#EAD9B8] hover:bg-[#d6c39f] text-[#171717] px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest transition-all duration-300 shadow-[0_0_25px_rgba(234,217,184,0.25)]"
+            className="inline-flex items-center gap-2 bg-[#EAD9B8] hover:bg-[#d6c39f] text-[#171717] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest transition-all duration-300 shadow-[0_0_25px_rgba(234,217,184,0.25)] active:scale-95"
           >
             <span>VIEW RESUME</span>
             <ExternalLink className="w-4 h-4" />
@@ -51,7 +51,7 @@ const ResumeSection = () => {
           <a
             href={personalInfo.resume}
             download="Anu Kumari Shah-Resume.pdf"
-            className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-white/[0.04] hover:bg-white/[0.09] text-[#F5EBDD] border border-[#8E8170]/40 hover:border-[#EAD9B8]/50 px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest transition-all duration-300"
+            className="inline-flex items-center gap-2 bg-white/[0.04] hover:bg-white/[0.09] text-[#F5EBDD] border border-[#8E8170]/40 hover:border-[#EAD9B8]/50 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest transition-all duration-300 active:scale-95"
           >
             <Download className="w-4 h-4 text-[#EAD9B8]" />
             <span>DOWNLOAD PDF</span>

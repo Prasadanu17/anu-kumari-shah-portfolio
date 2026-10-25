@@ -94,86 +94,82 @@ const StoryStage = () => {
     }
   };
 
-  // Robust wheel handler: scrolls through section content if it has overflow, then advances to next chapter
+  // Robust wheel handler: allows native smooth scrolling of inner content, then advances chapters at bounds
   useEffect(() => {
-    const handleWheel = (e) => {
-      // Normalize delta across all devices
-      let normalizedDelta = e.deltaY;
-      if (e.deltaMode === 1) {
-        normalizedDelta *= 33;
-      } else if (e.deltaMode === 2) {
-        normalizedDelta *= window.innerHeight;
-      }
+    let accumulatedDelta = 0;
+    let edgeResetTimeout = null;
 
-      // Filter micro-movements
-      if (Math.abs(normalizedDelta) < 14) return;
+    const handleWheel = (e) => {
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 33;
+      else if (e.deltaMode === 2) delta *= window.innerHeight;
+
+      // Filter tiny jitter
+      if (Math.abs(delta) < 8) return;
 
       const el = contentScrollRef.current;
       const maxScroll = el ? el.scrollHeight - el.clientHeight : 0;
-      const hasOverflow = maxScroll > 50;
+      const hasOverflow = maxScroll > 30;
 
-      const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 35 : true);
-      const isAtTop = !hasOverflow || (el ? el.scrollTop <= 35 : true);
+      const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 12 : true);
+      const isAtTop = !hasOverflow || (el ? el.scrollTop <= 12 : true);
 
       const now = Date.now();
+      if (now - lastScrollTimeRef.current < 500) return;
 
-      if (normalizedDelta > 0) {
-        // Scrolling DOWN
-        if (hasOverflow && !isAtBottom) {
-          if (el) {
-            el.scrollTop = Math.min(maxScroll, el.scrollTop + normalizedDelta);
-          }
-          return;
-        }
+      if (delta > 0 && isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
+        accumulatedDelta += delta;
+        clearTimeout(edgeResetTimeout);
+        edgeResetTimeout = setTimeout(() => { accumulatedDelta = 0; }, 250);
 
-        // Reached bottom of section: debounce before chapter jump
-        if (now - lastScrollTimeRef.current < 350) return;
-        if (isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
+        if (accumulatedDelta > 45) {
+          accumulatedDelta = 0;
           lastScrollTimeRef.current = now;
           goToChapter(currentChapterIndex + 1);
         }
-      } else if (normalizedDelta < 0) {
-        // Scrolling UP
-        if (hasOverflow && !isAtTop) {
-          if (el) {
-            el.scrollTop = Math.max(0, el.scrollTop + normalizedDelta);
-          }
-          return;
-        }
+      } else if (delta < 0 && isAtTop && currentChapterIndex > 0) {
+        accumulatedDelta += delta;
+        clearTimeout(edgeResetTimeout);
+        edgeResetTimeout = setTimeout(() => { accumulatedDelta = 0; }, 250);
 
-        // Reached top of section: debounce before chapter jump
-        if (now - lastScrollTimeRef.current < 350) return;
-        if (isAtTop && currentChapterIndex > 0) {
+        if (accumulatedDelta < -45) {
+          accumulatedDelta = 0;
           lastScrollTimeRef.current = now;
           goToChapter(currentChapterIndex - 1);
         }
+      } else {
+        accumulatedDelta = 0;
       }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      clearTimeout(edgeResetTimeout);
+    };
   }, [currentChapterIndex]);
 
-  // Touch swipe handler
+  // Touch swipe handler with high intent threshold so user can scroll content inside
   const handleTouchStart = (e) => {
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e) => {
     const now = Date.now();
-    if (now - lastScrollTimeRef.current < 350) return;
+    if (now - lastScrollTimeRef.current < 500) return;
 
     const touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY.current - touchEndY;
 
-    if (Math.abs(diff) < 30) return;
+    // Intentional swipe threshold
+    if (Math.abs(diff) < 65) return;
 
     const el = contentScrollRef.current;
     const maxScroll = el ? el.scrollHeight - el.clientHeight : 0;
-    const hasOverflow = maxScroll > 50;
+    const hasOverflow = maxScroll > 30;
 
-    const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 40 : true);
-    const isAtTop = !hasOverflow || (el ? el.scrollTop <= 40 : true);
+    const isAtBottom = !hasOverflow || (el ? el.scrollTop >= maxScroll - 20 : true);
+    const isAtTop = !hasOverflow || (el ? el.scrollTop <= 20 : true);
 
     if (diff > 0 && isAtBottom && currentChapterIndex < CHAPTERS.length - 1) {
       lastScrollTimeRef.current = now;
@@ -264,7 +260,7 @@ const StoryStage = () => {
       id="story-scroll-container"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative w-full h-screen overflow-hidden text-[#F4F5F4] flex flex-col justify-between"
+      className="relative w-full h-[100dvh] overflow-hidden text-[#F4F5F4] flex flex-col justify-between"
     >
 
       {/* =========================================================================
@@ -275,7 +271,7 @@ const StoryStage = () => {
         data-lenis-prevent="true"
         data-lenis-prevent-wheel="true"
         data-lenis-prevent-touch="true"
-        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-14 sm:pt-16 pb-2"
+        className="relative flex-1 w-full overflow-y-auto overflow-x-hidden pt-12 sm:pt-16 pb-16 md:pb-4 scroll-smooth"
       >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -285,8 +281,7 @@ const StoryStage = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            className={`w-full min-h-full flex flex-col ${currentChapter.id === 'journey' ? 'justify-start' : 'justify-center'
-              } py-1 sm:py-2`}
+            className="w-full min-h-full flex flex-col justify-start py-2 sm:py-4 my-auto"
           >
             <CurrentComponent
               onNextChapter={() => goToChapter(currentChapterIndex + 1)}

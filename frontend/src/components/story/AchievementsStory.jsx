@@ -62,8 +62,8 @@ const AchievementsStory = () => {
           </motion.p>
         </div>
 
-        {/* Compact Elegant Achievement Cards */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-[clamp(0.75rem,2vw,1.5rem)]">
+        {/* Responsive Achievement Cards: 1 col on mobile, 2 on tablet, 3 on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
           {achievements.map((item, idx) => {
             const IconComponent = getAchievementIcon(item.icon);
             return (
@@ -73,22 +73,22 @@ const AchievementsStory = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-80px" }}
                 transition={{ duration: 0.6, delay: idx * 0.12 }}
-                className="p-2.5 sm:p-6 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/60 transition-all duration-300 shadow-xl space-y-2 sm:space-y-4 group relative overflow-hidden"
+                className="p-4 sm:p-6 rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/60 transition-all duration-300 shadow-xl space-y-3 group relative overflow-hidden"
               >
                 <div className="flex items-center justify-between">
-                  <div className="w-6 h-6 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/[0.04] border border-[#8E8170]/40 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-all duration-300">
-                    <IconComponent className="w-3 h-3 sm:w-5 sm:h-5" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/[0.04] border border-[#8E8170]/40 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-all duration-300">
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider">
+                  <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider">
                     {item.category}
                   </span>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-[10px] sm:text-lg font-display font-bold text-[#EAD9B8] group-hover:text-[#F5EBDD] transition-colors leading-snug">
+                <div className="space-y-1.5">
+                  <h3 className="text-sm sm:text-base md:text-lg font-display font-bold text-[#EAD9B8] group-hover:text-[#F5EBDD] transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-[8px] sm:text-xs text-[#F5EBDD] font-light leading-relaxed pt-0.5 sm:pt-1 hidden sm:block">
+                  <p className="text-xs text-[#F5EBDD]/90 font-light leading-relaxed pt-0.5">
                     {item.description}
                   </p>
                 </div>

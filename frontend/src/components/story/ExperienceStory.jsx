@@ -172,15 +172,15 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
         </div>
 
         {/* ── Key Deliverables ── */}
-        <div className="space-y-1 bg-black/30 p-2.5 rounded-xl border border-white/[0.05]">
-          <span className="text-[8.5px] font-mono text-[#C8B99F] uppercase tracking-wider block font-semibold">
+        <div className="space-y-1.5 bg-black/30 p-3 rounded-xl border border-white/[0.05]">
+          <span className="text-[9.5px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-wider block font-semibold">
             KEY PRODUCTION DELIVERABLES
           </span>
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {role.highlights.slice(0, 3).map((item, idx) => (
-              <div key={idx} className="flex items-start gap-1.5">
-                <CheckCircle2 className={`w-3 h-3 mt-0.5 shrink-0 ${isCurrent ? 'text-emerald-400' : 'text-[#EAD9B8]'}`} />
-                <p className="text-[10px] sm:text-[11px] text-[#F5EBDD] font-light leading-snug">
+              <div key={idx} className="flex items-start gap-2">
+                <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${isCurrent ? 'text-emerald-400' : 'text-[#EAD9B8]'}`} />
+                <p className="text-xs sm:text-[13px] text-[#F5EBDD] font-light leading-snug">
                   {item}
                 </p>
               </div>

@@ -394,31 +394,41 @@ const ProjectsStory = () => {
             currentProject ? "justify-between gap-6 sm:gap-10" : "justify-center"
           }`}
         >
-          {/* ---- LEFT SIDE: DETAIL PANEL (Only rendered when a project is selected) ---- */}
+          {/* ---- DETAIL PANEL: Modal overlay on mobile, side-by-side on desktop ---- */}
           <AnimatePresence mode="wait">
             {currentProject && (
               <motion.div
                 key={currentProject.id}
-                initial={{ opacity: 0, x: -50, scale: 0.96 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -50, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 220, damping: 25 }}
-                className="w-full lg:w-[48%] xl:w-[46%] z-30 flex items-center justify-center"
+                className={
+                  isMobile
+                    ? "fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md"
+                    : "w-full lg:w-[48%] xl:w-[46%] z-30 flex items-center justify-center"
+                }
+                onClick={isMobile ? () => setActiveProjIndex(null) : undefined}
               >
-                <ProjectDetailPanel
-                  project={currentProject}
-                  onClose={() => setActiveProjIndex(null)}
-                />
+                <div
+                  className="w-full max-w-xl"
+                  onClick={isMobile ? (e) => e.stopPropagation() : undefined}
+                >
+                  <ProjectDetailPanel
+                    project={currentProject}
+                    onClose={() => setActiveProjIndex(null)}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* ---- RIGHT SIDE: 3D FANNED CARD DECK ---- */}
+          {/* ---- 3D FANNED CARD DECK ---- */}
           <motion.div
             layout
             transition={{ type: "spring", stiffness: 220, damping: 25 }}
             className={`flex flex-col items-center justify-center relative min-h-[340px] sm:min-h-[400px] z-20 ${
-              currentProject ? "w-full lg:w-[50%]" : "w-full max-w-2xl mx-auto"
+              currentProject && !isMobile ? "w-full lg:w-[50%]" : "w-full max-w-2xl mx-auto"
             }`}
           >
             <div

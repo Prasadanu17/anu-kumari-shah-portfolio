@@ -146,8 +146,8 @@ const SkillsStory = () => {
           </motion.p>
         </div>
 
-        {/* 3 Categorized Layout Columns */}
-        <div className="grid grid-cols-3 pt-4 gap-2 sm:gap-[clamp(0.75rem,2vw,1.5rem)]">
+        {/* Categorized Layout Grid: 1 col on mobile, 2 on tablet, 3 on laptop/desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-3 sm:pt-4 gap-4 sm:gap-6">
           {skillsCategorized.map((cat, idx) => {
             const isHovered = hoveredCategory === cat.category;
             return (
@@ -160,14 +160,14 @@ const SkillsStory = () => {
                 onMouseEnter={() => setHoveredCategory(cat.category)}
                 onMouseLeave={() => setHoveredCategory(null)}
               >
-                <TiltCard className={`p-2.5 sm:p-7 rounded-xl sm:rounded-2xl bg-[#1c1c1c] border transition-all duration-300 shadow-xl flex flex-col justify-between space-y-2 sm:space-y-6 group h-full ${
+                <TiltCard className={`p-4 sm:p-6 md:p-7 rounded-2xl bg-[#1c1c1c] border transition-all duration-300 shadow-xl flex flex-col justify-between space-y-3 sm:space-y-5 group h-full ${
                   isHovered
                     ? 'border-[#EAD9B8]/80 shadow-[0_0_30px_rgba(234,217,184,0.15)] bg-[#1e1e1e]'
                     : 'border-[#8E8170]/25 hover:border-[#EAD9B8]/40'
                 }`}>
-                  <div className="space-y-1.5 sm:space-y-3" style={{ transform: 'translateZ(30px)' }}>
+                  <div className="space-y-1.5 sm:space-y-2.5" style={{ transform: 'translateZ(30px)' }}>
                     <div className="flex items-center justify-between">
-                      <span className="text-[7px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider sm:tracking-widest">
+                      <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-widest">
                         CATEGORY 0{idx + 1}
                       </span>
                       <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
@@ -175,69 +175,69 @@ const SkillsStory = () => {
                       }`} />
                     </div>
 
-                    <h3 className="text-xs sm:text-xl font-display font-bold text-[#EAD9B8] tracking-tight group-hover:text-[#F5EBDD] transition-colors">
+                    <h3 className="text-base sm:text-lg md:text-xl font-display font-bold text-[#EAD9B8] tracking-tight group-hover:text-[#F5EBDD] transition-colors">
                       {cat.category}
                     </h3>
 
-                  <p className="text-[8px] sm:text-xs font-mono text-[#C8B99F] font-light hidden sm:block">
-                    {cat.description}
-                  </p>
+                    <p className="text-[11px] sm:text-xs font-mono text-[#C8B99F] font-light">
+                      {cat.description}
+                    </p>
 
-                  <div className="h-px w-full bg-[#8E8170]/20 pt-2" />
-                </div>
+                    <div className="h-px w-full bg-[#8E8170]/20 pt-1" />
+                  </div>
 
-                {/* Assembled Skill Items with Staggered 3D Flight Arrival & Name Labels */}
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
-                  {cat.skills.map((skill, skillIdx) => {
-                    const { icon, color } = getSkillIcon(skill);
-                    const isSelected = selectedSkill === skill || selectedSkill?.name === skill;
-                    return (
-                      <motion.div
-                        key={skill}
-                        data-skill-name={skill}
-                        onClick={() => setSelectedSkill(isSelected ? null : skill)}
-                        initial={{ opacity: 0, scale: 0.5, y: 30 }}
-                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                        viewport={{ once: false, margin: "-40px" }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 160,
-                          damping: 18,
-                          delay: 0.08 + skillIdx * 0.035,
-                        }}
-                        whileHover={{ scale: 1.08, y: -2 }}
-                        className={`group/skill relative flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-all duration-200 cursor-pointer shadow-md min-w-0 ${
-                          isSelected
-                            ? 'bg-[#2a2a2a] border-[#EAD9B8] ring-1 ring-[#EAD9B8]/50 shadow-[0_0_12px_rgba(234,217,184,0.3)]'
-                            : 'bg-white/[0.04] border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222]'
-                        }`}
-                      >
-                        {/* Dynamic Brand Color Glow */}
-                        <div
-                          className={`absolute inset-0 rounded-md sm:rounded-lg transition-opacity duration-300 pointer-events-none ${
-                            isSelected ? 'opacity-100' : 'opacity-0 group-hover/skill:opacity-100'
-                          }`}
-                          style={{
-                            boxShadow: `0 0 16px ${color}55`,
+                  {/* Assembled Skill Items with Staggered 3D Flight Arrival & Name Labels */}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1 sm:pt-2" style={{ transform: 'translateZ(20px)' }}>
+                    {cat.skills.map((skill, skillIdx) => {
+                      const { icon, color } = getSkillIcon(skill);
+                      const isSelected = selectedSkill === skill || selectedSkill?.name === skill;
+                      return (
+                        <motion.div
+                          key={skill}
+                          data-skill-name={skill}
+                          onClick={() => setSelectedSkill(isSelected ? null : skill)}
+                          initial={{ opacity: 0, scale: 0.5, y: 30 }}
+                          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                          viewport={{ once: false, margin: "-40px" }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 160,
+                            damping: 18,
+                            delay: 0.08 + skillIdx * 0.035,
                           }}
-                        />
+                          whileHover={{ scale: 1.06, y: -2 }}
+                          className={`group/skill relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer shadow-md min-w-0 ${
+                            isSelected
+                              ? 'bg-[#2a2a2a] border-[#EAD9B8] ring-1 ring-[#EAD9B8]/50 shadow-[0_0_12px_rgba(234,217,184,0.3)]'
+                              : 'bg-white/[0.04] border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222]'
+                          }`}
+                        >
+                          {/* Dynamic Brand Color Glow */}
+                          <div
+                            className={`absolute inset-0 rounded-lg transition-opacity duration-300 pointer-events-none ${
+                              isSelected ? 'opacity-100' : 'opacity-0 group-hover/skill:opacity-100'
+                            }`}
+                            style={{
+                              boxShadow: `0 0 16px ${color}55`,
+                            }}
+                          />
 
-                        {/* Official Brand Logo */}
-                        <span className="text-xs sm:text-base shrink-0 transition-transform duration-200 group-hover/skill:scale-110" style={{ color }}>
-                          {icon}
-                        </span>
+                          {/* Official Brand Logo */}
+                          <span className="text-sm sm:text-base shrink-0 transition-transform duration-200 group-hover/skill:scale-110" style={{ color }}>
+                            {icon}
+                          </span>
 
-                        {/* Skill Name Label */}
-                        <span className="text-[7.5px] sm:text-[11px] font-mono font-medium text-[#F5EBDD] group-hover/skill:text-[#EAD9B8] transition-colors whitespace-nowrap">
-                          {skill}
-                        </span>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </TiltCard>
-            </motion.div>
-          );
+                          {/* Skill Name Label */}
+                          <span className="text-[10px] sm:text-xs font-mono font-medium text-[#F5EBDD] group-hover/skill:text-[#EAD9B8] transition-colors whitespace-nowrap">
+                            {skill}
+                          </span>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </TiltCard>
+              </motion.div>
+            );
         })}
       </div>
 

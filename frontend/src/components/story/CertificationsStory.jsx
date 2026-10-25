@@ -81,6 +81,7 @@ const CylindricalCard = ({
   onInspect,
   onCopyId,
   copiedId,
+  isMobile,
 }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -126,24 +127,24 @@ const CylindricalCard = ({
 
   if (isCenter) {
     cylinderX = 0;
-    cylinderZ = 70;
+    cylinderZ = isMobile ? 35 : 70;
     cylinderRotateY = 0;
     scale = 1;
     opacity = 1;
     zIndex = 30;
   } else if (isLeft) {
-    cylinderX = -270;
-    cylinderZ = -60;
-    cylinderRotateY = 32;
-    scale = 0.82;
-    opacity = 0.35;
+    cylinderX = isMobile ? -85 : -270;
+    cylinderZ = isMobile ? -35 : -60;
+    cylinderRotateY = isMobile ? 22 : 32;
+    scale = isMobile ? 0.74 : 0.82;
+    opacity = isMobile ? 0.22 : 0.35;
     zIndex = 10;
   } else if (isRight) {
-    cylinderX = 270;
-    cylinderZ = -60;
-    cylinderRotateY = -32;
-    scale = 0.82;
-    opacity = 0.35;
+    cylinderX = isMobile ? 85 : 270;
+    cylinderZ = isMobile ? -35 : -60;
+    cylinderRotateY = isMobile ? -22 : -32;
+    scale = isMobile ? 0.74 : 0.82;
+    opacity = isMobile ? 0.22 : 0.35;
     zIndex = 10;
   } else {
     cylinderX = 0;
@@ -188,7 +189,7 @@ const CylindricalCard = ({
         rotateY: isCenter ? rotateY : cylinderRotateY,
         transformStyle: 'preserve-3d',
       }}
-      className={`absolute w-[320px] sm:w-[480px] md:w-[520px] rounded-2xl p-4 sm:p-5 select-none transition-all duration-300 ${
+      className={`absolute w-[86vw] max-w-[320px] sm:max-w-[480px] md:max-w-[520px] rounded-2xl p-3.5 sm:p-5 select-none transition-all duration-300 ${
         isCenter
           ? 'bg-[#1b1b1b]/95 border-2 border-[#EAD9B8]/70 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_rgba(234,217,184,0.18)] backdrop-blur-xl cursor-default pointer-events-auto'
           : 'bg-[#161616]/75 border border-[#8E8170]/30 shadow-xl backdrop-blur-md cursor-pointer hover:border-[#EAD9B8]/50 hover:opacity-55'
@@ -324,6 +325,14 @@ export default function CertificationsStory() {
   const [inspectedCert, setInspectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     setImageError(false);
@@ -448,9 +457,9 @@ export default function CertificationsStory() {
           </button>
         </div>
 
-        {/* ── 3D CYLINDRICAL COVERFLOW ARENA (Height ~280px) ── */}
+        {/* ── 3D CYLINDRICAL COVERFLOW ARENA ── */}
         <div
-          className="relative w-full h-[255px] sm:h-[285px] flex items-center justify-center overflow-visible"
+          className="relative w-full h-[280px] sm:h-[305px] flex items-center justify-center overflow-visible"
           style={{ perspective: 1200, transformStyle: 'preserve-3d' }}
         >
           {/* Navigation Chevron Left */}
@@ -478,6 +487,7 @@ export default function CertificationsStory() {
                 onInspect={(c) => setInspectedCert(c)}
                 onCopyId={handleCopyId}
                 copiedId={copiedId}
+                isMobile={isMobile}
               />
             ))}
           </div>

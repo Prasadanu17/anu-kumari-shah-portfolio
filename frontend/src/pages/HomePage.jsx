@@ -12,7 +12,7 @@ const HomePage = () => {
       <Navbar />
 
       {/* ── PINNED SCROLL STORYTELLER STAGE ── */}
-      <main className="relative z-10 w-full h-screen overflow-hidden">
+      <main className="relative z-10 w-full h-[100dvh] overflow-hidden">
         <StoryStage />
       </main>
     </div>

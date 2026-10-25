@@ -37,19 +37,19 @@ const ContactCard = ({ label, value, href, external, icon: Icon, index }) => {
       viewport={{ once: false, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className="group relative p-2 sm:p-3.5 rounded-lg sm:rounded-xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-300 min-w-0"
+      className="group relative p-3 sm:p-3.5 rounded-xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8] hover:bg-[#222222] transition-all duration-300 min-w-0"
     >
-      <div className="absolute top-2 sm:top-3 right-2 sm:right-3 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#EAD9B8] group-hover:shadow-[0_0_8px_rgba(234,217,184,0.6)] transition-all duration-300" />
+      <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#EAD9B8] group-hover:shadow-[0_0_8px_rgba(234,217,184,0.6)] transition-all duration-300" />
 
-      <div className="relative z-10 flex items-center gap-2 sm:gap-3" style={{ transform: 'translateZ(15px)' }}>
-        <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-md sm:rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-colors shrink-0">
-          <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+      <div className="relative z-10 flex items-center gap-2.5 sm:gap-3" style={{ transform: 'translateZ(15px)' }}>
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.04] border border-[#8E8170]/30 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-colors shrink-0">
+          <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <span className="text-[6.5px] sm:text-[9px] font-mono text-[#C8B99F] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold block truncate">
+          <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.12em] font-bold block truncate">
             {label}
           </span>
-          <span className="text-[8px] sm:text-xs font-mono font-medium text-[#F5EBDD] group-hover:text-[#EAD9B8] transition-colors truncate block">
+          <span className="text-[11px] sm:text-xs font-mono font-medium text-[#F5EBDD] group-hover:text-[#EAD9B8] transition-colors truncate block">
             {value}
           </span>
         </div>
@@ -99,7 +99,7 @@ const ContactForm = () => {
     }
   };
 
-  const inputClass = 'w-full bg-white/[0.03] border border-[#8E8170]/30 rounded-lg px-2.5 sm:px-3 py-1 sm:py-2 text-[9px] sm:text-xs font-mono text-[#F5EBDD] placeholder-[#C8B99F]/60 focus:outline-none focus:border-[#EAD9B8] focus:bg-white/[0.05] transition-all duration-200';
+  const inputClass = 'w-full bg-white/[0.03] border border-[#8E8170]/30 rounded-lg px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-mono text-[#F5EBDD] placeholder-[#C8B99F]/60 focus:outline-none focus:border-[#EAD9B8] focus:bg-white/[0.05] transition-all duration-200';
 
   return (
     <motion.div
@@ -107,13 +107,13 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: '-50px' }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="relative p-2.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-2 sm:space-y-3 min-w-0"
+      className="relative p-3.5 sm:p-5 rounded-2xl bg-[#171717] border border-[#8E8170]/30 shadow-2xl space-y-2.5 sm:space-y-3 min-w-0"
     >
       <div>
-        <h3 className="text-xs sm:text-base font-display font-bold text-[#EAD9B8] leading-tight">
+        <h3 className="text-sm sm:text-base font-display font-bold text-[#EAD9B8] leading-tight">
           Send a direct message
         </h3>
-        <p className="text-[8px] sm:text-[11px] font-mono text-[#C8B99F] mt-0.5 leading-tight">
+        <p className="text-[10px] sm:text-xs font-mono text-[#C8B99F] mt-0.5 leading-tight">
           I respond to all inquiries within 24 hours.
         </p>
       </div>

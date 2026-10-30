@@ -113,6 +113,9 @@ export const skillsCategorized = [
     description: "Data storage systems, version control, and development environments",
     skills: [
       "MySQL",
+      "PostgreSQL",
+      "Power BI",
+      "SQLAlchemy",
       "MongoDB",
       "Git",
       "GitHub",
@@ -128,6 +131,25 @@ export const skillsCategorized = [
 export const projects = [
   {
     id: 1,
+    title: "CustomerPulse-Analytics",
+    category: "ai_ml",
+    isProminent: true,
+    tag: "DATA ANALYTICS & BI",
+    description: "An end-to-end customer analytics and business intelligence system transforming raw customer data into actionable insights. Features Python data preprocessing, feature engineering on 3,900 customer records, automated PostgreSQL database integration using SQLAlchemy, and an interactive Power BI dashboard tracking purchasing behaviors, subscription dynamics, and revenue drivers.",
+    technologies: ["Python", "Pandas", "PostgreSQL", "SQLAlchemy", "Power BI", "Data Analytics"],
+    image: "/projects/customerpulse-analytics.jpg",
+    demo: "https://lnkd.in/dMG3bnpr",
+    github: "https://lnkd.in/dMG3bnpr",
+    keyFeatures: [
+      "Cleaned and preprocessed 3,900 customer records with Python and Pandas",
+      "Conducted exploratory feature engineering and statistical data profiling",
+      "Integrated cleaned dataset into PostgreSQL database via SQLAlchemy pipelines",
+      "Developed interactive Power BI dashboard with dynamic category & demographic drill-downs",
+      "Explored customer purchasing patterns, retention metrics (27% subscribers), and category revenue drivers"
+    ]
+  },
+  {
+    id: 2,
     title: "AI Resume Analyzer & Resume Builder",
     category: "ai_ml",
     isProminent: true,
@@ -145,7 +167,7 @@ export const projects = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     title: "Heart Disease Prediction System",
     category: "ai_ml",
     isProminent: true,
@@ -163,7 +185,7 @@ export const projects = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     title: "Breast Cancer Classification System",
     category: "ai_ml",
     isProminent: false,
@@ -181,7 +203,7 @@ export const projects = [
     ]
   },
   {
-    id: 4,
+    id: 5,
     title: "Sikkim Homestay Booking Platform",
     category: "web",
     isProminent: true,
@@ -198,7 +220,7 @@ export const projects = [
     ]
   },
   {
-    id: 5,
+    id: 6,
     title: "Mahendra Packers & Movers",
     category: "web",
     isProminent: false,
@@ -215,7 +237,7 @@ export const projects = [
     ]
   },
   {
-    id: 6,
+    id: 7,
     title: "Elite Interior Design Studio",
     category: "web",
     isProminent: false,
@@ -232,7 +254,7 @@ export const projects = [
     ]
   },
   {
-    id: 7,
+    id: 8,
     title: "Hotel Shivaratna",
     category: "web",
     isProminent: false,
@@ -250,7 +272,7 @@ export const projects = [
     ]
   },
   {
-    id: 8,
+    id: 9,
     title: "Priyansu Tours & Travels",
     category: "web",
     isProminent: false,

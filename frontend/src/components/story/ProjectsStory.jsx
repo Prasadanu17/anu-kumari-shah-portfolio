@@ -17,7 +17,7 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
   const baseY = Math.abs(offset) * (isMobile ? 4 : 8);
   const baseZ = total - Math.abs(offset);
 
-  const isAi = project.category === 'ai_ml' || project.category === 'ml';
+  const isAi = project.category === 'ai_ml' || project.category === 'ml' || project.category === 'data_analytics';
 
   return (
     <motion.div
@@ -63,7 +63,7 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
                 <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981]" />
               )}
               <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] uppercase tracking-[0.2em] font-bold">
-                {isAi ? 'AI/ML' : 'WEB'}
+                {project.tag?.includes('DATA') ? 'DATA/BI' : isAi ? 'AI/ML' : 'WEB'}
               </span>
             </div>
           </div>
@@ -152,7 +152,7 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       {/* Top Header: Badge & Close Button */}
       <div className="flex items-center justify-between gap-3">
         <span className="inline-block text-[11px] font-mono uppercase bg-[#EAD9B8]/10 border border-[#8E8170]/40 text-[#EAD9B8] px-3 py-1 rounded-md font-bold tracking-wider">
-          {project.category === 'ai_ml' || project.category === 'ml' ? 'AI / ML' : 'FULL-STACK WEB'}
+          {project.tag || (isAi ? 'AI / ML & DATA' : 'FULL-STACK WEB')}
         </span>
         <button
           onClick={onClose}
@@ -274,7 +274,7 @@ const ProjectsStory = () => {
   }, [projects]);
 
   const topAiList = useMemo(() => {
-    return topProjects.filter((p) => p.category === 'ai_ml' || p.category === 'ml');
+    return topProjects.filter((p) => p.category === 'ai_ml' || p.category === 'ml' || p.category === 'data_analytics');
   }, [topProjects]);
 
   const topWebList = useMemo(() => {
@@ -347,7 +347,7 @@ const ProjectsStory = () => {
               }`}
             >
               <Brain className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>AI PROJECTS ({topAiList.length})</span>
+              <span>AI & DATA ({topAiList.length})</span>
             </button>
 
             <button
@@ -377,7 +377,7 @@ const ProjectsStory = () => {
         {/* SUBTITLE & HINT TEXT */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[9.5px] sm:text-xs font-mono text-[#C8B99F] pb-1 border-b border-white/[0.05]">
           <span className="text-[#EAD9B8] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-            {activeCategory === 'ai_ml' && '01 // FEATURED AI & MACHINE LEARNING HIGHLIGHTS'}
+            {activeCategory === 'ai_ml' && '01 // FEATURED AI, ML & DATA ANALYTICS HIGHLIGHTS'}
             {activeCategory === 'web' && '02 // FEATURED FULL-STACK WEB APPLICATION'}
             {activeCategory === 'all' && 'SELECTED ARCHIVE // TOP FLAGSHIP SYSTEMS'}
           </span>

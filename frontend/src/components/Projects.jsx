@@ -25,7 +25,7 @@ import { usePortfolio } from '../context/PortfolioContext';
 const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
 
-  const isAi = project.category === 'ai_ml' || project.category === 'ml';
+  const isAi = project.category === 'ai_ml' || project.category === 'ml' || project.category === 'data_analytics';
 
   return (
     <motion.div
@@ -175,7 +175,7 @@ const ProjectModal = ({ project, onClose }) => {
    PREMIUM PROJECT CARD
    ========================================================================== */
 const ProjectCard = ({ project, index, onInspect }) => {
-  const isAi = project.category === 'ai_ml' || project.category === 'ml';
+  const isAi = project.category === 'ai_ml' || project.category === 'ml' || project.category === 'data_analytics';
 
   return (
     <motion.div
@@ -335,9 +335,9 @@ const Projects = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Split into AI and Full-Stack Web
+  // Split into AI/ML & Data and Full-Stack Web
   const aiProjects = useMemo(() => {
-    return projects.filter((p) => p.category === 'ai_ml' || p.category === 'ml');
+    return projects.filter((p) => p.category === 'ai_ml' || p.category === 'ml' || p.category === 'data_analytics');
   }, [projects]);
 
   const webProjects = useMemo(() => {
@@ -393,7 +393,7 @@ const Projects = () => {
             }`}
           >
             <Brain className="w-3.5 h-3.5" />
-            <span>AI & ML ({aiProjects.length})</span>
+            <span>AI, ML & DATA ({aiProjects.length})</span>
           </button>
 
           <button
@@ -439,14 +439,14 @@ const Projects = () => {
               <div className="flex items-center gap-2">
                 <span className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-widest uppercase font-bold flex items-center gap-1.5">
                   <Brain className="w-3.5 h-3.5 text-[#EAD9B8]" />
-                  01 // INTELLIGENT SYSTEMS & RESEARCH
+                  01 // INTELLIGENT SYSTEMS, DATA & RESEARCH
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[#EAD9B8] uppercase tracking-tight mt-0.5">
-                AI & MACHINE LEARNING PROJECTS
+                AI, MACHINE LEARNING & DATA ANALYTICS
               </h2>
               <p className="text-[11px] sm:text-xs text-[#C8B99F] font-light max-w-xl mt-0.5">
-                NLP semantic resume matching, cardiovascular clinical risk modeling, and TensorFlow deep neural classification systems.
+                Customer behavior analytics, interactive Power BI dashboards, NLP semantic matching, cardiovascular risk modeling, and TensorFlow deep neural classification systems.
               </p>
             </div>
 
@@ -529,10 +529,10 @@ const Projects = () => {
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-[#EAD9B8] font-bold">TECHNICAL PORTFOLIO VERIFIED:</span>
-          <span>SBERT • TensorFlow • Scikit-Learn • React.js • PHP MVC • MySQL</span>
+          <span>Power BI • PostgreSQL • SBERT • TensorFlow • Scikit-Learn • React.js • MySQL</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-emerald-400 font-semibold">6 Shipped Projects</span>
+          <span className="text-emerald-400 font-semibold">{projects.length} Shipped Projects</span>
           <span className="text-[#8E8170]">•</span>
           <span className="text-[#EAD9B8]">100% Production Code</span>
         </div>

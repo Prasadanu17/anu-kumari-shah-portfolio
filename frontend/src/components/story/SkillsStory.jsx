@@ -5,7 +5,7 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import {
   SiPython, SiNumpy, SiPandas, SiScikitlearn, SiPytorch, SiTensorflow, SiKeras,
   SiReact, SiJavascript, SiNodedotjs, SiFastapi, SiTailwindcss, SiHtml5, SiCss,
-  SiBootstrap, SiPhp, SiCodeigniter, SiMysql, SiMongodb, SiGit, SiGithub,
+  SiBootstrap, SiPhp, SiCodeigniter, SiMysql, SiPostgresql, SiSqlalchemy, SiMongodb, SiGit, SiGithub,
   SiJupyter, SiGooglecolab
 } from 'react-icons/si';
 import { FaBrain, FaEye, FaChartBar, FaDatabase, FaCode, FaServer, FaPalette } from 'react-icons/fa';
@@ -37,6 +37,9 @@ const getSkillIcon = (skillName) => {
     'PHP': { icon: <SiPhp />, color: '#777BB4' },
     'CodeIgniter': { icon: <SiCodeigniter />, color: '#EF4223' },
     'MySQL': { icon: <SiMysql />, color: '#4479A1' },
+    'PostgreSQL': { icon: <SiPostgresql />, color: '#336791' },
+    'Power BI': { icon: <FaChartBar />, color: '#F2C811' },
+    'SQLAlchemy': { icon: <SiSqlalchemy />, color: '#D71F00' },
     'MongoDB': { icon: <SiMongodb />, color: '#47A248' },
     'Git': { icon: <SiGit />, color: '#F05032' },
     'GitHub': { icon: <SiGithub />, color: '#ffffff' },

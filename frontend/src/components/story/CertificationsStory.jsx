@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame, animate } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Award,
@@ -21,7 +21,9 @@ import {
   Layers,
   Terminal,
   Compass,
-  Cpu
+  Cpu,
+  Play,
+  Pause
 } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 
@@ -300,9 +302,9 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
 
 /* ==========================================================================
    MAIN EDITORIAL LUXURY CERTIFICATIONS STORY COMPONENT
-   Inspired by editorial accommodation design:
+   Inspired by luxury editorial accommodation design:
    - Left side: Eyebrow, Large Serif Headline, Divider, Paragraph, Outline CTA Button, Prev/Next Arrows
-   - Right side: Smooth horizontal card carousel with peek effect & high-res cards
+   - Right side: Buttery-smooth, infinite continuous gliding conveyor with zero end!
    ========================================================================== */
 const CertificationsStory = () => {
   const { certifications } = usePortfolio();
@@ -310,6 +312,8 @@ const CertificationsStory = () => {
   const [inspectedCert, setInspectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [cardWidth, setCardWidth] = useState(380);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef(null);
 
   // Filter important/featured certifications for homepage luxury showcase
@@ -319,6 +323,9 @@ const CertificationsStory = () => {
   }, [certifications]);
 
   const total = featuredCerts.length;
+  const gap = 20;
+  const itemWidth = cardWidth + gap;
+  const singleSetWidth = total * itemWidth;
 
   // Responsive card width calculation
   useEffect(() => {
@@ -337,19 +344,189 @@ const CertificationsStory = () => {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const handleNext = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % total);
-  }, [total]);
+  // Motion Value for continuous sub-pixel smooth glide
+  const x = useMotionValue(0);
+  const isHoveredRef = useRef(false);
+  const isDraggingRef = useRef(false);
+  const isAutoPlayingRef = useRef(true);
+  const isNudgingRef = useRef(false);
+  const lastActiveIndexRef = useRef(0);
 
+  // Sync ref values with state for 60/120fps animation frame loop
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+  }, [isHovered]);
+
+  useEffect(() => {
+    isAutoPlayingRef.current = isAutoPlaying;
+  }, [isAutoPlaying]);
+
+  // Create 4 repeated sets so the conveyor is completely infinite with no visual seam or end
+  const displayList = useMemo(() => {
+    if (featuredCerts.length === 0) return [];
+    return [
+      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set0-${i}` })),
+      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set1-${i}` })),
+      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set2-${i}` })),
+      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set3-${i}` })),
+    ];
+  }, [featuredCerts]);
+
+  // Continuous buttery-smooth linear animation loop (no jumps, no rewind, infinite conveyor)
+  const SPEED = 42; // pixels per second continuous luxury glide
+
+  useAnimationFrame((time, delta) => {
+    if (
+      !isAutoPlayingRef.current ||
+      isHoveredRef.current ||
+      isDraggingRef.current ||
+      inspectedCert ||
+      isNudgingRef.current ||
+      singleSetWidth <= 0
+    ) {
+      return;
+    }
+
+    // Delta-time based smooth gliding (frame-rate independent 60/120Hz)
+    const moveBy = (SPEED * delta) / 1000;
+    let currentX = x.get() - moveBy;
+
+    // Mathematically seamless modulo wrap:
+    // When 1 full set of cards has passed, shift forward by singleSetWidth.
+    // Because the repeated sets are identical, the shift is 100% invisible!
+    if (currentX <= -singleSetWidth) {
+      currentX += singleSetWidth;
+    } else if (currentX > 0) {
+      currentX -= singleSetWidth;
+    }
+    x.set(currentX);
+
+    // Update active slide counter gently without causing render churn
+    const rawIdx = Math.round(Math.abs(currentX) / itemWidth);
+    const newIdx = ((rawIdx % total) + total) % total;
+    if (newIdx !== lastActiveIndexRef.current) {
+      lastActiveIndexRef.current = newIdx;
+      setActiveIndex(newIdx);
+    }
+  });
+
+  // Manual Nudge Forward (Next Button)
+  const handleNext = useCallback(() => {
+    if (singleSetWidth <= 0) return;
+    isNudgingRef.current = true;
+    const currentX = x.get();
+    const targetX = currentX - itemWidth;
+
+    animate(x, targetX, {
+      duration: 0.52,
+      ease: [0.25, 1, 0.5, 1],
+      onComplete: () => {
+        let finalX = x.get();
+        while (finalX <= -singleSetWidth) finalX += singleSetWidth;
+        while (finalX > 0) finalX -= singleSetWidth;
+        x.set(finalX);
+
+        const rawIdx = Math.round(Math.abs(finalX) / itemWidth);
+        const newIdx = ((rawIdx % total) + total) % total;
+        setActiveIndex(newIdx);
+        lastActiveIndexRef.current = newIdx;
+        isNudgingRef.current = false;
+      },
+    });
+  }, [itemWidth, singleSetWidth, total, x]);
+
+  // Manual Nudge Backward (Prev Button)
   const handlePrev = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
+    if (singleSetWidth <= 0) return;
+    isNudgingRef.current = true;
+    const currentX = x.get();
+    const targetX = currentX + itemWidth;
+
+    animate(x, targetX, {
+      duration: 0.52,
+      ease: [0.25, 1, 0.5, 1],
+      onComplete: () => {
+        let finalX = x.get();
+        while (finalX <= -singleSetWidth) finalX += singleSetWidth;
+        while (finalX > 0) finalX -= singleSetWidth;
+        x.set(finalX);
+
+        const rawIdx = Math.round(Math.abs(finalX) / itemWidth);
+        const newIdx = ((rawIdx % total) + total) % total;
+        setActiveIndex(newIdx);
+        lastActiveIndexRef.current = newIdx;
+        isNudgingRef.current = false;
+      },
+    });
+  }, [itemWidth, singleSetWidth, total, x]);
+
+  // Click on a dot to navigate directly to that card
+  const handleDotClick = useCallback((targetIdx) => {
+    if (singleSetWidth <= 0) return;
+    isNudgingRef.current = true;
+    const targetX = -targetIdx * itemWidth;
+
+    animate(x, targetX, {
+      duration: 0.58,
+      ease: [0.25, 1, 0.5, 1],
+      onComplete: () => {
+        setActiveIndex(targetIdx);
+        lastActiveIndexRef.current = targetIdx;
+        isNudgingRef.current = false;
+      },
+    });
+  }, [itemWidth, singleSetWidth, x]);
+
+  // Drag Gesture Handling
+  const handleDragStart = () => {
+    isDraggingRef.current = true;
+  };
+
+  const handleDrag = () => {
+    if (singleSetWidth <= 0) return;
+    let currentX = x.get();
+    while (currentX <= -singleSetWidth * 2) {
+      currentX += singleSetWidth;
+      x.set(currentX);
+    }
+    while (currentX > 0) {
+      currentX -= singleSetWidth;
+      x.set(currentX);
+    }
+    const rawIdx = Math.round(Math.abs(currentX) / itemWidth);
+    const newIdx = ((rawIdx % total) + total) % total;
+    if (newIdx !== lastActiveIndexRef.current) {
+      lastActiveIndexRef.current = newIdx;
+      setActiveIndex(newIdx);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 120);
+
+    let currentX = x.get();
+    while (currentX <= -singleSetWidth) currentX += singleSetWidth;
+    while (currentX > 0) currentX -= singleSetWidth;
+    x.set(currentX);
+
+    const rawIdx = Math.round(Math.abs(currentX) / itemWidth);
+    const newIdx = ((rawIdx % total) + total) % total;
+    setActiveIndex(newIdx);
+    lastActiveIndexRef.current = newIdx;
+  };
 
   const handleCopyId = (id) => {
     if (!id) return;
     navigator.clipboard.writeText(id);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  const handleCardClick = (cert) => {
+    if (isDraggingRef.current) return;
+    setInspectedCert(cert);
   };
 
   // Keyboard navigation & Escape key dismiss
@@ -365,11 +542,6 @@ const CertificationsStory = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [inspectedCert, handleNext, handlePrev]);
-
-  // Peek calculation: when activeIndex > 0, previous card peeks from left
-  const gap = 20;
-  const peekOffset = activeIndex > 0 ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 40 : 80) : 0;
-  const translateX = -activeIndex * (cardWidth + gap) + peekOffset;
 
   return (
     <section
@@ -417,7 +589,7 @@ const CertificationsStory = () => {
             </div>
 
             {/* Slider Navigation Arrows & Page Indicator */}
-            <div className="flex items-center gap-4 pt-2 text-xs font-mono text-[#C8B99F]">
+            <div className="flex items-center gap-3 sm:gap-4 pt-2 text-xs font-mono text-[#C8B99F] flex-wrap">
               <div className="flex items-center gap-2">
                 <button
                   onClick={handlePrev}
@@ -435,6 +607,20 @@ const CertificationsStory = () => {
                 </button>
               </div>
 
+              {/* Auto-Slide Toggle Button */}
+              <button
+                onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                className={`px-2.5 py-1.5 rounded-lg text-[10px] font-mono border transition-all duration-200 flex items-center gap-1.5 ${
+                  isAutoPlaying
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                    : 'bg-white/5 text-[#C8B99F] border-[#8E8170]/30 hover:text-white'
+                }`}
+                title={isAutoPlaying ? 'Pause Automatic Carousel' : 'Resume Automatic Carousel'}
+              >
+                {isAutoPlaying ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
+                <span>{isAutoPlaying ? 'AUTO' : 'PAUSED'}</span>
+              </button>
+
               <span className="text-[11px] tracking-widest text-[#8E8170]">
                 <span className="text-[#EAD9B8] font-bold">0{activeIndex + 1}</span> / 0{total}
               </span>
@@ -444,10 +630,10 @@ const CertificationsStory = () => {
                 {featuredCerts.map((_, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    onClick={() => handleDotClick(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 relative overflow-hidden ${
                       idx === activeIndex
-                        ? 'w-6 bg-[#EAD9B8]'
+                        ? 'w-7 bg-[#EAD9B8]'
                         : 'w-1.5 bg-[#8E8170]/40 hover:bg-[#8E8170]'
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
@@ -459,35 +645,37 @@ const CertificationsStory = () => {
         </div>
 
         {/* =========================================================================
-            RIGHT AREA: Horizontal Card Carousel with Peek Effect
+            RIGHT AREA: Infinite Continuous Gliding Conveyor with Movable Drag
             ========================================================================= */}
         <div
           ref={containerRef}
-          className="w-full lg:w-[64%] xl:w-[66%] flex-1 overflow-hidden relative py-2"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="w-full lg:w-[64%] xl:w-[66%] flex-1 overflow-hidden relative py-2 select-none"
         >
-          {/* Subtle gradient shadow on left edge when peeking */}
-          {activeIndex > 0 && (
-            <div className="absolute top-0 left-0 bottom-0 w-12 bg-gradient-to-r from-[#171717] to-transparent z-10 pointer-events-none" />
-          )}
+          {/* Subtle Left & Right Soft Fade Gradient Masks for Luxury Editorial Look */}
+          <div className="absolute top-0 left-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-[#171717] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#171717] to-transparent z-10 pointer-events-none" />
 
-          {/* Sliding Track */}
+          {/* Draggable & Auto-Gliding Seamless Infinite Track */}
           <motion.div
-            animate={{ x: translateX }}
-            transition={{ type: 'spring', stiffness: 220, damping: 26 }}
-            className="flex gap-5 items-stretch"
+            drag="x"
+            dragElastic={0.08}
+            onDragStart={handleDragStart}
+            onDrag={handleDrag}
+            onDragEnd={handleDragEnd}
+            style={{ x }}
+            className="flex gap-5 items-stretch cursor-grab active:cursor-grabbing will-change-transform"
           >
-            {featuredCerts.map((cert, index) => {
-              const isActive = index === activeIndex;
+            {displayList.map((cert, index) => {
               const meta = CATEGORY_META[cert.category];
 
               return (
                 <div
-                  key={cert.id}
-                  onClick={() => setInspectedCert(cert)}
+                  key={cert.uniqueKey || `${cert.id}-${index}`}
+                  onClick={() => handleCardClick(cert)}
                   style={{ width: `${cardWidth}px` }}
-                  className={`shrink-0 cursor-pointer group flex flex-col justify-between transition-all duration-300 ${
-                    isActive ? 'opacity-100 scale-100' : 'opacity-70 hover:opacity-90 scale-[0.98]'
-                  }`}
+                  className="shrink-0 cursor-pointer group flex flex-col justify-between transition-all duration-300 opacity-90 hover:opacity-100"
                 >
                   {/* Certificate Image Frame */}
                   <div className="relative w-full h-[210px] sm:h-[240px] md:h-[260px] rounded-2xl overflow-hidden bg-black/50 border border-[#8E8170]/30 group-hover:border-[#EAD9B8]/60 transition-all duration-500 shadow-xl group-hover:shadow-[0_16px_40px_rgba(234,217,184,0.12)]">
@@ -495,7 +683,8 @@ const CertificationsStory = () => {
                       <img
                         src={cert.image}
                         alt={cert.title}
-                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 pointer-events-none"
+                        loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#1b1b1b] to-[#121212]">

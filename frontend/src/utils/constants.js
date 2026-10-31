@@ -295,27 +295,135 @@ export const certifications = [
   {
     id: 1,
     title: "Deloitte Australia Data Analytics Job Simulation",
-    organization: "Forage Virtual Experience",
-    date: "February 2026",
+    organization: "Deloitte (via Forage)",
+    date: "February 6, 2026",
     category: "Data Analytics & EDA",
-    credentialId: "FORAGE-DEL-2026-8941",
-    skills: ["Tableau", "Data Analysis", "EDA", "Daikibo Telemetry Analysis"],
-    description: "Completed practical simulation involving telemetry data analysis, interactive dashboard engineering in Tableau, data cleaning pipelines, and executive recommendation summaries.",
-    link: "https://theforage.com/"
+    credentialId: "aBQ9Sfj8hx8Ynp4Db",
+    skills: ["Data Analysis", "Forensic Technology", "EDA", "Tableau", "Telemetry Data"],
+    description: "Completed practical simulation involving forensic technology, telemetry data analysis, interactive dashboard engineering in Tableau, data cleaning pipelines, and executive recommendation summaries.",
+    image: "/assets/certificate/deloitte_data_analytics.png",
+    link: "/assets/certificate/Data Analytics.pdf",
+    isImportant: true
   },
   {
     id: 2,
-    title: "Web Design Competition Certificate",
-    organization: "Technical Fest",
-    date: "2025",
-    category: "Design Competition",
-    credentialId: "TF-WD-2025-014",
-    skills: ["Web Design", "UI Layout", "Responsive Architecture"],
-    description: "Awarded top honor for exceptional responsive web design, spatial grid layout hierarchy, and dynamic frontend UI component craftsmanship.",
-    link: null
+    title: "Runner-Up — Coding Challenge (Transformation-2025)",
+    organization: "SRM University Sikkim (School of IT)",
+    date: "1st Nov 2025",
+    category: "Competitive Coding",
+    credentialId: "SRM-TRANS-2025-RUNNERUP",
+    skills: ["Competitive Coding", "Algorithms", "Problem Solving", "Rapid Development"],
+    description: "Awarded Runner-Up in the Coding Challenge at Transformation 2025 Tech Fest organized by the School of Information Technology, SRM University Sikkim.",
+    image: "/assets/certificate/runner_up_transformation_2025.jpg",
+    link: "/assets/certificate/runner-up.pdf",
+    isImportant: true
   },
   {
     id: 3,
+    title: "3rd Position — Website Designing (INNOVISION 2k25)",
+    organization: "The School of Information Technology, The ICFAI University Sikkim",
+    date: "Nov 2025",
+    category: "Design Competition",
+    credentialId: "ICFAI-INNOV-2025-WD3",
+    skills: ["Website Designing", "UI/UX Layout", "Responsive Architecture", "Frontend Development"],
+    description: "Awarded 3rd position in the Website Designing competition at INNOVISION 2k25 organized by The School of Information Technology, The ICFAI University Sikkim.",
+    image: "/assets/certificate/icfai_web_design_3rd.jpg",
+    link: "/assets/certificate/icfai_web_design_3rd.jpg",
+    isImportant: true
+  },
+  {
+    id: 4,
+    title: "Campus Exchange Program Certificate",
+    organization: "SRM Institute of Science & Technology, Chennai",
+    date: "Dec 2024 – Jan 2025",
+    category: "Academic Exchange",
+    credentialId: "SRM-CEP-2025-CHE",
+    skills: ["Cross-Campus Academic Immersion", "Advanced Systems", "Technical Collaboration"],
+    description: "Successfully completed intensive Campus Exchange Program at SRM Institute of Science and Technology (SRMIST), Kattankulathur, Chennai, from 29th December 2024 to 15th January 2025.",
+    image: "/assets/certificate/srm_campus_exchange.jpg",
+    link: "/assets/certificate/srm_campus_exchange.jpg",
+    isImportant: true
+  },
+  {
+    id: 5,
+    title: "Web Development Internship Certificate",
+    organization: "Groveus Informatics Pvt. Ltd.",
+    date: "March 2025 – May 2025",
+    category: "Professional Internship",
+    credentialId: "GRC20297",
+    skills: ["PHP", "CodeIgniter", "MySQL", "Full-Stack Web Dev"],
+    description: "Successfully built production web applications, client backend APIs, and dynamic database schemas during intensive industry internship.",
+    image: "/assets/certificate/groveus_certificate.jpeg",
+    link: "/assets/certificate/groveus_certificate.jpeg",
+    isImportant: true
+  },
+  {
+    id: 6,
+    title: "On The Job Training Program (OJT) Certificate",
+    organization: "Sikkim Manipal Institute of Technology (SMIT)",
+    date: "February 2022",
+    category: "Technical Training",
+    credentialId: "SMIT-OJT-2022-CA",
+    skills: ["Computer Applications", "Hands-on Computing", "Systems Administration", "IT Fundamentals"],
+    description: "Completed 18 days On The Job Training Program organized by the Department of Computer Applications, Sikkim Manipal Institute of Technology (SMIT), Majitar, Sikkim.",
+    image: "/assets/certificate/smit_on_the_job_training.jpg?v=2",
+    link: "/assets/certificate/smit_on_the_job_training.jpg?v=2",
+    isImportant: false
+  },
+  {
+    id: 7,
+    title: "Student Volunteer Certificate — MERAKI 2023",
+    organization: "SRM University Sikkim",
+    date: "23-24 Feb, 2023",
+    category: "Leadership & Community",
+    credentialId: "SRM-MERAKI-2023-VOL",
+    skills: ["Event Organization", "Technical Volunteering", "Community Leadership", "Team Coordination"],
+    description: "Certificate of Appreciation awarded for serving as a student volunteer at MERAKI 2023 organized by Shri Ramasamy Memorial University Sikkim.",
+    image: "/assets/certificate/meraki_volunteer_2023.jpg",
+    link: "/assets/certificate/meraki_volunteer_2023.jpg",
+    isImportant: false
+  },
+  {
+    id: 8,
+    title: "Type Racer Competition — INNOVISION 2k25",
+    organization: "The ICFAI University, Sikkim",
+    date: "21st November 2025",
+    category: "Competitive Coding",
+    credentialId: "ICFAI-INNOV-2025-TR",
+    skills: ["Algorithmic Speed", "Fast Prototyping", "Technical Competitions"],
+    description: "Certificate of Participation in Type Racer organized by the School of Information Technology, The ICFAI University Sikkim during INNOVISION 2k25.",
+    image: "/assets/certificate/icfai_typeracer_innovision.jpg?v=2",
+    link: "/assets/certificate/icfai_typeracer_innovision.jpg?v=2",
+    isImportant: false
+  },
+  {
+    id: 9,
+    title: "Innovation Ambassador (IA) Training — Foundation Level",
+    organization: "MoE's Innovation Cell & AICTE, Govt. of India",
+    date: "11-05-2026",
+    category: "Technical Achievement",
+    credentialId: "IA/Foundation/1101177",
+    skills: ["Innovation & IP", "Design Thinking", "Entrepreneurship", "Tech Leadership"],
+    description: "Successfully underwent Innovation Ambassador (IA) training 'Foundation Level' (16 sessions, 30 contact hours) conducted by MoE's Innovation Cell & AICTE during IIC calendar year 2025-26.",
+    image: "/assets/certificate/moe_innovation_ambassador.jpg",
+    link: "/assets/certificate/IA Online Training Certificate.pdf",
+    isImportant: false
+  },
+  {
+    id: 10,
+    title: "Entrepreneurship Development Program Certificate",
+    organization: "Entrepreneurship Development Cell",
+    date: "2025",
+    category: "Professional Development",
+    credentialId: "EDP-2025-CERT",
+    skills: ["Business Strategy", "Product Development", "Market Research", "Project Management"],
+    description: "Completed comprehensive training on entrepreneurial strategy, innovation methodologies, and startup product lifecycle development.",
+    image: null,
+    link: "/assets/certificate/Entrepreneurship.pdf",
+    isImportant: false
+  },
+  {
+    id: 11,
     title: "Coding Challenge Certificate",
     organization: "University Code Labs",
     date: "2025",
@@ -323,31 +431,9 @@ export const certifications = [
     credentialId: "UCL-CC-2025-089",
     skills: ["Problem Solving", "Algorithms", "Data Structures"],
     description: "Demonstrated advanced algorithmic problem-solving speed, data structure optimizations, and robust code implementations under strict time constraints.",
-    link: null
-  },
-  {
-    id: 4,
-    title: "Web Development Internship Certificate",
-    organization: "Groveus Informatics Pvt. Ltd.",
-    date: "2025",
-    category: "Professional Internship",
-    credentialId: "GRC20297",
-    skills: ["PHP", "CodeIgniter", "MySQL", "Full-Stack Web Dev"],
-    description: "Successfully built production web applications, client backend APIs, and dynamic database schemas during intensive industry internship.",
-    image: "/assets/certificate/groveus_certificate.jpeg",
-    link: null
-  },
-  {
-    id: 5,
-    title: "Runner-Up — Coding Challenge (Transformation-2025)",
-    organization: "SRM University Sikkim (School of IT)",
-    date: "Nov 2025",
-    category: "Competitive Coding",
-    credentialId: "SRM-TRANS-2025-RUNNERUP",
-    skills: ["Competitive Coding", "Algorithms", "Problem Solving", "Rapid Development"],
-    description: "Awarded Runner-Up in the Coding Challenge at Transformation 2025 Tech Fest organized by the School of Information Technology, SRM University Sikkim.",
-    image: "/assets/certificate/runner-up.jpeg",
-    link: "/assets/certificate/runner-up.pdf"
+    image: null,
+    link: null,
+    isImportant: false
   }
 ];
 
@@ -399,23 +485,23 @@ export const experience = [
 export const achievements = [
   {
     id: 1,
-    title: "3rd Place — Web Design Competition",
+    title: "3rd Position — Website Designing (INNOVISION 2k25)",
     category: "DESIGN & UI",
-    description: "Awarded 3rd place in an inter-institutional web design competition for UI/UX aesthetic, responsive structure, and functional layout.",
+    description: "Awarded 3rd position in the Website Designing competition at INNOVISION 2k25 organized by The School of Information Technology, The ICFAI University Sikkim.",
     icon: "award"
   },
   {
     id: 2,
-    title: "Runner-Up — Hackathon",
+    title: "Runner-Up — Coding Challenge (Transformation-2025)",
     category: "COMPETITIVE CODING",
-    description: "Secured runner-up position in a collaborative hackathon building innovative software solutions under strict time constraints.",
+    description: "Secured runner-up position in the Coding Challenge at Transformation 2025 Tech Fest organized by the School of Information Technology, SRM University Sikkim.",
     icon: "code"
   },
   {
     id: 3,
-    title: "Volunteering Leadership",
+    title: "Student Volunteer Leadership",
     category: "ACADEMIC & COMMUNITY",
-    description: "Active volunteer organizer for university technical events and academic workshops during Graduation (BCA) and Post-Graduation (MCA).",
+    description: "Active volunteer organizer for university technical events including MERAKI 2023 during Graduation (BCA) and Post-Graduation (MCA).",
     icon: "heart"
   }
 ];

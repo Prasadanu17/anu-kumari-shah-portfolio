@@ -4,6 +4,7 @@ import LoadingScreen from './components/common/LoadingScreen';
 import feather from 'feather-icons';
 import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
+import CertificationsPage from './pages/CertificationsPage';
 import Lenis from 'lenis';
 import { PortfolioProvider } from './context/PortfolioContext';
 
@@ -92,6 +93,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/certifications" element={<CertificationsPage />} />
+          <Route path="/certificates" element={<CertificationsPage />} />
         </Routes>
       </BrowserRouter>
     </PortfolioProvider>

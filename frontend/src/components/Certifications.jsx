@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame, animate } from 'framer-motion';
 import {
   Award,
   ShieldCheck,
@@ -20,64 +20,68 @@ import {
   Building,
   ArrowUpRight,
   Compass,
-  Cpu
+  Cpu,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 /* ==========================================================================
-   CATEGORY COLOR AND ICON METADATA
+   CATEGORY COLOR AND ICON METADATA (HIGH CONTRAST & MAXIMUM VISIBILITY)
    ========================================================================== */
 const CATEGORY_META = {
   'Data Analytics & EDA': {
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-emerald-500/50',
     foilGlow: 'rgba(16, 185, 129, 0.22)',
     accent: '#10b981',
     icon: Activity,
   },
   'Competitive Coding': {
-    badge: 'bg-rose-500/10 text-rose-300 border-rose-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-rose-500/50',
     foilGlow: 'rgba(244, 63, 94, 0.22)',
     accent: '#f43f5e',
     icon: Code2,
   },
   'Professional Internship': {
-    badge: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-purple-500/50',
     foilGlow: 'rgba(168, 85, 247, 0.22)',
     accent: '#a855f7',
     icon: Layers,
   },
   'Technical Achievement': {
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-sky-500/50',
     foilGlow: 'rgba(14, 165, 233, 0.22)',
     accent: '#0ea5e9',
     icon: Terminal,
   },
   'Design Competition': {
-    badge: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-amber-500/50',
     foilGlow: 'rgba(245, 158, 11, 0.22)',
     accent: '#f59e0b',
     icon: Sparkles,
   },
   'Professional Development': {
-    badge: 'bg-teal-500/10 text-teal-300 border-teal-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-teal-500/50',
     foilGlow: 'rgba(20, 184, 166, 0.22)',
     accent: '#14b8a6',
     icon: Sparkles,
   },
   'Academic Exchange': {
-    badge: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-indigo-500/50',
     foilGlow: 'rgba(99, 102, 241, 0.22)',
     accent: '#6366f1',
     icon: Compass,
   },
   'Technical Training': {
-    badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-cyan-500/50',
     foilGlow: 'rgba(6, 182, 212, 0.22)',
     accent: '#06b6d4',
     icon: Cpu,
   },
   'Leadership & Community': {
-    badge: 'bg-pink-500/10 text-pink-300 border-pink-500/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-pink-500/50',
     foilGlow: 'rgba(236, 72, 153, 0.22)',
     accent: '#ec4899',
     icon: Sparkles,
@@ -91,7 +95,7 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
   if (!cert) return null;
 
   const meta = CATEGORY_META[cert.category] || {
-    badge: 'bg-[#EAD9B8]/10 text-[#EAD9B8] border-[#8E8170]/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-white/20',
     accent: '#EAD9B8',
     icon: Award,
   };
@@ -138,10 +142,11 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className={`text-[9px] font-mono uppercase px-2 py-0.5 rounded border font-bold ${meta.badge}`}>
+              <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold px-3 py-1 rounded-lg bg-[#0a0a0a] text-white border border-white/20 shadow-md">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: meta.accent }} />
                 {cert.category}
               </span>
-              <span className="text-[9px] font-mono text-emerald-400 flex items-center gap-1">
+              <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 font-bold">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 VERIFIED CREDENTIAL
               </span>
@@ -152,7 +157,7 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
           </div>
         </div>
 
-        {/* Certificate Visual Display (Image or High-Tech Parchment Banner) */}
+        {/* Certificate Visual Display */}
         {cert.image ? (
           <div className="relative rounded-xl overflow-hidden border border-[#8E8170]/40 max-h-[300px] bg-black/50 group flex items-center justify-center">
             <img
@@ -311,7 +316,7 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
    ========================================================================== */
 const CertCard = ({ cert, index, onInspect, onCopyId, copiedId }) => {
   const meta = CATEGORY_META[cert.category] || {
-    badge: 'bg-[#EAD9B8]/10 text-[#EAD9B8] border-[#8E8170]/30',
+    badge: 'bg-[#0a0a0a]/95 text-white border-white/20',
     accent: '#EAD9B8',
     icon: Award,
   };
@@ -349,70 +354,62 @@ const CertCard = ({ cert, index, onInspect, onCopyId, copiedId }) => {
             >
               <CategoryIcon className="w-7 h-7" />
             </div>
-            <span className="text-[11px] font-display font-bold text-[#EAD9B8]/90 max-w-[220px] line-clamp-1">
+            <span className="text-[10px] font-mono text-[#8E8170] uppercase tracking-wider">
               {cert.organization}
-            </span>
-            <span className="text-[9px] font-mono text-[#8E8170] mt-0.5">
-              {cert.date}
             </span>
           </div>
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent opacity-80" />
 
-        {/* Hover Inspect Specs Overlay */}
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+        {/* Category Pill Tag (Simple, Best Visible, 100% Contrast) */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold px-3 py-1 rounded-lg bg-[#0a0a0a]/95 text-white border border-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.85)] backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: meta.accent }} />
+            <span>{cert.category}</span>
+          </span>
+        </div>
+
+        {/* Hover Inspect Overlay */}
+        <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <span className="px-3 py-1.5 rounded-lg bg-[#EAD9B8] text-[#171717] font-mono text-xs font-bold flex items-center gap-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
             <Eye className="w-3.5 h-3.5" />
             <span>INSPECT CREDENTIAL</span>
           </span>
         </div>
-
-        {/* Top Badges */}
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
-          <span className={`px-2.5 py-1 rounded-md text-[9px] font-mono uppercase font-semibold backdrop-blur-md border ${meta.badge}`}>
-            {cert.category}
-          </span>
-
-          <span className="px-2 py-0.5 rounded-md text-[8.5px] font-mono bg-black/75 border border-emerald-500/30 text-emerald-400 flex items-center gap-1 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            VERIFIED
-          </span>
-        </div>
       </div>
 
       {/* Card Content */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
-        <div>
-          {/* Organization & Date */}
-          <div className="flex items-center justify-between text-[10px] font-mono text-[#C8B99F] mb-1">
-            <span className="flex items-center gap-1 truncate max-w-[180px]">
-              <Building className="w-3 h-3 text-[#EAD9B8]" />
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-[11px] font-mono text-[#8E8170]">
+            <span className="flex items-center gap-1.5 truncate max-w-[210px] text-[#C8B99F]">
+              <Building className="w-3 h-3 text-[#8E8170] shrink-0" />
               <span className="truncate">{cert.organization}</span>
             </span>
-            <span className="flex items-center gap-1 text-[#8E8170]">
-              <Calendar className="w-3 h-3" />
+            <span className="flex items-center gap-1 shrink-0">
+              <Calendar className="w-3 h-3 text-[#8E8170]" />
               <span>{cert.date}</span>
             </span>
           </div>
 
-          {/* Title */}
           <h3
             onClick={() => onInspect(cert)}
-            className="text-base sm:text-lg font-display font-bold text-[#EAD9B8] group-hover:text-[#F5EBDD] transition-colors cursor-pointer leading-snug line-clamp-2"
+            className="text-base font-display font-bold text-[#F5EBDD] group-hover:text-[#EAD9B8] transition-colors line-clamp-2 cursor-pointer leading-snug"
           >
             {cert.title}
           </h3>
 
-          {/* Description */}
-          <p className="text-[11px] sm:text-xs text-[#C8B99F] font-light leading-relaxed mt-1.5 line-clamp-2">
+          <p className="text-xs text-[#C8B99F]/90 font-light line-clamp-2 leading-relaxed">
             {cert.description}
           </p>
 
-          {/* Credential ID chip with Copy Button */}
+          {/* Credential ID */}
           {cert.credentialId && (
-            <div className="mt-3 pt-3 border-t border-white/[0.05] flex items-center justify-between text-[10px] font-mono text-[#8E8170]">
-              <span className="truncate max-w-[160px]">ID: {cert.credentialId}</span>
+            <div className="pt-2 flex items-center justify-between text-[10px] font-mono bg-black/30 p-2 rounded-lg border border-white/5">
+              <span className="text-[#8E8170] truncate max-w-[160px]">
+                ID: {cert.credentialId}
+              </span>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -478,7 +475,7 @@ const CertCard = ({ cert, index, onInspect, onCopyId, copiedId }) => {
 };
 
 /* ==========================================================================
-   MAIN COMPREHENSIVE CERTIFICATIONS COMPONENT
+   MAIN COMPREHENSIVE CERTIFICATIONS COMPONENT WITH AUTOMATED CATEGORY MARQUEE
    ========================================================================== */
 const Certifications = () => {
   const { certifications } = usePortfolio();
@@ -486,6 +483,26 @@ const Certifications = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCert, setSelectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+
+  // Automation marquee states & refs
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [singleSetWidth, setSingleSetWidth] = useState(0);
+
+  const x = useMotionValue(0);
+  const isHoveredRef = useRef(false);
+  const isDraggingRef = useRef(false);
+  const isAutoPlayingRef = useRef(true);
+  const isNudgingRef = useRef(false);
+  const setRef = useRef(null);
+
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+  }, [isHovered]);
+
+  useEffect(() => {
+    isAutoPlayingRef.current = isAutoPlaying;
+  }, [isAutoPlaying]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -508,6 +525,137 @@ const Certifications = () => {
     return Array.from(cats);
   }, [certifications]);
 
+  // Structured category objects list
+  const categoryList = useMemo(() => {
+    const base = [
+      { id: 'all', name: 'All Credentials', count: certifications.length, icon: Award },
+      ...categories.map((cat) => ({
+        id: cat,
+        name: cat,
+        count: certifications.filter((c) => c.category === cat).length,
+        icon: CATEGORY_META[cat]?.icon || Award,
+      })),
+    ];
+    return base;
+  }, [categories, certifications]);
+
+  // Measure pixel width of one complete set of category pills
+  useEffect(() => {
+    const measureWidth = () => {
+      if (setRef.current) {
+        setSingleSetWidth(setRef.current.offsetWidth);
+      }
+    };
+    measureWidth();
+    // Re-check shortly after mount to ensure layout calculation has stabilized
+    const timer = setTimeout(measureWidth, 250);
+    window.addEventListener('resize', measureWidth);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measureWidth);
+    };
+  }, [categoryList]);
+
+  // Continuous buttery-smooth automated marquee loop (60/120fps linear glide)
+  const SPEED = 32; // px per second
+
+  useAnimationFrame((time, delta) => {
+    if (
+      !isAutoPlayingRef.current ||
+      isHoveredRef.current ||
+      isDraggingRef.current ||
+      isNudgingRef.current ||
+      singleSetWidth <= 0
+    ) {
+      return;
+    }
+
+    const moveBy = (SPEED * delta) / 1000;
+    let currentX = x.get() - moveBy;
+
+    // Mathematically seamless wrap: jump by singleSetWidth with ZERO visual jump
+    if (currentX <= -singleSetWidth) {
+      currentX += singleSetWidth;
+    } else if (currentX > 0) {
+      currentX -= singleSetWidth;
+    }
+    x.set(currentX);
+  });
+
+  // Manual Nudge Forward
+  const handleNudgeForward = useCallback(() => {
+    if (singleSetWidth <= 0) return;
+    isNudgingRef.current = true;
+    const currentX = x.get();
+    const targetX = currentX - 240;
+
+    animate(x, targetX, {
+      duration: 0.45,
+      ease: [0.25, 1, 0.5, 1],
+      onComplete: () => {
+        let finalX = x.get();
+        while (finalX <= -singleSetWidth) finalX += singleSetWidth;
+        while (finalX > 0) finalX -= singleSetWidth;
+        x.set(finalX);
+        isNudgingRef.current = false;
+      },
+    });
+  }, [singleSetWidth, x]);
+
+  // Manual Nudge Backward
+  const handleNudgeBackward = useCallback(() => {
+    if (singleSetWidth <= 0) return;
+    isNudgingRef.current = true;
+    const currentX = x.get();
+    const targetX = currentX + 240;
+
+    animate(x, targetX, {
+      duration: 0.45,
+      ease: [0.25, 1, 0.5, 1],
+      onComplete: () => {
+        let finalX = x.get();
+        while (finalX <= -singleSetWidth) finalX += singleSetWidth;
+        while (finalX > 0) finalX -= singleSetWidth;
+        x.set(finalX);
+        isNudgingRef.current = false;
+      },
+    });
+  }, [singleSetWidth, x]);
+
+  // Drag Gesture Handling
+  const handleDragStart = () => {
+    isDraggingRef.current = true;
+  };
+
+  const handleDrag = () => {
+    if (singleSetWidth <= 0) return;
+    let currentX = x.get();
+    while (currentX <= -singleSetWidth * 2) {
+      currentX += singleSetWidth;
+      x.set(currentX);
+    }
+    while (currentX > 0) {
+      currentX -= singleSetWidth;
+      x.set(currentX);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 120);
+
+    let currentX = x.get();
+    while (currentX <= -singleSetWidth) currentX += singleSetWidth;
+    while (currentX > 0) currentX -= singleSetWidth;
+    x.set(currentX);
+  };
+
+  const handleCategoryClick = (catId) => {
+    if (isDraggingRef.current) return;
+    setActiveCategory(catId);
+  };
+
   // Filtered list
   const filteredCerts = useMemo(() => {
     return certifications.filter((cert) => {
@@ -528,64 +676,165 @@ const Certifications = () => {
     });
   }, [certifications, activeCategory, searchQuery]);
 
+  // Render Category Pill Item (Simple, Clear, Best Visible)
+  const renderCategoryPill = (cat, setIndex) => {
+    const isSelected = activeCategory === cat.id;
+    const CatIcon = cat.icon || Award;
+
+    return (
+      <button
+        key={`${cat.id}-set${setIndex}`}
+        onClick={() => handleCategoryClick(cat.id)}
+        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all shrink-0 flex items-center gap-2.5 border select-none ${
+          isSelected
+            ? 'bg-[#EAD9B8] text-[#121212] font-bold border-2 border-[#EAD9B8] shadow-[0_0_20px_rgba(234,217,184,0.4)] scale-[1.02]'
+            : 'bg-[#1c1c1c] text-[#F5EBDD] border border-white/20 hover:text-white hover:bg-[#282828] hover:border-white/40 active:scale-95'
+        }`}
+      >
+        <CatIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#121212]' : 'text-[#EAD9B8]'}`} />
+        <span className="whitespace-nowrap tracking-wide">{cat.name}</span>
+        <span
+          className={`px-2 py-0.5 rounded-full text-[11px] font-mono font-bold ${
+            isSelected
+              ? 'bg-[#121212] text-[#EAD9B8]'
+              : 'bg-white/10 text-white'
+          }`}
+        >
+          {cat.count}
+        </span>
+      </button>
+    );
+  };
+
   return (
     <div className="space-y-10 sm:space-y-12">
-      {/* ── Filter & Search Toolbar ── */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2 rounded-2xl bg-[#141414]/90 border border-white/[0.08] backdrop-blur-xl">
-        {/* Navigation Category Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-          <button
-            onClick={() => setActiveCategory('all')}
-            className={`px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all shrink-0 ${
-              activeCategory === 'all'
-                ? 'bg-[#EAD9B8] text-[#171717] shadow-md'
-                : 'text-[#C8B99F] hover:text-[#F5EBDD] hover:bg-white/5'
-            }`}
-          >
-            ALL CREDENTIALS ({certifications.length})
-          </button>
 
-          {categories.map((cat) => {
-            const count = certifications.filter((c) => c.category === cat).length;
-            const meta = CATEGORY_META[cat];
-            const CatIcon = meta?.icon || Award;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1.5 ${
-                  activeCategory === cat
-                    ? 'bg-[#EAD9B8] text-[#171717] shadow-md'
-                    : 'text-[#C8B99F] hover:text-[#F5EBDD] hover:bg-white/5'
-                }`}
-              >
-                <CatIcon className="w-3.5 h-3.5" />
-                <span>
-                  {cat.toUpperCase()} ({count})
+      {/* ── Filter & Search Toolbar with Automated Category Ribbon ── */}
+      <div className="space-y-3">
+        {/* Top Controls Row: Instant Search + Category Telemetry + Automation Toggles */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-[#141414]/90 border border-white/[0.08] backdrop-blur-xl">
+          {/* Active Filter Pill or Reset Status */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] sm:text-xs font-mono text-[#8E8170] uppercase tracking-wider flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              STATUS:
+            </span>
+            {activeCategory === 'all' ? (
+              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] sm:text-xs font-mono text-[#EAD9B8] font-bold">
+                SHOWING ALL ({filteredCerts.length})
+              </span>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <span className="px-2.5 py-1 rounded-lg bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 text-[10px] sm:text-xs font-mono text-[#EAD9B8] font-bold">
+                  {activeCategory.toUpperCase()} ({filteredCerts.length})
                 </span>
+                <button
+                  onClick={() => setActiveCategory('all')}
+                  className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-mono text-[#C8B99F] hover:text-white transition-colors border border-white/10"
+                  title="Clear Category Filter"
+                >
+                  ✕ RESET ALL
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Controls: Prev/Next nudge, Auto-play toggle, Search Input */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            {/* Auto-Slide Toggle Button */}
+            <button
+              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+              className={`px-2.5 py-1.5 rounded-xl text-[10px] font-mono border transition-all duration-200 flex items-center gap-1.5 ${
+                isAutoPlaying
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                  : 'bg-white/5 text-[#C8B99F] border-[#8E8170]/30 hover:text-white'
+              }`}
+              title={isAutoPlaying ? 'Pause Automated Ribbon' : 'Resume Automated Ribbon'}
+            >
+              {isAutoPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+              <span>{isAutoPlaying ? 'AUTO' : 'PAUSED'}</span>
+            </button>
+
+            {/* Prev / Next Nudge Chevrons */}
+            <div className="flex items-center gap-1">
+              <button
+                onClick={handleNudgeBackward}
+                className="p-1.5 rounded-lg border border-[#8E8170]/30 hover:border-[#EAD9B8] text-[#C8B99F] hover:text-[#EAD9B8] hover:bg-white/5 transition-all"
+                aria-label="Scroll Categories Left"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
               </button>
-            );
-          })}
+              <button
+                onClick={handleNudgeForward}
+                className="p-1.5 rounded-lg border border-[#8E8170]/30 hover:border-[#EAD9B8] text-[#C8B99F] hover:text-[#EAD9B8] hover:bg-white/5 transition-all"
+                aria-label="Scroll Categories Right"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Instant Search Bar */}
+            <div className="relative min-w-[180px] sm:w-60">
+              <Search className="w-3.5 h-3.5 text-[#8E8170] absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search credentials..."
+                className="w-full pl-8 pr-7 py-1.5 rounded-xl bg-black/40 border border-white/[0.08] text-xs font-mono text-[#F5EBDD] placeholder-[#8E8170] focus:outline-none focus:border-[#EAD9B8]/50"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8E8170] hover:text-white"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Instant Search Bar */}
-        <div className="relative min-w-[200px] sm:w-64">
-          <Search className="w-3.5 h-3.5 text-[#8E8170] absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search credential, skill, issuer..."
-            className="w-full pl-8 pr-7 py-1.5 rounded-xl bg-black/40 border border-white/[0.08] text-xs font-mono text-[#F5EBDD] placeholder-[#8E8170] focus:outline-none focus:border-[#EAD9B8]/50"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8E8170] hover:text-white"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          )}
+        {/* ── Automated Infinite Continuous Gliding Category Conveyor ── */}
+        <div
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="relative w-full overflow-hidden py-2 px-1 rounded-2xl bg-[#141414]/70 border border-white/[0.06] backdrop-blur-md select-none group/ribbon"
+        >
+          {/* Left & Right Soft Fade Gradient Masks for Luxury Editorial Look */}
+          <div className="absolute top-0 left-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-[#141414] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-[#141414] to-transparent z-10 pointer-events-none" />
+
+          {/* Draggable & Auto-Gliding Seamless Infinite Ribbon */}
+          <motion.div
+            drag="x"
+            dragElastic={0.08}
+            onDragStart={handleDragStart}
+            onDrag={handleDrag}
+            onDragEnd={handleDragEnd}
+            style={{ x }}
+            className="flex shrink-0 items-center cursor-grab active:cursor-grabbing will-change-transform py-0.5"
+          >
+            {/* Set 0 (Measured with ref) */}
+            <div ref={setRef} className="flex shrink-0 items-center gap-2.5 pr-2.5">
+              {categoryList.map((cat) => renderCategoryPill(cat, 0))}
+            </div>
+
+            {/* Set 1 */}
+            <div className="flex shrink-0 items-center gap-2.5 pr-2.5">
+              {categoryList.map((cat) => renderCategoryPill(cat, 1))}
+            </div>
+
+            {/* Set 2 */}
+            <div className="flex shrink-0 items-center gap-2.5 pr-2.5">
+              {categoryList.map((cat) => renderCategoryPill(cat, 2))}
+            </div>
+
+            {/* Set 3 */}
+            <div className="flex shrink-0 items-center gap-2.5 pr-2.5">
+              {categoryList.map((cat) => renderCategoryPill(cat, 3))}
+            </div>
+          </motion.div>
         </div>
       </div>
 
@@ -663,4 +912,3 @@ const Certifications = () => {
 };
 
 export default Certifications;
-

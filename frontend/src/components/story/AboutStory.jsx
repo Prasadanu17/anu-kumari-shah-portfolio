@@ -108,29 +108,40 @@ const AboutStory = () => {
             </span>
           </motion.div>
 
-          {/* Title */}
-          <motion.h2
+          {/* Title & Subtitle */}
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.08 }}
-            className="font-display font-extrabold text-[#EAD9B8] text-2xl sm:text-3xl md:text-4xl tracking-tight uppercase leading-snug"
+            className="space-y-1.5"
           >
-            ENGINEERING INTELLIGENT SYSTEMS
-          </motion.h2>
+            <h2 className="font-display font-extrabold text-[#EAD9B8] text-2xl sm:text-3xl md:text-4xl tracking-tight uppercase leading-snug">
+              Who Am I?
+            </h2>
+            <p className="font-mono text-xs sm:text-sm text-[#C8B99F] tracking-wide font-medium">
+              Crafting intelligent systems at the intersection of AI, data, and the web.
+            </p>
+          </motion.div>
 
-          {/* Clean Storytelling Narrative */}
+          {/* Clean, Concise Storytelling Narrative */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="space-y-2 text-[#F5EBDD] text-xs sm:text-sm md:text-base font-light leading-relaxed"
+            className="space-y-2.5 text-[#F5EBDD] text-xs sm:text-sm md:text-[14px] font-light leading-relaxed"
           >
             <p>
-              I am an MCA student at ICFAI University, Sikkim, with a deep interest in Artificial Intelligence, Machine Learning, and modern full-stack web development.
+              Hi, I'm <strong className="text-[#EAD9B8] font-semibold">Anu Kumari Shah</strong>, an MCA student at ICFAI University, Sikkim, with a background in Computer Applications and a focus on Artificial Intelligence, Machine Learning, and Web Development.
             </p>
             <p>
-              With practical experience built through industry web development internships and client projects, I focus on building intelligent, scalable systems combining NLP, computer vision, and robust full-stack architecture.
+              From engineering full-stack applications with databases and intuitive user interfaces through client projects and internships, to exploring intelligent ML systems, I enjoy turning ideas into useful, practical technology.
             </p>
+            <div className="pt-0.5">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#EAD9B8]/10 border border-[#EAD9B8]/30 text-[#EAD9B8] text-xs sm:text-sm font-mono font-bold tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Always learning. Always building.
+              </span>
+            </div>
           </motion.div>
 
           {/* Education Information visually highlighted */}

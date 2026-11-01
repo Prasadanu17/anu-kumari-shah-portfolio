@@ -1,20 +1,20 @@
 export const personalInfo = {
   name: "Anu Kumari Shah",
   title: "AI/ML Engineer × Full-Stack Developer",
-  tagline: "I build intelligent systems and modern web experiences using AI, machine learning, and full-stack technologies.",
+  tagline: "MCA student at ICFAI University, Sikkim with a background in Computer Applications and a growing interest in AI, Machine Learning, and Web Development. Always learning. Always building.",
   email: "anu705545@gmail.com",
   location: "Gangtok, Sikkim",
-  bio: "MCA student at ICFAI University, Sikkim with a deep passion for Artificial Intelligence, Machine Learning, Deep Learning, and modern full-stack web development. Focused on creating intelligent, practical systems that bridge research and real-world software applications.",
+  bio: "MCA student at ICFAI University, Sikkim with a background in Computer Applications and a growing interest in Artificial Intelligence, Machine Learning, and Web Development. Always learning. Always building.",
   github: "https://github.com/Prasadanu17",
   linkedin: "https://linkedin.com/in/anu-shah-102594348",
   resume: "/assets/Anu Kumari Shah-Resume.pdf"
 };
 
 export const heroHighlights = [
-  "MCA Student",
-  "AI/ML Learner",
-  "Web Developer",
-  "Problem Solver"
+  "MCA @ ICFAI Sikkim",
+  "AI & ML Explorer",
+  "Web Development",
+  "Always Learning. Always Building."
 ];
 
 export const education = [

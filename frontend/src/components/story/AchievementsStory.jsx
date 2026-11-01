@@ -65,17 +65,19 @@ const AchievementsStory = () => {
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: idx * 0.1 }}
-                className="p-4 sm:p-6 rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/60 transition-all duration-300 shadow-xl space-y-3 group relative overflow-hidden"
+                initial={{ opacity: 0, y: 25, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                transition={{ duration: 0.45, delay: idx * 0.1, ease: [0.34, 1.56, 0.64, 1] }}
+                className="p-4 sm:p-6 rounded-2xl bg-[#1c1c1c] border border-[#8E8170]/30 hover:border-[#EAD9B8]/70 transition-all duration-300 shadow-xl space-y-3 group relative overflow-hidden hover:shadow-[0_16px_40px_rgba(234,217,184,0.12)]"
               >
-                <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/[0.04] border border-[#8E8170]/40 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-all duration-300">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/[0.04] border border-[#8E8170]/40 flex items-center justify-center text-[#EAD9B8] group-hover:bg-[#EAD9B8] group-hover:text-[#171717] transition-all duration-300 shrink-0">
                     <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-mono text-[#C8B99F] font-bold uppercase tracking-wider">
-                    {item.category}
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-sans font-bold uppercase tracking-wider bg-[#0a0a0a]/90 text-white border border-white/20 shadow-md">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#EAD9B8] shrink-0" />
+                    <span>{item.category}</span>
                   </span>
                 </div>
 
@@ -83,7 +85,7 @@ const AchievementsStory = () => {
                   <h3 className="text-sm sm:text-base md:text-lg font-display font-bold text-[#EAD9B8] group-hover:text-[#F5EBDD] transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-[#F5EBDD]/90 font-light leading-relaxed pt-0.5">
+                  <p className="text-xs sm:text-sm text-[#F5EBDD]/90 font-light leading-relaxed pt-0.5">
                     {item.description}
                   </p>
                 </div>

@@ -57,11 +57,15 @@ const HomeStory = () => {
           className="w-full space-y-3 sm:space-y-4 md:space-y-5 z-30 min-w-0"
         >
           {/* Status Kicker */}
-          <motion.div variants={itemVariants} className="flex items-center gap-2 sm:gap-3">
+          <motion.div variants={itemVariants} className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="w-4 sm:w-8 h-[2px] bg-[#8E8170] shrink-0"></span>
-            <p className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-[0.15em] sm:tracking-[0.25em] uppercase font-bold leading-tight truncate">
+            <p className="text-[10px] sm:text-xs font-mono text-[#C8B99F] tracking-[0.15em] sm:tracking-[0.25em] uppercase font-bold leading-tight">
               PORTFOLIO // INTELLIGENT SYSTEMS
             </p>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 text-[#EAD9B8] text-[9.5px] sm:text-[10px] font-mono font-bold tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Always learning. Always building.
+            </span>
           </motion.div>
 
           {/* Main Title & Role */}
@@ -70,7 +74,7 @@ const HomeStory = () => {
               ANU KUMARI SHAH
             </h1>
             <p className="text-xs sm:text-sm md:text-base font-mono text-[#C8B99F] tracking-wider font-semibold uppercase">
-              AI/ML ENGINEER × FULL-STACK
+              MCA Student @ ICFAI University, Sikkim × AI/ML & Web Development
             </p>
           </motion.div>
 
@@ -79,7 +83,7 @@ const HomeStory = () => {
             variants={itemVariants}
             className="text-[#F5EBDD] text-xs sm:text-sm md:text-base leading-relaxed font-light max-w-xl"
           >
-            "I build intelligent systems and modern web experiences using AI, machine learning, and full-stack technologies."
+            "{personalInfo.tagline || 'MCA student at ICFAI University, Sikkim with a background in Computer Applications and a growing interest in AI, Machine Learning, and Web Development. Always learning. Always building.'}"
           </motion.p>
 
           {/* Identity Highlights Chips */}

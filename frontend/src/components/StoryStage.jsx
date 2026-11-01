@@ -218,32 +218,247 @@ const StoryStage = () => {
   const currentChapter = CHAPTERS[currentChapterIndex];
   const CurrentComponent = currentChapter.Component;
 
-  // Cinematic Storytelling Slide Animation Variants (Fast, silky-smooth & GPU friendly)
-  const storyVariants = {
-    enter: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? 24 : -24,
-      scale: 0.995,
-    }),
-    center: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.36,
-        ease: [0.16, 1, 0.3, 1],
+  // Tailored, unique cinematic animation variants for each distinct chapter
+  const SECTION_ANIMATIONS = {
+    // 01 Home: Dramatic Cinematic Zoom & Focus Reveal
+    home: {
+      enter: (dir) => ({
+        opacity: 0,
+        scale: 0.92,
+        y: dir > 0 ? 30 : -30,
+        filter: 'blur(8px)',
+      }),
+      center: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
       },
+      exit: (dir) => ({
+        opacity: 0,
+        scale: 1.04,
+        y: dir > 0 ? -30 : 30,
+        filter: 'blur(6px)',
+        transition: { duration: 0.25, ease: 'easeIn' },
+      }),
     },
-    exit: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? -24 : 24,
-      scale: 0.995,
-      transition: {
-        duration: 0.22,
-        ease: [0.16, 1, 0.3, 1],
+
+    // 02 About: Editorial Horizontal Unfold & Slide
+    about: {
+      enter: (dir) => ({
+        opacity: 0,
+        x: dir > 0 ? 70 : -70,
+        scale: 0.98,
+        filter: 'blur(4px)',
+      }),
+      center: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
       },
-    }),
+      exit: (dir) => ({
+        opacity: 0,
+        x: dir > 0 ? -60 : 60,
+        scale: 0.98,
+        filter: 'blur(4px)',
+        transition: { duration: 0.24, ease: 'easeIn' },
+      }),
+    },
+
+    // 03 Journey: Vertical Timeline Elevator Flow
+    journey: {
+      enter: (dir) => ({
+        opacity: 0,
+        y: dir > 0 ? 80 : -80,
+        scale: 0.96,
+      }),
+      center: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.46, ease: [0.16, 1, 0.3, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        y: dir > 0 ? -70 : 70,
+        scale: 0.96,
+        transition: { duration: 0.24, ease: 'easeIn' },
+      }),
+    },
+
+    // 04 Skills: Quantum Constellation Dispersion & Spring Pop
+    skills: {
+      enter: (dir) => ({
+        opacity: 0,
+        scale: 0.88,
+        rotate: dir > 0 ? -2 : 2,
+        filter: 'blur(6px)',
+      }),
+      center: {
+        opacity: 1,
+        scale: 1,
+        rotate: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.48, ease: [0.175, 0.885, 0.32, 1.1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        scale: 0.9,
+        rotate: dir > 0 ? 2 : -2,
+        filter: 'blur(6px)',
+        transition: { duration: 0.22, ease: 'easeIn' },
+      }),
+    },
+
+    // 05 Projects: Card Deck Lateral Cascade
+    projects: {
+      enter: (dir) => ({
+        opacity: 0,
+        x: dir > 0 ? 60 : -60,
+        y: 20,
+        rotateZ: dir > 0 ? 1.5 : -1.5,
+      }),
+      center: {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        rotateZ: 0,
+        transition: { duration: 0.44, ease: [0.16, 1, 0.3, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        x: dir > 0 ? -50 : 50,
+        y: -20,
+        rotateZ: dir > 0 ? -1 : 1,
+        transition: { duration: 0.24, ease: 'easeIn' },
+      }),
+    },
+
+    // 06 Experience: 3D Spatial Flip & Drop
+    experience: {
+      enter: (dir) => ({
+        opacity: 0,
+        rotateX: dir > 0 ? 12 : -12,
+        y: dir > 0 ? 45 : -45,
+        scale: 0.97,
+      }),
+      center: {
+        opacity: 1,
+        rotateX: 0,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.44, ease: [0.16, 1, 0.3, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        rotateX: dir > 0 ? -10 : 10,
+        y: dir > 0 ? -40 : 40,
+        scale: 0.97,
+        transition: { duration: 0.22, ease: 'easeIn' },
+      }),
+    },
+
+    // 07 Certifications: 3D Cylindrical Hologram Swing
+    certifications: {
+      enter: (dir) => ({
+        opacity: 0,
+        rotateY: dir > 0 ? 14 : -14,
+        z: -90,
+        scale: 0.95,
+        filter: 'blur(4px)',
+      }),
+      center: {
+        opacity: 1,
+        rotateY: 0,
+        z: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        transition: { duration: 0.46, ease: [0.16, 1, 0.3, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        rotateY: dir > 0 ? -14 : 14,
+        z: -90,
+        scale: 0.95,
+        filter: 'blur(4px)',
+        transition: { duration: 0.24, ease: 'easeIn' },
+      }),
+    },
+
+    // 08 Achievements: Triumphant Victory Spring Pop
+    achievements: {
+      enter: (dir) => ({
+        opacity: 0,
+        scale: 0.88,
+        y: 40,
+      }),
+      center: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: { duration: 0.48, ease: [0.34, 1.56, 0.64, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        scale: 0.94,
+        y: -30,
+        transition: { duration: 0.22, ease: 'easeIn' },
+      }),
+    },
+
+    // 09 Resume: Document Parchment Cascade Unfurl
+    resume: {
+      enter: (dir) => ({
+        opacity: 0,
+        y: dir > 0 ? 60 : -60,
+        scaleY: 0.94,
+        filter: 'blur(4px)',
+      }),
+      center: {
+        opacity: 1,
+        y: 0,
+        scaleY: 1,
+        filter: 'blur(0px)',
+        transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        y: dir > 0 ? -45 : 45,
+        scaleY: 0.96,
+        filter: 'blur(4px)',
+        transition: { duration: 0.22, ease: 'easeIn' },
+      }),
+    },
+
+    // 10 Contact: Magnetic Signal Ripple & Elevate
+    contact: {
+      enter: (dir) => ({
+        opacity: 0,
+        scale: 0.94,
+        y: 35,
+        filter: 'blur(6px)',
+      }),
+      center: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+      },
+      exit: (dir) => ({
+        opacity: 0,
+        scale: 1.02,
+        y: -25,
+        filter: 'blur(4px)',
+        transition: { duration: 0.22, ease: 'easeIn' },
+      }),
+    },
   };
+
+  const activeVariant = SECTION_ANIMATIONS[currentChapter.id] || SECTION_ANIMATIONS.home;
 
   return (
     <div
@@ -267,7 +482,7 @@ const StoryStage = () => {
           <motion.div
             key={currentChapter.id}
             custom={direction}
-            variants={storyVariants}
+            variants={activeVariant}
             initial="enter"
             animate="center"
             exit="exit"

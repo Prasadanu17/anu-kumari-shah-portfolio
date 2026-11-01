@@ -151,8 +151,9 @@ const ProjectDetailPanel = ({ project, onClose }) => {
     >
       {/* Top Header: Badge & Close Button */}
       <div className="flex items-center justify-between gap-3">
-        <span className="inline-block text-[11px] font-mono uppercase bg-[#EAD9B8]/10 border border-[#8E8170]/40 text-[#EAD9B8] px-3 py-1 rounded-md font-bold tracking-wider">
-          {project.tag || (isAi ? 'AI / ML & DATA' : 'FULL-STACK WEB')}
+        <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold px-3 py-1 rounded-lg bg-[#0a0a0a]/95 text-white border border-white/20 shadow-md">
+          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+          <span>{project.tag || (isAi ? 'AI / ML & DATA' : 'FULL-STACK WEB')}</span>
         </span>
         <button
           onClick={onClose}
@@ -319,20 +320,20 @@ const ProjectsStory = () => {
             </h2>
           </div>
 
-          {/* Category Tabs: AI Projects & Full-Stack Websites */}
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+          {/* Category Tabs: AI Projects & Full-Stack Websites (Simple, Clear, Best Visible) */}
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => {
                 setActiveCategory('all');
                 setActiveProjIndex(null);
               }}
-              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all border ${
                 activeCategory === 'all'
-                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
-                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+                  ? 'bg-[#EAD9B8] text-[#121212] font-bold border-[#EAD9B8] shadow-md'
+                  : 'bg-[#1c1c1c] text-[#F5EBDD] border-white/20 hover:border-white/40 hover:text-white'
               }`}
             >
-              TOP ({topProjects.length})
+              All Top ({topProjects.length})
             </button>
 
             <button
@@ -340,14 +341,14 @@ const ProjectsStory = () => {
                 setActiveCategory('ai_ml');
                 setActiveProjIndex(null);
               }}
-              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all border flex items-center gap-1.5 ${
                 activeCategory === 'ai_ml'
-                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
-                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+                  ? 'bg-[#EAD9B8] text-[#121212] font-bold border-[#EAD9B8] shadow-md'
+                  : 'bg-[#1c1c1c] text-[#F5EBDD] border-white/20 hover:border-white/40 hover:text-white'
               }`}
             >
-              <Brain className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>AI & DATA ({topAiList.length})</span>
+              <Brain className="w-3.5 h-3.5 text-emerald-400" />
+              <span>AI & Data ({topAiList.length})</span>
             </button>
 
             <button
@@ -355,21 +356,22 @@ const ProjectsStory = () => {
                 setActiveCategory('web');
                 setActiveProjIndex(null);
               }}
-              className={`px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all border flex items-center gap-1.5 ${
                 activeCategory === 'web'
-                  ? 'bg-[#EAD9B8] text-[#171717] border-[#EAD9B8] shadow-md'
-                  : 'bg-[#181818]/90 text-[#C8B99F] border-[#8E8170]/30 hover:border-[#EAD9B8]/40 hover:text-[#F5EBDD]'
+                  ? 'bg-[#EAD9B8] text-[#121212] font-bold border-[#EAD9B8] shadow-md'
+                  : 'bg-[#1c1c1c] text-[#F5EBDD] border-white/20 hover:border-white/40 hover:text-white'
               }`}
             >
-              <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>FULL-STACK WEB ({topWebList.length})</span>
+              <Globe className="w-3.5 h-3.5 text-sky-400" />
+              <span>Full-Stack Web ({topWebList.length})</span>
             </button>
 
             <Link
               to="/projects"
-              className="px-3 py-1.5 rounded-lg bg-[#1c1c1c] border border-[#8E8170]/40 text-[#EAD9B8] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider hover:bg-[#EAD9B8] hover:text-[#171717] transition-all shadow-md ml-0 sm:ml-1"
+              className="px-3.5 py-1.5 rounded-xl bg-[#1c1c1c] border border-white/20 text-[#EAD9B8] text-xs sm:text-sm font-sans font-bold hover:bg-[#EAD9B8] hover:text-[#121212] hover:border-[#EAD9B8] transition-all shadow-md ml-0 sm:ml-1 flex items-center gap-1.5"
             >
-              INDEX (ALL WORK) →
+              <span>Explore All Archive</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </motion.div>

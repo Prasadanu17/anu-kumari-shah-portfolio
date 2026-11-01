@@ -22,7 +22,7 @@ const JourneyStory = () => {
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
-              03 // MY CAREER JOURNEY
+              04 // MY CAREER JOURNEY
             </span>
           </motion.div>
 

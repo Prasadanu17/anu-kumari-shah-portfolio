@@ -472,7 +472,7 @@ export default function ExperienceStory() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
-              06 // WORK EXPERIENCE
+              03 // WORK EXPERIENCE
             </span>
           </div>
 

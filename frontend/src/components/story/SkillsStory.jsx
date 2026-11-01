@@ -122,7 +122,7 @@ const SkillsStory = () => {
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
-              04 // TECHNICAL SKILLS
+              05 // TECHNICAL SKILLS
             </span>
           </motion.div>
 

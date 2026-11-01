@@ -5,10 +5,10 @@ import { usePortfolio } from "../context/PortfolioContext";
 const NAV_ITEMS = [
   { label: "HOME",           href: "#home",           id: "home"           },
   { label: "ABOUT",          href: "#about",          id: "about"          },
+  { label: "EXPERIENCE",     href: "#experience",     id: "experience"     },
   { label: "JOURNEY",        href: "#journey",        id: "journey"        },
   { label: "SKILLS",         href: "#skills",         id: "skills"         },
   { label: "PROJECTS",       href: "#projects",       id: "projects"       },
-  { label: "EXPERIENCE",     href: "#experience",     id: "experience"     },
   { label: "CERTIFICATIONS", href: "#certifications", id: "certifications" },
   { label: "CONTACT",        href: "#contact",        id: "contact"        },
 ];

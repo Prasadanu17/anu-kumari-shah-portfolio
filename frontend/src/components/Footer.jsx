@@ -103,7 +103,7 @@ const Footer = () => {
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-[#EAD9B8]" />
-                MCA (ICFAI CGPA: 10.00)
+                MCA — ICFAI University, Sikkim
               </span>
             </div>
           </motion.div>

@@ -23,7 +23,6 @@ export const education = [
     degree: "MCA — ICFAI University, Sikkim",
     institution: "ICFAI University, Sikkim",
     period: "2025 – 2027",
-    cgpa: "10.00",
     description: "Deepening knowledge in Artificial Intelligence, Machine Learning, Deep Learning, and Advanced Software Architecture."
   },
   {
@@ -63,7 +62,7 @@ export const journeyTimeline = [
     title: "MCA",
     subtitle: "ICFAI University, Sikkim",
     period: "2025 – 2027",
-    description: "Advanced post-graduate studies with 10.00 CGPA focus on AI, ML, Deep Learning, and System Design."
+    description: "Advanced post-graduate studies with focused specialization in AI, ML, Deep Learning, and System Design."
   },
   {
     id: 5,

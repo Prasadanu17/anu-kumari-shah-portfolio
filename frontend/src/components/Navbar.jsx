@@ -45,7 +45,7 @@ const Navbar = () => {
             </span>
           </div>
           <div className="flex items-center gap-6">
-            <span className="text-[#F5EBDD]/90">ICFAI UNIV • MCA CGPA: 10.00</span>
+            <span className="text-[#F5EBDD]/90">ICFAI UNIVERSITY • MCA</span>
             <span className="text-[#8E8170]">|</span>
             <span className="text-[#EAD9B8]">GANGTOK, SIKKIM</span>
           </div>

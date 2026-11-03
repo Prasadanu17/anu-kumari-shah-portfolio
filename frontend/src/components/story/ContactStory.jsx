@@ -65,7 +65,13 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '', botcheck: '' });
   const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'sent' | 'error'
   const [feedbackMsg, setFeedbackMsg] = useState('');
-  const [feedbackType, setFeedbackType] = useState('info'); // 'success' | 'error' | 'info'
+  const [lastSubmittedName, setLastSubmittedName] = useState('');
+
+  const isKeyConfigured = Boolean(
+    import.meta.env.VITE_WEB3FORMS_ACCESS_KEY &&
+    import.meta.env.VITE_WEB3FORMS_ACCESS_KEY.trim() !== '' &&
+    import.meta.env.VITE_WEB3FORMS_ACCESS_KEY !== 'YOUR_WEB3FORMS_ACCESS_KEY_HERE'
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -83,20 +89,14 @@ const ContactForm = () => {
 
     try {
       await submitContactForm(formData);
+      setLastSubmittedName(formData.name || 'Friend');
       setStatus('sent');
-      setFeedbackType('success');
-      setFeedbackMsg('Thank you! Your message was sent successfully.');
       setFormData({ name: '', email: '', message: '', botcheck: '' });
-      setTimeout(() => {
-        setStatus('idle');
-        setFeedbackMsg('');
-      }, 5000);
     } catch (error) {
       console.warn('Web3Forms submission error:', error.message || error);
       setStatus('error');
-      setFeedbackType('error');
       setFeedbackMsg(
-        error.message || 'Unable to submit via Web3Forms. Please try again or use direct email.'
+        error.message || 'Unable to submit via Web3Forms. Please check your setup or use direct email.'
       );
     }
   };
@@ -119,140 +119,170 @@ const ContactForm = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-1.5 sm:space-y-2.5">
-        {/* Anti-spam Honeypot field (hidden from humans) */}
-        <input
-          type="checkbox"
-          name="botcheck"
-          tabIndex={-1}
-          autoComplete="off"
-          checked={Boolean(formData.botcheck)}
-          onChange={(e) => setFormData({ ...formData, botcheck: e.target.checked ? 'spam' : '' })}
-          style={{ display: 'none' }}
-        />
-
-        <input
-          type="text"
-          name="name"
-          placeholder="YOUR NAME"
-          required
-          value={formData.name}
-          onChange={handleChange}
-          className={inputClass}
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="YOUR EMAIL"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className={inputClass}
-        />
-
-        <textarea
-          name="message"
-          placeholder="YOUR MESSAGE"
-          required
-          rows={2}
-          value={formData.message}
-          onChange={handleChange}
-          className={`${inputClass} resize-none sm:rows-3`}
-        />
-
-        {feedbackMsg && (
-          <div
-            className={`text-[9px] sm:text-[11px] font-mono p-2 sm:p-2.5 rounded-lg border flex flex-col gap-1.5 ${
-              feedbackType === 'success'
-                ? 'text-emerald-400 bg-emerald-950/40 border-emerald-500/40'
-                : feedbackType === 'error'
-                ? 'text-rose-400 bg-rose-950/40 border-rose-500/40'
-                : 'text-[#EAD9B8] bg-white/[0.04] border-[#8E8170]/30'
-            }`}
-          >
-            <div className="flex items-center gap-1.5">
-              {feedbackType === 'success' ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              ) : feedbackType === 'error' ? (
-                <AlertCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-              ) : null}
-              <span>{feedbackMsg}</span>
-            </div>
-            {feedbackType === 'error' && (
-              <a
-                href={`mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(
-                  formData.name || 'Visitor'
-                )}&body=${encodeURIComponent(formData.message || '')}`}
-                className="text-[10px] sm:text-xs text-[#EAD9B8] underline hover:text-white inline-flex items-center gap-1 mt-0.5"
-              >
-                <Mail className="w-3 h-3" /> Click here to open your email client instead
-              </a>
-            )}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={status === 'sending'}
-          className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-[#EAD9B8] text-[#171717] text-[8.5px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1.5 sm:py-2.5 rounded-lg hover:bg-[#d6c39f] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_20px_rgba(234,217,184,0.2)]"
+      {/* Prominent Success View */}
+      {status === 'sent' ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-5 sm:p-6 rounded-xl bg-[#1c241c] border border-emerald-500/40 text-center space-y-3 my-2"
         >
-          <AnimatePresence mode="wait">
-            {status === 'idle' && (
-              <motion.span
-                key="idle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 sm:gap-2"
-              >
-                <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                SEND MESSAGE
-              </motion.span>
-            )}
-            {status === 'sending' && (
-              <motion.span
-                key="sending"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 sm:gap-2"
-              >
+          <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <Check className="w-6 h-6 stroke-[2.5]" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-sm sm:text-base font-bold text-emerald-300 font-display">
+              Message Successfully Sent!
+            </h4>
+            <p className="text-[11px] sm:text-xs text-[#EAD9B8] font-mono leading-relaxed max-w-sm mx-auto">
+              Thank you, <span className="text-white font-semibold">{lastSubmittedName}</span>! Your message has been safely delivered to Anu's inbox ({personalInfo.email}).
+            </p>
+          </div>
+          <p className="text-[10px] text-emerald-400/80 font-mono">
+            ✓ Status 200: Web3Forms delivery confirmed
+          </p>
+          <button
+            type="button"
+            onClick={() => setStatus('idle')}
+            className="mt-3 inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold text-[#171717] bg-[#EAD9B8] px-4 py-2 rounded-lg hover:bg-[#d6c39f] transition-all shadow-md"
+          >
+            Send Another Message
+          </button>
+        </motion.div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-2.5">
+          {/* Anti-spam Honeypot field (hidden from humans) */}
+          <input
+            type="checkbox"
+            name="botcheck"
+            tabIndex={-1}
+            autoComplete="off"
+            checked={Boolean(formData.botcheck)}
+            onChange={(e) => setFormData({ ...formData, botcheck: e.target.checked ? 'spam' : '' })}
+            style={{ display: 'none' }}
+          />
+
+          {/* Configuration Hint Banner if key is missing */}
+          {!isKeyConfigured && (
+            <div className="text-[9.5px] sm:text-[10.5px] font-mono p-2 rounded-lg bg-amber-950/30 border border-amber-500/30 text-amber-200/90 flex items-start gap-2">
+              <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-amber-300">Web3Forms setup pending: </span>
+                Add your free access key to <code className="text-[#EAD9B8] bg-black/40 px-1 py-0.5 rounded">frontend/.env</code> to send directly, or use direct email client below.
+              </div>
+            </div>
+          )}
+
+          <input
+            type="text"
+            name="name"
+            placeholder="YOUR NAME"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            className={inputClass}
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="YOUR EMAIL"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            className={inputClass}
+          />
+
+          <textarea
+            name="message"
+            placeholder="YOUR MESSAGE"
+            required
+            rows={2}
+            value={formData.message}
+            onChange={handleChange}
+            className={`${inputClass} resize-none sm:rows-3`}
+          />
+
+          {/* Error Banner with 1-click fallback */}
+          {status === 'error' && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-[10px] sm:text-xs font-mono p-2.5 rounded-lg border text-rose-300 bg-rose-950/50 border-rose-500/40 space-y-2"
+            >
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                <span className="font-semibold">{feedbackMsg}</span>
+              </div>
+              <div className="pt-1 border-t border-rose-500/20 flex flex-wrap items-center justify-between gap-2">
+                <a
+                  href={`mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(
+                    formData.name || 'Visitor'
+                  )}&body=${encodeURIComponent(formData.message || '')}`}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EAD9B8] text-[#171717] font-bold text-[10px] hover:bg-white transition-colors"
+                >
+                  <Mail className="w-3 h-3" /> Send via Email Client ({personalInfo.email})
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setStatus('idle')}
+                  className="text-[10px] text-rose-300 underline hover:text-white"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          <button
+            type="submit"
+            disabled={status === 'sending'}
+            className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-[#EAD9B8] text-[#171717] text-[8.5px] sm:text-xs font-mono font-bold uppercase tracking-wider sm:tracking-widest px-3 py-1.5 sm:py-2.5 rounded-lg hover:bg-[#d6c39f] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 shadow-[0_0_20px_rgba(234,217,184,0.2)]"
+          >
+            <AnimatePresence mode="wait">
+              {status === 'idle' && (
                 <motion.span
-                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 border-2 border-[#171717]/40 border-t-[#171717] rounded-full"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-                />
-                SENDING...
-              </motion.span>
-            )}
-            {status === 'sent' && (
-              <motion.span
-                key="sent"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
-              >
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-700" />
-                MESSAGE SENT
-              </motion.span>
-            )}
-            {status === 'error' && (
-              <motion.span
-                key="error"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
-              >
-                <AlertCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-700" />
-                RETRY SEND
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
-      </form>
+                  key="idle"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="inline-flex items-center gap-1.5 sm:gap-2"
+                >
+                  <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  SEND MESSAGE
+                </motion.span>
+              )}
+              {status === 'sending' && (
+                <motion.span
+                  key="sending"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="inline-flex items-center gap-1.5 sm:gap-2"
+                >
+                  <motion.span
+                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 border-2 border-[#171717]/40 border-t-[#171717] rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                  />
+                  SENDING MESSAGE...
+                </motion.span>
+              )}
+              {status === 'error' && (
+                <motion.span
+                  key="error"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
+                >
+                  <AlertCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-700" />
+                  RETRY SEND
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </form>
+      )}
     </motion.div>
   );
 };

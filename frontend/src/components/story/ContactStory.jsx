@@ -58,13 +58,14 @@ const ContactCard = ({ label, value, href, external, icon: Icon, index }) => {
 };
 
 /* ==========================================================================
-   CONTACT FORM
+   CONTACT FORM (Web3Forms + Env Secure Configuration)
    ========================================================================== */
 const ContactForm = () => {
   const { personalInfo, submitContactForm } = usePortfolio();
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('idle');
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', botcheck: '' });
+  const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'sent' | 'error'
   const [feedbackMsg, setFeedbackMsg] = useState('');
+  const [feedbackType, setFeedbackType] = useState('info'); // 'success' | 'error' | 'info'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -72,29 +73,31 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.botcheck) {
+      // Spam honeypot triggered by automated bot
+      return;
+    }
+
     setStatus('sending');
     setFeedbackMsg('');
 
     try {
       await submitContactForm(formData);
       setStatus('sent');
-      setFeedbackMsg('Thank you! Your message was delivered successfully.');
-      setFormData({ name: '', email: '', message: '' });
+      setFeedbackType('success');
+      setFeedbackMsg('Thank you! Your message was sent successfully.');
+      setFormData({ name: '', email: '', message: '', botcheck: '' });
       setTimeout(() => {
         setStatus('idle');
         setFeedbackMsg('');
-      }, 4000);
+      }, 5000);
     } catch (error) {
-      console.warn('Web3Forms submission notice:', error.message || error);
-      // Fallback: open mail client
-      window.location.href = `mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`;
-      setStatus('fallback');
-      setFeedbackMsg('Redirecting to your mail client...');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => {
-        setStatus('idle');
-        setFeedbackMsg('');
-      }, 4000);
+      console.warn('Web3Forms submission error:', error.message || error);
+      setStatus('error');
+      setFeedbackType('error');
+      setFeedbackMsg(
+        error.message || 'Unable to submit via Web3Forms. Please try again or use direct email.'
+      );
     }
   };
 
@@ -117,6 +120,17 @@ const ContactForm = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-1.5 sm:space-y-2.5">
+        {/* Anti-spam Honeypot field (hidden from humans) */}
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabIndex={-1}
+          autoComplete="off"
+          checked={Boolean(formData.botcheck)}
+          onChange={(e) => setFormData({ ...formData, botcheck: e.target.checked ? 'spam' : '' })}
+          style={{ display: 'none' }}
+        />
+
         <input
           type="text"
           name="name"
@@ -148,9 +162,34 @@ const ContactForm = () => {
         />
 
         {feedbackMsg && (
-          <p className="text-[8px] sm:text-[10px] font-mono text-[#EAD9B8] bg-white/[0.04] p-1.5 rounded border border-[#8E8170]/30">
-            {feedbackMsg}
-          </p>
+          <div
+            className={`text-[9px] sm:text-[11px] font-mono p-2 sm:p-2.5 rounded-lg border flex flex-col gap-1.5 ${
+              feedbackType === 'success'
+                ? 'text-emerald-400 bg-emerald-950/40 border-emerald-500/40'
+                : feedbackType === 'error'
+                ? 'text-rose-400 bg-rose-950/40 border-rose-500/40'
+                : 'text-[#EAD9B8] bg-white/[0.04] border-[#8E8170]/30'
+            }`}
+          >
+            <div className="flex items-center gap-1.5">
+              {feedbackType === 'success' ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              ) : feedbackType === 'error' ? (
+                <AlertCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+              ) : null}
+              <span>{feedbackMsg}</span>
+            </div>
+            {feedbackType === 'error' && (
+              <a
+                href={`mailto:${personalInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(
+                  formData.name || 'Visitor'
+                )}&body=${encodeURIComponent(formData.message || '')}`}
+                className="text-[10px] sm:text-xs text-[#EAD9B8] underline hover:text-white inline-flex items-center gap-1 mt-0.5"
+              >
+                <Mail className="w-3 h-3" /> Click here to open your email client instead
+              </a>
+            )}
+          </div>
         )}
 
         <button
@@ -199,16 +238,16 @@ const ContactForm = () => {
                 MESSAGE SENT
               </motion.span>
             )}
-            {status === 'fallback' && (
+            {status === 'error' && (
               <motion.span
-                key="fallback"
+                key="error"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 className="inline-flex items-center gap-1.5 sm:gap-2 text-[#171717]"
               >
-                <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-700" />
-                OPENING MAIL CLIENT
+                <AlertCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-700" />
+                RETRY SEND
               </motion.span>
             )}
           </AnimatePresence>

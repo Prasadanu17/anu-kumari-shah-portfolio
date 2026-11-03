@@ -54,9 +54,9 @@ export async function getAchievementsApi() {
 export async function submitContactForm(formData) {
   const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
-  if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
+  if (!accessKey || accessKey.trim() === '' || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
     throw new Error(
-      'Web3Forms access key is not configured. Please add VITE_WEB3FORMS_ACCESS_KEY in frontend/.env'
+      'Web3Forms access key is not configured. Please add your key to VITE_WEB3FORMS_ACCESS_KEY in frontend/.env'
     );
   }
 
@@ -67,20 +67,21 @@ export async function submitContactForm(formData) {
       Accept: 'application/json',
     },
     body: JSON.stringify({
-      access_key: accessKey,
+      access_key: accessKey.trim(),
       name: formData.name,
       email: formData.email,
+      replyto: formData.email,
       message: formData.message,
-      subject: `New Portfolio Message from ${formData.name}`,
-      from_name: formData.name || 'Portfolio Visitor',
-      botcheck: '',
+      subject: `Portfolio Contact: New message from ${formData.name}`,
+      from_name: `${formData.name} via Portfolio`,
+      botcheck: formData.botcheck ? 'spam' : '',
     }),
   });
 
   const result = await response.json();
 
   if (!response.ok || !result.success) {
-    throw new Error(result.message || 'Failed to submit form through Web3Forms');
+    throw new Error(result.message || 'Failed to submit form through Web3Forms.');
   }
 
   return result;

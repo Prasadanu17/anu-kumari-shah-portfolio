@@ -270,6 +270,24 @@ export const projects = [
       "Filterable interior portfolio gallery",
       "Consultation scheduling request module"
     ]
+  },
+  {
+    id: 9,
+    title: "Niram Industries",
+    category: "web",
+    isProminent: true,
+    tag: "CLIENT PROJECT",
+    description: "Modernized and engineered the responsive frontend UI architecture for Niram Industries Private Limited (niramindustries.com), an ISO 9001:2015 certified dry-mix construction materials manufacturer in Siliguri. Enhanced mobile accessibility, product catalog navigation, and customer inquiry interfaces during web development internship at Groveus Informatics.",
+    technologies: ["HTML5", "CSS3", "JavaScript", "Bootstrap", "Responsive Web Design", "Client Project"],
+    image: "/projects/niram.jpg",
+    demo: "https://niramindustries.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Modernized frontend layout and responsive architecture across all screen sizes",
+      "Interactive construction dry-mix product catalog & technical specification displays",
+      "Streamlined customer contact workflows and business inquiry touchpoints",
+      "Engineered during web development internship at Groveus Informatics Pvt. Ltd."
+    ]
   }
 ];
 
@@ -417,24 +435,31 @@ export const experience = [
       "Engineered client websites including Priyansu Tours & Travels and Hotel Shivaratna"
     ],
     technologies: ["React.js", "Tailwind CSS", "Frontend Dev", "Backend Dev", "Dynamic Web Dev", "Client Projects"],
-    projectsMentioned: ["Priyansu Tours & Travels", "Hotel Shivaratna"]
+    projectsMentioned: [
+      { name: "Priyansu Tours & Travels", url: "https://www.priyansutravels.com/" },
+      { name: "Hotel Shivaratna", url: "https://www.hotelshivaratna.com/" }
+    ]
   },
   {
     id: 2,
     title: "Web Development Intern",
     company: "Groveus Informatics Pvt. Ltd.",
-    location: "Siliguri",
+    location: "Siliguri, West Bengal",
     period: "March 2025 – May 2025",
     type: "INTERNSHIP",
     highlights: [
-      "Worked on full-stack web applications for commercial client platforms",
-      "Developed frontend layouts using HTML, CSS, Bootstrap, and JavaScript",
-      "Built server-side backend features with PHP and CodeIgniter framework",
-      "Integrated MySQL database operations via phpMyAdmin and async AJAX requests",
-      "Shipped client projects: Mahendra Packers & Movers, Elite Interior Design, Vidhyaa Institute, and Niram Industries"
+      "Updated and modernized the responsive frontend area for Niram Industries (niramindustries.com)",
+      "Engineered commercial client platforms with responsive frontend layouts and dynamic backend features",
+      "Developed web interfaces using HTML5, CSS3, Bootstrap, and JavaScript",
+      "Built server-side backend features with PHP and CodeIgniter framework connected to MySQL databases",
+      "Delivered live client platforms: Niram Industries, Mahendra Packers & Movers, and Elite Interior Design Studio"
     ],
-    technologies: ["HTML", "CSS", "Bootstrap", "JavaScript", "PHP", "CodeIgniter", "MySQL", "phpMyAdmin", "AJAX"],
-    projectsMentioned: ["Mahendra Packers & Movers", "Elite Interior Design", "Vidhyaa Institute", "Niram Industries"]
+    technologies: ["HTML5", "CSS3", "Bootstrap", "JavaScript", "PHP", "CodeIgniter", "MySQL", "phpMyAdmin", "AJAX"],
+    projectsMentioned: [
+      { name: "Niram Industries", url: "https://niramindustries.com/" },
+      { name: "Mahendra Packers & Movers", url: "https://mahendrapackersandmovers.com/" },
+      { name: "Elite Interior Design", url: "https://eliteinteriordesignstudio.com/" }
+    ]
   }
 ];
 

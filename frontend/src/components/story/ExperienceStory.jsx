@@ -195,16 +195,33 @@ const LuxuryGlassCard = ({ role, index, onOpenCertificate }) => {
               <FolderGit2 className="w-2.5 h-2.5 text-[#EAD9B8]" />
               SHIPPED CLIENT PLATFORMS ({role.projectsMentioned.length}):
             </span>
-            <div className="flex flex-wrap gap-1">
-              {role.projectsMentioned.map((proj) => (
-                <span
-                  key={proj}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] hover:border-[#EAD9B8] hover:bg-[#EAD9B8]/10 transition-colors"
-                >
-                  <Sparkles className="w-2 h-2 text-[#EAD9B8]" />
-                  {proj}
-                </span>
-              ))}
+            <div className="flex flex-wrap gap-1.5">
+              {role.projectsMentioned.map((proj, pIdx) => {
+                const name = typeof proj === 'string' ? proj : proj.name;
+                const url = typeof proj === 'object' ? proj.url : null;
+                return url ? (
+                  <a
+                    key={pIdx}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] hover:border-[#EAD9B8] hover:bg-[#EAD9B8]/15 hover:text-[#EAD9B8] transition-all group/link"
+                  >
+                    <Sparkles className="w-2 h-2 text-[#EAD9B8]" />
+                    <span>{name}</span>
+                    <ExternalLink className="w-2.5 h-2.5 text-[#EAD9B8]/70 group-hover/link:text-[#EAD9B8] transition-colors" />
+                  </a>
+                ) : (
+                  <span
+                    key={pIdx}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono bg-white/[0.04] border border-[#8E8170]/30 text-[#F5EBDD] hover:border-[#EAD9B8] hover:bg-[#EAD9B8]/10 transition-colors"
+                  >
+                    <Sparkles className="w-2 h-2 text-[#EAD9B8]" />
+                    {name}
+                  </span>
+                );
+              })}
             </div>
           </div>
         )}

@@ -93,7 +93,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-[8px] sm:text-xs font-mono text-[#C8B99F] leading-relaxed max-w-sm">
-              AI/ML Engineer & Full-Stack Developer building intelligent systems, NLP models, and production web applications.
+              MCA Student | Aspiring AI/ML Developer | Web Developer building intelligent systems, machine learning models, and modern web applications.
             </p>
 
             <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-1 sm:gap-y-2 text-[8px] sm:text-[11px] font-mono text-[#C8B99F] pt-1">

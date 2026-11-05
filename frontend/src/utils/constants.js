@@ -1,6 +1,6 @@
 export const personalInfo = {
   name: "Anu Kumari Shah",
-  title: "AI/ML Engineer × Full-Stack Developer",
+  title: "MCA Student | Aspiring AI/ML Developer | Web Developer",
   tagline: "MCA student at ICFAI University, Sikkim with a background in Computer Applications and a growing interest in AI, Machine Learning, and Web Development. Always learning. Always building.",
   email: "anu705545@gmail.com",
   location: "Gangtok, Sikkim",

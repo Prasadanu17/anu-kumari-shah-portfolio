@@ -75,7 +75,7 @@ const Navbar = () => {
                   ANU KUMARI SHAH
                 </span>
                 <span className="text-[10px] font-mono text-[#C8B99F] block -mt-0.5 font-medium">
-                  AI/ML & FULL-STACK ENGINEER
+                  MCA • ASPIRING AI/ML & WEB DEV
                 </span>
               </div>
             </a>

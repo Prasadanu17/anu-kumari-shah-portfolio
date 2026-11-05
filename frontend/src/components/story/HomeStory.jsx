@@ -74,7 +74,7 @@ const HomeStory = () => {
               ANU KUMARI SHAH
             </h1>
             <p className="text-xs sm:text-sm md:text-base font-mono text-[#C8B99F] tracking-wider font-semibold uppercase">
-              MCA Student @ ICFAI University, Sikkim × AI/ML & Web Development
+              MCA Student | Aspiring AI/ML Developer | Web Developer
             </p>
           </motion.div>
 
@@ -121,8 +121,8 @@ const HomeStory = () => {
           {/* Quick Metrics Bar */}
           <motion.div variants={itemVariants} className="grid grid-cols-3 gap-2 sm:gap-3 pt-2 sm:pt-3 border-t border-[#8E8170]/20 max-w-lg">
             <div className="bg-[#1c1c1c] border border-[#8E8170]/25 p-2 sm:p-2.5 rounded-xl">
-              <span className="font-display font-bold text-sm sm:text-lg text-[#EAD9B8] block leading-none">10.00</span>
-              <span className="text-[8px] sm:text-[9.5px] font-mono tracking-wider text-[#C8B99F] uppercase font-medium truncate block mt-1">MCA CGPA</span>
+              <span className="font-display font-bold text-sm sm:text-lg text-[#EAD9B8] block leading-none">MCA</span>
+              <span className="text-[8px] sm:text-[9.5px] font-mono tracking-wider text-[#C8B99F] uppercase font-medium truncate block mt-1">ICFAI SIKKIM</span>
             </div>
             <div className="bg-[#1c1c1c] border border-[#8E8170]/25 p-2 sm:p-2.5 rounded-xl">
               <span className="font-display font-bold text-sm sm:text-lg text-[#EAD9B8] block leading-none">AI / ML</span>
@@ -194,7 +194,7 @@ const HomeStory = () => {
 
               <div className="absolute bottom-2 left-2 right-2 p-1.5 sm:p-2.5 rounded-lg bg-[#171717]/95 border border-[#8E8170]/30 backdrop-blur-md">
                 <p className="text-[10px] sm:text-xs font-display font-bold text-[#EAD9B8] truncate leading-tight">Anu Kumari Shah</p>
-                <p className="text-[8px] sm:text-[9.5px] font-mono text-[#C8B99F] truncate leading-tight mt-0.5">ICFAI MCA • AI/ML & Web</p>
+                <p className="text-[8px] sm:text-[9.5px] font-mono text-[#C8B99F] truncate leading-tight mt-0.5">MCA Student • Aspiring AI/ML & Web</p>
               </div>
             </motion.div>
           </motion.div>

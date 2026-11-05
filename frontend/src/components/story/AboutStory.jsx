@@ -48,13 +48,13 @@ const HoverPhoto = () => {
                    transition-all duration-500 cursor-pointer group flex items-center justify-center"
       >
         {/* Inner circle container to hold image */}
-        <div className="absolute inset-2 sm:inset-3 rounded-full overflow-hidden border border-white/10">
+        <div className="absolute inset-2 sm:inset-3 rounded-full overflow-hidden border border-white/10 shadow-inner">
           <img
-            src="/assets/profile.jpeg"
+            src="/assets/anu_about.jpg"
             alt="Anu Kumari Shah"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
             onError={(e) => {
-              e.target.src = "/assets/hero_img.png";
+              e.target.src = "/assets/profile.jpeg";
             }}
           />
         </div>
@@ -63,11 +63,11 @@ const HoverPhoto = () => {
         <div className="absolute -inset-2 sm:-inset-3.5 rounded-full border border-dashed border-[#8E8170]/35 animate-[spin_25s_linear_infinite]" />
         <div className="absolute -inset-4 sm:-inset-6 rounded-full border border-[#8E8170]/20" />
 
-        {/* Floating Mini Badge 1 — CGPA Top Right */}
+        {/* Floating Mini Badge 1 — Focus Top Right */}
         <div className="absolute -top-1 -right-1 sm:top-2 sm:right-[-10px] px-2.5 sm:px-3 py-1 rounded-full bg-[#1c1c1c]/95 border border-[#8E8170]/40 backdrop-blur-md shadow-lg flex items-center gap-1.5 z-20">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse shrink-0" />
           <span className="text-[9px] sm:text-[10px] font-mono text-[#EAD9B8] font-bold whitespace-nowrap">
-            10.00 CGPA
+            MCA • ICFAI UNIV
           </span>
         </div>
 
@@ -165,9 +165,11 @@ const AboutStory = () => {
                     <span className="text-[9.5px] sm:text-[11px] font-mono text-[#C8B99F]">
                       {edu.period}
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-[#EAD9B8]/15 border border-[#EAD9B8]/30 text-[#EAD9B8] text-[9.5px] sm:text-xs font-mono font-bold">
-                      CGPA: {edu.cgpa}
-                    </span>
+                    {edu.cgpa && (
+                      <span className="px-2 py-0.5 rounded bg-[#EAD9B8]/15 border border-[#EAD9B8]/30 text-[#EAD9B8] text-[9.5px] sm:text-xs font-mono font-bold">
+                        CGPA: {edu.cgpa}
+                      </span>
+                    )}
                   </div>
 
                   <h3 className="font-display font-bold text-xs sm:text-sm text-[#EAD9B8] leading-tight">

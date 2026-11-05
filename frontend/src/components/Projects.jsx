@@ -493,7 +493,7 @@ const Projects = () => {
                 FULL-STACK WEBSITE PROJECTS
               </h2>
               <p className="text-[11px] sm:text-xs text-[#C8B99F] font-light max-w-xl mt-0.5">
-                Commercial enterprise client platforms, homestay tourism booking portals, and luxury interior design portfolio architectures.
+                Commercial enterprise client platforms, luxury hospitality & tourism booking portals, and interior design architectures.
               </p>
             </div>
 

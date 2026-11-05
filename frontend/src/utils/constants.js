@@ -203,23 +203,42 @@ export const projects = [
   },
   {
     id: 5,
-    title: "Sikkim Homestay Booking Platform",
+    title: "Hotel Shivaratna",
     category: "web",
     isProminent: true,
-    tag: "FULL-STACK WEB",
-    description: "A modern travel and homestay booking platform highlighting authentic homestay experiences across Sikkim with smooth interactive UI transitions.",
-    technologies: ["React.js", "JavaScript", "Tailwind CSS", "Framer Motion"],
-    image: "/projects/homestay.png",
-    demo: "https://home-stay-kappa.vercel.app/",
+    tag: "FEATURED CLIENT PLATFORM",
+    description: "A luxury hospitality & mountain retreat web platform developed for Hotel Shivaratna in Rinchenpong, West Sikkim. Features online room booking inquiries, multi-district travel guides, an interactive photo gallery, and smooth responsive design.",
+    technologies: ["React.js", "Vite", "Tailwind CSS", "Framer Motion", "Lucide React"],
+    image: "/projects/shivaratna.jpg",
+    demo: "https://www.hotelshivaratna.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
-      "Scenic property showcase cards & location details",
-      "Interactive room availability & booking modal",
-      "Fully responsive mobile & desktop UI"
+      "Online room booking & consultation inquiry interface",
+      "Comprehensive Sikkim 4-district interactive travel guides",
+      "Dynamic photo gallery showcase with luxury aesthetic",
+      "Fully responsive mobile & desktop UI architecture"
     ]
   },
   {
     id: 6,
+    title: "Priyansu Tours & Travels",
+    category: "web",
+    isProminent: true,
+    tag: "FEATURED CLIENT PLATFORM",
+    description: "A comprehensive travel agency & tour booking portal developed for Priyansu Tours & Travels in Gangtok, Sikkim. Features customized Himalayan tour packages, vehicle fleet bookings (car & bike rentals), hotel reservations, and multi-district Sikkim destination guides.",
+    technologies: ["React.js", "Vite", "Tailwind CSS", "Lucide React"],
+    image: "/projects/priyansu_hero.png",
+    demo: "https://www.priyansutravels.com/",
+    github: "https://github.com/Prasadanu17",
+    keyFeatures: [
+      "Customized tour packages across Sikkim, Darjeeling, Kalimpong & Bhutan",
+      "Fleet booking system for car & bike rentals across mountain routes",
+      "Hotel accommodation reservation & WhatsApp direct booking integration",
+      "Comprehensive 4-district Sikkim destination and travel itinerary guides"
+    ]
+  },
+  {
+    id: 7,
     title: "Mahendra Packers & Movers",
     category: "web",
     isProminent: false,
@@ -236,7 +255,7 @@ export const projects = [
     ]
   },
   {
-    id: 7,
+    id: 8,
     title: "Elite Interior Design Studio",
     category: "web",
     isProminent: false,
@@ -250,42 +269,6 @@ export const projects = [
       "Translucent UI glassmorphism elements",
       "Filterable interior portfolio gallery",
       "Consultation scheduling request module"
-    ]
-  },
-  {
-    id: 8,
-    title: "Hotel Shivaratna",
-    category: "web",
-    isProminent: false,
-    tag: "CLIENT PROJECT",
-    description: "A luxury hospitality & mountain retreat web platform developed for Hotel Shivaratna in Rinchenpong, West Sikkim. Features online room booking inquiries, multi-district travel guides, an interactive photo gallery, and smooth responsive design.",
-    technologies: ["React.js", "Vite", "Tailwind CSS", "Framer Motion", "Lucide React"],
-    image: "/projects/shivaratna.jpg",
-    demo: "https://www.hotelshivaratna.com/",
-    github: "https://github.com/Prasadanu17",
-    keyFeatures: [
-      "Online room booking & consultation inquiry interface",
-      "Comprehensive Sikkim 4-district interactive travel guides",
-      "Dynamic photo gallery showcase with luxury aesthetic",
-      "Fully responsive mobile & desktop UI architecture"
-    ]
-  },
-  {
-    id: 9,
-    title: "Priyansu Tours & Travels",
-    category: "web",
-    isProminent: false,
-    tag: "CLIENT PROJECT",
-    description: "A comprehensive travel agency & tour booking portal developed for Priyansu Tours & Travels in Gangtok, Sikkim. Features customized Himalayan tour packages, vehicle fleet bookings (car & bike rentals), hotel reservations, and multi-district Sikkim destination guides.",
-    technologies: ["React.js", "Vite", "Tailwind CSS", "Lucide React"],
-    image: "/projects/priyansu_hero.png",
-    demo: "https://www.priyansutravels.com/",
-    github: "https://github.com/Prasadanu17",
-    keyFeatures: [
-      "Customized tour packages across Sikkim, Darjeeling, Kalimpong & Bhutan",
-      "Fleet booking system for car & bike rentals across mountain routes",
-      "Hotel accommodation reservation & WhatsApp direct booking integration",
-      "Comprehensive 4-district Sikkim destination and travel itinerary guides"
     ]
   }
 ];

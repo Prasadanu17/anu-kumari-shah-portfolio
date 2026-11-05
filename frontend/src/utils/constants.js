@@ -390,32 +390,6 @@ export const certifications = [
     image: "/assets/certificate/moe_innovation_ambassador.jpg",
     link: "/assets/certificate/IA Online Training Certificate.pdf",
     isImportant: false
-  },
-  {
-    id: 10,
-    title: "Entrepreneurship Development Program Certificate",
-    organization: "Entrepreneurship Development Cell",
-    date: "2025",
-    category: "Professional Development",
-    credentialId: "EDP-2025-CERT",
-    skills: ["Business Strategy", "Product Development", "Market Research", "Project Management"],
-    description: "Completed comprehensive training on entrepreneurial strategy, innovation methodologies, and startup product lifecycle development.",
-    image: null,
-    link: "/assets/certificate/Entrepreneurship.pdf",
-    isImportant: false
-  },
-  {
-    id: 11,
-    title: "Coding Challenge Certificate",
-    organization: "University Code Labs",
-    date: "2025",
-    category: "Technical Achievement",
-    credentialId: "UCL-CC-2025-089",
-    skills: ["Problem Solving", "Algorithms", "Data Structures"],
-    description: "Demonstrated advanced algorithmic problem-solving speed, data structure optimizations, and robust code implementations under strict time constraints.",
-    image: null,
-    link: null,
-    isImportant: false
   }
 ];
 

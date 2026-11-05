@@ -50,11 +50,11 @@ const HoverPhoto = () => {
         {/* Inner circle container to hold image */}
         <div className="absolute inset-2 sm:inset-3 rounded-full overflow-hidden border border-white/10 shadow-inner">
           <img
-            src="/assets/anu_about.jpg"
+            src="/assets/profile.jpeg"
             alt="Anu Kumari Shah"
-            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             onError={(e) => {
-              e.target.src = "/assets/profile.jpeg";
+              e.target.src = "/assets/anu_about.jpg";
             }}
           />
         </div>

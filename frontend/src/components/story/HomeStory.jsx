@@ -183,11 +183,11 @@ const HomeStory = () => {
               className="relative z-20 w-[150px] h-[210px] sm:w-[190px] sm:h-[265px] md:w-[clamp(180px,20vw,260px)] md:h-[clamp(250px,28vw,360px)] rounded-2xl border-2 border-[#8E8170]/35 bg-[#1c1c1c]/90 backdrop-blur-md overflow-hidden shadow-2xl group hover:border-[#EAD9B8]/60 transition-colors"
             >
               <img
-                src="/assets/profile.jpeg"
+                src="/assets/anu_about.jpg"
                 alt="Anu Kumari Shah"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                 onError={(e) => {
-                  e.target.src = "/assets/hero_img.png";
+                  e.target.src = "/assets/profile.jpeg";
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-85" />

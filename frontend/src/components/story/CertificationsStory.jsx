@@ -786,7 +786,7 @@ const CertificationsStory = () => {
             </div>
 
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-[#F5EBDD] font-normal tracking-tight leading-[1.12]">
-              Our <br className="hidden sm:inline" />
+              My <br className="hidden sm:inline" />
               <span className="italic font-light text-[#EAD9B8]">Certifications</span>
             </h2>
 

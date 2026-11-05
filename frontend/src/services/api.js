@@ -52,7 +52,8 @@ export async function getAchievementsApi() {
  * Requires VITE_WEB3FORMS_ACCESS_KEY to be set in .env.
  */
 export async function submitContactForm(formData) {
-  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+  const accessKey =
+    import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '50a164b7-f7ac-4995-87b4-16f07453d28d';
 
   if (!accessKey || accessKey.trim() === '' || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
     throw new Error(
@@ -60,22 +61,20 @@ export async function submitContactForm(formData) {
     );
   }
 
+  const payload = new FormData();
+  payload.append('access_key', accessKey.trim());
+  payload.append('name', formData.name);
+  payload.append('email', formData.email);
+  payload.append('message', formData.message);
+  payload.append('subject', `Portfolio Contact: New message from ${formData.name}`);
+  payload.append('from_name', `${formData.name} via Portfolio`);
+  if (formData.botcheck) {
+    payload.append('botcheck', 'spam');
+  }
+
   const response = await fetch('https://api.web3forms.com/submit', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      access_key: accessKey.trim(),
-      name: formData.name,
-      email: formData.email,
-      replyto: formData.email,
-      message: formData.message,
-      subject: `Portfolio Contact: New message from ${formData.name}`,
-      from_name: `${formData.name} via Portfolio`,
-      botcheck: formData.botcheck ? 'spam' : '',
-    }),
+    body: payload,
   });
 
   const result = await response.json();

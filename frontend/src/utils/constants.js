@@ -281,7 +281,7 @@ export const projects = [
     technologies: ["HTML5", "CSS3", "JavaScript", "Bootstrap", "Responsive Web Design", "Client Project"],
     image: "/projects/niram.webp",
     demo: "https://niramindustries.com/",
-    github: "https://github.com/Prasadanu17",
+    github: null,
     keyFeatures: [
       "Modernized frontend layout and responsive architecture across all screen sizes",
       "Interactive construction dry-mix product catalog & technical specification displays",

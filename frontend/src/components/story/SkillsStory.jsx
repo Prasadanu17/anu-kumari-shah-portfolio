@@ -220,7 +220,7 @@ const SkillsStory = () => {
 
                           {/* Official Brand Logo */}
                           <span className="text-sm sm:text-base shrink-0 transition-transform duration-200 group-hover/skill:scale-110" style={{ color }}>
-                            {icon}
+                            {React.cloneElement(icon, { 'aria-label': skill })}
                           </span>
 
                           {/* Skill Name Label */}

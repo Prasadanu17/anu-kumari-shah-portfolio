@@ -43,57 +43,67 @@ const ProjectModal = ({ project, onClose }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto select-none"
+      onWheel={(e) => e.stopPropagation()}
+      data-lenis-prevent="true"
+      data-lenis-prevent-wheel="true"
+      data-lenis-prevent-touch="true"
+      className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain p-3 sm:p-6 py-6 sm:py-12"
     >
-      <motion.div
-        initial={{ scale: 0.94, opacity: 0, y: 15 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.94, opacity: 0, y: 15 }}
-        transition={{ duration: 0.25 }}
-        onClick={(e) => e.stopPropagation()}
-        className="relative z-[10000] w-full max-w-2xl rounded-2xl bg-[#171717] border-2 border-[#EAD9B8]/60 p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(234,217,184,0.15)] space-y-4 my-auto max-h-[90vh] overflow-y-auto"
+      <div
+        className="min-h-full flex items-center justify-center w-full"
+        onClick={onClose}
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#C8B99F] hover:text-[#EAD9B8] transition-colors"
-          aria-label="Close Project Modal"
+        <motion.div
+          initial={{ scale: 0.94, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.94, opacity: 0, y: 15 }}
+          transition={{ duration: 0.25 }}
+          onClick={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
+          data-lenis-prevent="true"
+          className="relative z-[10000] w-full max-w-2xl rounded-2xl bg-[#171717] border-2 border-[#EAD9B8]/60 p-4 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(234,217,184,0.15)] space-y-4 my-auto cursor-default"
         >
-          <X className="w-4 h-4" />
-        </button>
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-3.5 sm:top-4 right-3.5 sm:right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#C8B99F] hover:text-[#EAD9B8] transition-colors"
+            aria-label="Close Project Modal"
+          >
+            <X className="w-4 h-4" />
+          </button>
 
-        {/* Top Header */}
-        <div className="flex items-center gap-2.5 border-b border-[#8E8170]/25 pb-3 pr-8">
-          <div className="p-2 rounded-xl bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 text-[#EAD9B8]">
-            {isAi ? <Brain className="w-5 h-5" /> : <Globe className="w-5 h-5" />}
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-[#EAD9B8]/10 text-[#EAD9B8] border border-[#8E8170]/30 font-bold">
-                {project.tag || (isAi ? 'AI / ML PROJECT' : 'FULL-STACK WEB')}
-              </span>
-              <span className="text-[9px] font-mono text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                VERIFIED PRODUCTION
-              </span>
+          {/* Top Header */}
+          <div className="flex items-center gap-2.5 border-b border-[#8E8170]/25 pb-3 pr-8">
+            <div className="p-2 rounded-xl bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 text-[#EAD9B8] shrink-0">
+              {isAi ? <Brain className="w-5 h-5" /> : <Globe className="w-5 h-5" />}
             </div>
-            <h3 className="text-base sm:text-xl font-display font-extrabold text-[#EAD9B8] mt-1">
-              {project.title}
-            </h3>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-[#EAD9B8]/10 text-[#EAD9B8] border border-[#8E8170]/30 font-bold">
+                  {project.tag || (isAi ? 'AI / ML PROJECT' : 'FULL-STACK WEB')}
+                </span>
+                <span className="text-[9px] font-mono text-emerald-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  VERIFIED PRODUCTION
+                </span>
+              </div>
+              <h3 className="text-base sm:text-xl font-display font-extrabold text-[#EAD9B8] mt-1 break-words">
+                {project.title}
+              </h3>
+            </div>
           </div>
-        </div>
 
-        {/* Screenshot Banner if available */}
-        {project.image && (
-          <div className="relative rounded-xl overflow-hidden border border-[#8E8170]/40 max-h-[260px] bg-black/50 group">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full max-h-[260px] object-cover object-top transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-60" />
-          </div>
-        )}
+          {/* Screenshot Banner if available */}
+          {project.image && (
+            <div className="relative rounded-xl overflow-hidden border border-[#8E8170]/40 max-h-[200px] sm:max-h-[260px] bg-black/50 group">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full max-h-[200px] sm:max-h-[260px] object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-60" />
+            </div>
+          )}
 
         {/* Description */}
         <div className="space-y-1.5">
@@ -177,6 +187,7 @@ const ProjectModal = ({ project, onClose }) => {
           </button>
         </div>
       </motion.div>
+      </div>
     </motion.div>,
     document.body
   );

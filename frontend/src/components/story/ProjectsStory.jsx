@@ -148,7 +148,11 @@ const ProjectDetailPanel = ({ project, onClose }) => {
       animate={{ opacity: 1, x: 0, scale: 1 }}
       exit={{ opacity: 0, x: -30, scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-      className="relative w-full bg-[#171717] backdrop-blur-xl border border-[#8E8170]/40 rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden flex flex-col max-h-[75vh] overflow-y-auto"
+      onWheel={(e) => e.stopPropagation()}
+      data-lenis-prevent="true"
+      data-lenis-prevent-wheel="true"
+      data-lenis-prevent-touch="true"
+      className="relative w-full bg-[#171717] backdrop-blur-xl border border-[#8E8170]/40 rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden flex flex-col max-h-[75vh] overflow-y-auto overscroll-contain"
       style={{ transformStyle: 'preserve-3d' }}
     >
       {/* Top Header: Badge & Close Button */}

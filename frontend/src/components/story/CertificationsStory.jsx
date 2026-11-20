@@ -128,16 +128,26 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto select-none"
+      onWheel={(e) => e.stopPropagation()}
+      data-lenis-prevent="true"
+      data-lenis-prevent-wheel="true"
+      data-lenis-prevent-touch="true"
+      className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain p-3 sm:p-6 py-6 sm:py-12"
     >
-      <motion.div
-        initial={{ scale: 0.94, opacity: 0, y: 15 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.94, opacity: 0, y: 15 }}
-        transition={{ duration: 0.25 }}
-        onClick={(e) => e.stopPropagation()}
-        className="relative z-[10000] w-full max-w-2xl rounded-2xl bg-[#171717] border-2 border-[#EAD9B8]/60 p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(234,217,184,0.15)] space-y-4 my-auto max-h-[90vh] overflow-y-auto"
+      <div
+        className="min-h-full flex items-center justify-center w-full"
+        onClick={onClose}
       >
+        <motion.div
+          initial={{ scale: 0.94, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.94, opacity: 0, y: 15 }}
+          transition={{ duration: 0.25 }}
+          onClick={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
+          data-lenis-prevent="true"
+          className="relative z-[10000] w-full max-w-2xl rounded-2xl bg-[#171717] border-2 border-[#EAD9B8]/60 p-4 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(234,217,184,0.15)] space-y-4 my-auto cursor-default"
+        >
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#C8B99F] hover:text-[#EAD9B8] transition-colors"
@@ -318,6 +328,7 @@ const CertModal = ({ cert, onClose, onCopyId, copiedId }) => {
           </button>
         </div>
       </motion.div>
+      </div>
     </motion.div>,
     document.body
   );

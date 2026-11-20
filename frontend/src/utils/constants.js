@@ -138,7 +138,7 @@ export const projects = [
     technologies: ["Python", "Pandas", "PostgreSQL", "SQLAlchemy", "Power BI", "Data Analytics"],
     image: "/projects/customerpulse-analytics.jpg",
     demo: "https://lnkd.in/dMG3bnpr",
-    github: "https://lnkd.in/dMG3bnpr",
+    github: "https://github.com/Prasadanu17",
     keyFeatures: [
       "Cleaned and preprocessed 3,900 customer records with Python and Pandas",
       "Conducted exploratory feature engineering and statistical data profiling",
@@ -192,7 +192,7 @@ export const projects = [
     description: "A deep learning neural network model built with TensorFlow and Keras to classify medical imaging / diagnostic feature data for early breast cancer diagnosis.",
     technologies: ["Python", "TensorFlow", "Keras", "Neural Networks", "scikit-learn", "Pandas"],
     image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
-    demo: "https://github.com/Prasadanu17",
+    demo: null,
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
       "Deep Learning neural network architecture",
@@ -227,7 +227,7 @@ export const projects = [
     tag: "FEATURED CLIENT PLATFORM",
     description: "A comprehensive travel agency & tour booking portal developed for Priyansu Tours & Travels in Gangtok, Sikkim. Features customized Himalayan tour packages, vehicle fleet bookings (car & bike rentals), hotel reservations, and multi-district Sikkim destination guides.",
     technologies: ["React.js", "Vite", "Tailwind CSS", "Lucide React"],
-    image: "/projects/priyansu_hero.png",
+    image: "/projects/priyansu_hero.webp",
     demo: "https://www.priyansutravels.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
@@ -245,7 +245,7 @@ export const projects = [
     tag: "CLIENT PROJECT",
     description: "A commercial logistics platform built during web development internship to streamline customer service quotes and contact management.",
     technologies: ["HTML", "CSS", "Bootstrap", "JavaScript", "PHP", "MySQL", "AJAX"],
-    image: "/projects/packers.png",
+    image: "/projects/packers.webp",
     demo: "https://mahendrapackersandmovers.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
@@ -262,7 +262,7 @@ export const projects = [
     tag: "CLIENT PROJECT",
     description: "A responsive portfolio showcase website engineered for an interior design studio to display luxury design projects and client services.",
     technologies: ["HTML5", "CSS3", "JavaScript", "Bootstrap"],
-    image: "/projects/interior.png",
+    image: "/projects/interior.webp",
     demo: "https://eliteinteriordesignstudio.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
@@ -301,7 +301,7 @@ export const certifications = [
     credentialId: "aBQ9Sfj8hx8Ynp4Db",
     skills: ["Data Analysis", "Forensic Technology", "EDA", "Tableau", "Telemetry Data"],
     description: "Completed practical simulation involving forensic technology, telemetry data analysis, interactive dashboard engineering in Tableau, data cleaning pipelines, and executive recommendation summaries.",
-    image: "/assets/certificate/deloitte_data_analytics.png",
+    image: "/assets/certificate/deloitte_data_analytics.webp",
     link: "/assets/certificate/Data Analytics.pdf",
     isImportant: true
   },
@@ -314,7 +314,7 @@ export const certifications = [
     credentialId: "SRM-TRANS-2025-RUNNERUP",
     skills: ["Competitive Coding", "Algorithms", "Problem Solving", "Rapid Development"],
     description: "Awarded Runner-Up in the Coding Challenge at Transformation 2025 Tech Fest organized by the School of Information Technology, SRM University Sikkim.",
-    image: "/assets/certificate/runner_up_transformation_2025.jpg",
+    image: "/assets/certificate/runner_up_transformation_2025.webp",
     link: "/assets/certificate/runner-up.pdf",
     isImportant: true
   },
@@ -327,7 +327,7 @@ export const certifications = [
     credentialId: "ICFAI-INNOV-2025-WD3",
     skills: ["Website Designing", "UI/UX Layout", "Responsive Architecture", "Frontend Development"],
     description: "Awarded 3rd position in the Website Designing competition at INNOVISION 2k25 organized by The School of Information Technology, The ICFAI University Sikkim.",
-    image: "/assets/certificate/icfai_web_design_3rd.jpg",
+    image: "/assets/certificate/icfai_web_design_3rd.webp",
     link: "/assets/certificate/icfai_web_design_3rd.jpg",
     isImportant: true
   },
@@ -340,7 +340,7 @@ export const certifications = [
     credentialId: "SRM-CEP-2025-CHE",
     skills: ["Cross-Campus Academic Immersion", "Advanced Systems", "Technical Collaboration"],
     description: "Successfully completed intensive Campus Exchange Program at SRM Institute of Science and Technology (SRMIST), Kattankulathur, Chennai, from 29th December 2024 to 15th January 2025.",
-    image: "/assets/certificate/srm_campus_exchange.jpg",
+    image: "/assets/certificate/srm_campus_exchange.webp",
     link: "/assets/certificate/srm_campus_exchange.jpg",
     isImportant: true
   },
@@ -353,7 +353,7 @@ export const certifications = [
     credentialId: "GRC20297",
     skills: ["PHP", "CodeIgniter", "MySQL", "Full-Stack Web Dev"],
     description: "Successfully built production web applications, client backend APIs, and dynamic database schemas during intensive industry internship.",
-    image: "/assets/certificate/groveus_certificate.jpeg",
+    image: "/assets/certificate/groveus_certificate.webp",
     link: "/assets/certificate/groveus_certificate.jpeg",
     isImportant: true
   },
@@ -366,7 +366,7 @@ export const certifications = [
     credentialId: "SMIT-OJT-2022-CA",
     skills: ["Computer Applications", "Hands-on Computing", "Systems Administration", "IT Fundamentals"],
     description: "Completed 18 days On The Job Training Program organized by the Department of Computer Applications, Sikkim Manipal Institute of Technology (SMIT), Majitar, Sikkim.",
-    image: "/assets/certificate/smit_on_the_job_training.jpg?v=2",
+    image: "/assets/certificate/smit_on_the_job_training.webp",
     link: "/assets/certificate/smit_on_the_job_training.jpg?v=2",
     isImportant: false
   },
@@ -379,7 +379,7 @@ export const certifications = [
     credentialId: "SRM-MERAKI-2023-VOL",
     skills: ["Event Organization", "Technical Volunteering", "Community Leadership", "Team Coordination"],
     description: "Certificate of Appreciation awarded for serving as a student volunteer at MERAKI 2023 organized by Shri Ramasamy Memorial University Sikkim.",
-    image: "/assets/certificate/meraki_volunteer_2023.jpg",
+    image: "/assets/certificate/meraki_volunteer_2023.webp",
     link: "/assets/certificate/meraki_volunteer_2023.jpg",
     isImportant: false
   },
@@ -392,7 +392,7 @@ export const certifications = [
     credentialId: "ICFAI-INNOV-2025-TR",
     skills: ["Algorithmic Speed", "Fast Prototyping", "Technical Competitions"],
     description: "Certificate of Participation in Type Racer organized by the School of Information Technology, The ICFAI University Sikkim during INNOVISION 2k25.",
-    image: "/assets/certificate/icfai_typeracer_innovision.jpg?v=2",
+    image: "/assets/certificate/icfai_typeracer_innovision.webp",
     link: "/assets/certificate/icfai_typeracer_innovision.jpg?v=2",
     isImportant: false
   },
@@ -405,7 +405,7 @@ export const certifications = [
     credentialId: "IA/Foundation/1101177",
     skills: ["Innovation & IP", "Design Thinking", "Entrepreneurship", "Tech Leadership"],
     description: "Successfully underwent Innovation Ambassador (IA) training 'Foundation Level' (16 sessions, 30 contact hours) conducted by MoE's Innovation Cell & AICTE during IIC calendar year 2025-26.",
-    image: "/assets/certificate/moe_innovation_ambassador.jpg",
+    image: "/assets/certificate/moe_innovation_ambassador.webp",
     link: "/assets/certificate/IA Online Training Certificate.pdf",
     isImportant: false
   }
@@ -482,7 +482,7 @@ export const achievements = [
     id: 3,
     title: "Student Volunteer Leadership",
     category: "ACADEMIC & COMMUNITY",
-    description: "Active volunteer organizer for university technical events including MERAKI 2023 during Graduation (BCA) and Post-Graduation (MCA).",
+    description: "Active volunteer organizer for university technical events, serving as Student Volunteer at MERAKI 2023 (SRM University) during BCA and continuing technical community leadership during MCA studies.",
     icon: "heart"
   }
 ];

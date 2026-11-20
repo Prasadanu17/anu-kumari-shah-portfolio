@@ -18,9 +18,10 @@ const Footer = () => {
     { num: '04', label: 'Journey', href: '#journey' },
     { num: '05', label: 'Skills', href: '#skills' },
     { num: '06', label: 'Projects', href: '#projects' },
-
     { num: '07', label: 'Certifications', href: '#certifications' },
-    { num: '08', label: 'Contact', href: '#contact' },
+    { num: '08', label: 'Achievements', href: '#achievements' },
+    { num: '09', label: 'Resume', href: '#resume' },
+    { num: '10', label: 'Contact', href: '#contact' },
   ];
 
   const socials = [

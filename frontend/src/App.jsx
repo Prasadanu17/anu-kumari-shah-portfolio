@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoadingScreen from './components/common/LoadingScreen';
-import feather from 'feather-icons';
 import HomePage from './pages/HomePage';
-import ProjectsPage from './pages/ProjectsPage';
-import CertificationsPage from './pages/CertificationsPage';
 import Lenis from 'lenis';
 import { PortfolioProvider } from './context/PortfolioContext';
+
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const CertificationsPage = lazy(() => import('./pages/CertificationsPage'));
 
 function ScrollProgressBar() {
   useEffect(() => {
@@ -28,37 +27,31 @@ function ScrollProgressBar() {
 }
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Loading screen
+  // Lenis smooth scroll - active only for desktop fine pointers to protect mobile main thread & native touch performance
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, []);
+    if (typeof window === 'undefined') return;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
 
-  // Lenis smooth scroll
-  useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
+      touchMultiplier: 0,
     });
 
+    let rafId = null;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
-  }, []);
-
-  // Feather icons replacement (run once after mount)
-  useEffect(() => {
-    feather.replace();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   // Robust delegated smooth scroll for anchor links
@@ -82,20 +75,18 @@ function App() {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
   return (
     <PortfolioProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollProgressBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/certifications" element={<CertificationsPage />} />
-          <Route path="/certificates" element={<CertificationsPage />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
+            <Route path="/certificates" element={<CertificationsPage />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </PortfolioProvider>
   );

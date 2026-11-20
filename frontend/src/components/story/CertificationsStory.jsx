@@ -600,14 +600,12 @@ const CertificationsStory = () => {
     isAutoPlayingRef.current = isAutoPlaying;
   }, [isAutoPlaying]);
 
-  // Repeated list for continuous infinite conveyor
+  // Repeated list for continuous infinite conveyor (2 sets is optimal for infinite loop with minimal DOM overhead)
   const displayList = useMemo(() => {
     if (featuredCerts.length === 0) return [];
     return [
       ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set0-${i}` })),
       ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set1-${i}` })),
-      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set2-${i}` })),
-      ...featuredCerts.map((c, i) => ({ ...c, uniqueKey: `${c.id}-set3-${i}` })),
     ];
   }, [featuredCerts]);
 
@@ -637,10 +635,7 @@ const CertificationsStory = () => {
 
     const rawIdx = Math.round(Math.abs(currentX) / itemWidth);
     const newIdx = ((rawIdx % featuredCerts.length) + featuredCerts.length) % featuredCerts.length;
-    if (newIdx !== lastActiveIndexRef.current) {
-      lastActiveIndexRef.current = newIdx;
-      setActiveIndex(newIdx);
-    }
+    lastActiveIndexRef.current = newIdx;
   });
 
   const handleNext = useCallback(() => {
@@ -778,21 +773,18 @@ const CertificationsStory = () => {
         {/* LEFT COLUMN / TOP ON MOBILE: Editorial Intro, Serif Heading, Divider, CTA & Controls */}
         <div className="w-full lg:w-[36%] xl:w-[34%] shrink-0 flex flex-col justify-between space-y-4 sm:space-y-5">
           <div className="space-y-2 sm:space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#C8B99F] font-semibold block">
-                AUTHENTICATED HONORS
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EAD9B8]/15 border border-[#EAD9B8]/40 shadow-[0_0_15px_rgba(234,217,184,0.15)]">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs sm:text-sm font-mono text-[#EAD9B8] tracking-[0.2em] uppercase font-bold">
+                07 // AUTHENTICATED HONORS
               </span>
             </div>
 
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-[#F5EBDD] font-normal tracking-tight leading-[1.12]">
-              My <br className="hidden sm:inline" />
-              <span className="italic font-light text-[#EAD9B8]">Certifications</span>
+            <h2 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#F5EBDD] tracking-tight uppercase leading-tight">
+              MY CERTIFICATIONS
             </h2>
 
-            <div className="w-12 sm:w-14 h-[2px] bg-[#8E8170]/50 my-2 sm:my-4" />
-
-            <p className="text-xs sm:text-sm text-[#C8B99F] font-light leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-[#C8B99F] font-light leading-relaxed max-w-sm pt-1">
               Verified academic milestones, competitive coding honors, and industry job simulations reflecting continuous technical dedication across AI, data analytics, and modern web systems.
             </p>
           </div>
@@ -889,15 +881,18 @@ const CertificationsStory = () => {
                   key={cert.uniqueKey || `${cert.id}-${index}`}
                   onClick={() => handleCardClick(cert)}
                   style={{ width: `${cardWidth}px` }}
-                  className="shrink-0 cursor-pointer group flex flex-col justify-between transition-all duration-300 opacity-90 hover:opacity-100"
+                  className="shrink-0 cursor-pointer group flex flex-col justify-between transition-opacity duration-300 opacity-90 hover:opacity-100 will-change-transform"
                 >
-                  <div className="relative w-full h-[180px] sm:h-[240px] md:h-[260px] rounded-2xl overflow-hidden bg-black/50 border border-[#8E8170]/30 group-hover:border-[#EAD9B8]/60 transition-all duration-500 shadow-xl group-hover:shadow-[0_16px_40px_rgba(234,217,184,0.12)]">
+                  <div className="relative w-full h-[180px] sm:h-[240px] md:h-[260px] rounded-2xl overflow-hidden bg-black/50 border border-[#8E8170]/30 group-hover:border-[#EAD9B8]/60 transition-colors duration-300 shadow-xl group-hover:shadow-[0_16px_40px_rgba(234,217,184,0.12)]">
                     {cert.image ? (
                       <img
                         src={cert.image}
                         alt={cert.title}
                         className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 pointer-events-none"
-                        loading="lazy"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        width="360"
+                        height="240"
                       />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#1b1b1b] to-[#121212]">

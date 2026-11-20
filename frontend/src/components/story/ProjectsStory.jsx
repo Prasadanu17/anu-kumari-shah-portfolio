@@ -139,6 +139,8 @@ const FannedCard = ({ project, index, total, isActive, onSelect, isMobile }) => 
 const ProjectDetailPanel = ({ project, onClose }) => {
   if (!project) return null;
 
+  const isAi = project.category === 'ai_ml' || project.category === 'ml' || project.category === 'data_analytics';
+
   return (
     <motion.div
       layout

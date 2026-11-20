@@ -6,6 +6,11 @@ export default function CustomCursor() {
   const innerRef = useRef(null);
 
   useEffect(() => {
+    // Only run custom cursor on devices that support hover and fine pointers (desktop mouse)
+    if (typeof window === 'undefined') return;
+    const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!hasFinePointer) return;
+
     const outer = outerRef.current;
     const inner = innerRef.current;
     if (!outer || !inner) return;
@@ -16,6 +21,7 @@ export default function CustomCursor() {
     let cursorY = 0;
     let dotX = 0;
     let dotY = 0;
+    let rafId = null;
 
     const onMouseMove = (e) => {
       mouseX = e.clientX;
@@ -37,10 +43,10 @@ export default function CustomCursor() {
       inner.style.left = `${dotX}px`;
       inner.style.top = `${dotY}px`;
 
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
-    animate();
+    rafId = requestAnimationFrame(animate);
 
     // Hover effect on interactive elements
     const interactive = document.querySelectorAll('a, button, input, textarea, .project-card, .filter-btn');
@@ -67,6 +73,7 @@ export default function CustomCursor() {
     window.addEventListener('mousemove', onMouseMove);
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', onMouseMove);
       interactive.forEach(el => {
         el.removeEventListener('mouseenter', onEnter);

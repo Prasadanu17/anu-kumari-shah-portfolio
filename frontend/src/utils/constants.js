@@ -136,7 +136,7 @@ export const projects = [
     tag: "DATA ANALYTICS & BI",
     description: "An end-to-end customer analytics and business intelligence system transforming raw customer data into actionable insights. Features Python data preprocessing, feature engineering on 3,900 customer records, automated PostgreSQL database integration using SQLAlchemy, and an interactive Power BI dashboard tracking purchasing behaviors, subscription dynamics, and revenue drivers.",
     technologies: ["Python", "Pandas", "PostgreSQL", "SQLAlchemy", "Power BI", "Data Analytics"],
-    image: "/projects/customerpulse-analytics.jpg",
+    image: "/projects/customerpulse-analytics.webp",
     demo: "https://lnkd.in/dMG3bnpr",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
@@ -173,7 +173,7 @@ export const projects = [
     tag: "FEATURED ML PROJECT",
     description: "An intelligent healthcare application that predicts the likelihood of heart disease using Machine Learning and Streamlit for real-time risk assessment.",
     technologies: ["Python", "Streamlit", "Scikit-learn", "Pandas", "NumPy"],
-    image: "/projects/Heart_disease_pred_AI.jpeg",
+    image: "/projects/Heart_disease_pred_AI.webp",
     demo: "https://heart-healthprediction.streamlit.app/",
     github: "https://github.com/Prasadanu17/heart-disease-prediction",
     keyFeatures: [
@@ -209,7 +209,7 @@ export const projects = [
     tag: "FEATURED CLIENT PLATFORM",
     description: "A luxury hospitality & mountain retreat web platform developed for Hotel Shivaratna in Rinchenpong, West Sikkim. Features online room booking inquiries, multi-district travel guides, an interactive photo gallery, and smooth responsive design.",
     technologies: ["React.js", "Vite", "Tailwind CSS", "Framer Motion", "Lucide React"],
-    image: "/projects/shivaratna.jpg",
+    image: "/projects/shivaratna.webp",
     demo: "https://www.hotelshivaratna.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [
@@ -279,7 +279,7 @@ export const projects = [
     tag: "CLIENT PROJECT",
     description: "Modernized and engineered the responsive frontend UI architecture for Niram Industries Private Limited (niramindustries.com), an ISO 9001:2015 certified dry-mix construction materials manufacturer in Siliguri. Enhanced mobile accessibility, product catalog navigation, and customer inquiry interfaces during web development internship at Groveus Informatics.",
     technologies: ["HTML5", "CSS3", "JavaScript", "Bootstrap", "Responsive Web Design", "Client Project"],
-    image: "/projects/niram.jpg",
+    image: "/projects/niram.webp",
     demo: "https://niramindustries.com/",
     github: "https://github.com/Prasadanu17",
     keyFeatures: [

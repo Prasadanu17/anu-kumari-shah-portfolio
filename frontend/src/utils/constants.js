@@ -52,17 +52,17 @@ export const journeyTimeline = [
   },
   {
     id: 3,
-    title: "Part-Time Web Developer",
-    subtitle: "Shield Tech Infosec Solutions",
-    period: "2026 – Present",
-    description: "Developed modern dynamic web applications using React.js and Tailwind CSS for client projects."
-  },
-  {
-    id: 4,
     title: "MCA",
     subtitle: "ICFAI University, Sikkim",
     period: "2025 – 2027",
     description: "Advanced post-graduate studies with focused specialization in AI, ML, Deep Learning, and System Design."
+  },
+  {
+    id: 4,
+    title: "Part-Time Web Developer",
+    subtitle: "Shield Tech Infosec Solutions",
+    period: "2026 – Present",
+    description: "Developed modern dynamic web applications using React.js and Tailwind CSS for client projects."
   },
   {
     id: 5,
